@@ -1,0 +1,356 @@
+// IMPORTS
+@import '../sass/mixins';
+@import '../sass/variables';
+@import '../sass/animations';
+
+body {
+  background-color: $mainBackground;
+  overflow-x: hidden;
+  @include flexColumnStart;
+
+  header {
+    width: 100vw;
+    height: 10vh;
+    @include flexBetween;
+    padding: 0 50px 0 20px;
+
+    img {
+      width: 50px;
+      height: 50px;
+      margin: auto 0;
+    }
+
+    .menuHamburger {
+      width: 30px;
+      height: 30px;
+      @include flexColumnEvenly;
+      background-color: $mainBackground;
+      padding: 6px 3px;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 5px 5px 7px $shadowGray1, -5px -5px 7px $shadowWhite;
+
+      &:active {
+        box-shadow: 0 0 2px $mainBackground, 0 0 2px $shadowGray1,
+          inset 6px 6px 9px $shadowGray1, inset -6px -6px 9px $shadowWhite;
+      }
+
+      .line {
+        width: 80%;
+        height: 15%;
+        background-color: $shadowGray3;
+        border-radius: 2px;
+      }
+    }
+  }
+
+  main {
+    width: 80vw;
+    height: 95vh;
+    position: absolute;
+    top: 3vh;
+    left: 50%;
+    transform: translate(-50%, 0);
+
+    #table {
+      width: 100%;
+      height: 100%;
+
+      #searchFunctions {
+        width: 100%;
+        height: 5%;
+        margin-bottom: 20px;
+        @include flexStart;
+
+        #searchBar {
+          width: 70%;
+          height: 100%;
+          background-color: $mainBackground;
+          border-radius: 20px;
+          box-shadow: 5px 5px 7px $shadowGray1, -5px -5px 7px $shadowWhite;
+          padding-left: 10px;
+          margin-right: 15px;
+          @include flexStart;
+          animation: showUp 1s ease;
+
+          svg {
+            width: 20px;
+            height: 20px;
+            margin: auto 0;
+            fill: $fontGray;
+            animation: showUp 1s ease;
+          }
+
+          input {
+            width: 70%;
+            height: 100%;
+            border-radius: 20px;
+            border: none;
+            outline: none;
+            background: transparent;
+            padding: 0 10px;
+            color: $fontGray;
+          }
+        }
+
+        select {
+          width: 30%;
+          height: 100%;
+          background-color: $mainBackground;
+          border: none;
+          outline: none;
+          border-radius: 20px;
+          box-shadow: 5px 5px 7px $shadowGray1, -5px -5px 7px $shadowWhite;
+          padding-left: 10px;
+          color: $fontGray;
+          text-align: center;
+          margin-right: 15px;
+          animation: showUp 1s ease;
+
+          option {
+            background-color: $mainBackground;
+            outline: none;
+            border: none;
+            border-radius: 0 0 20px 20px;
+          }
+        }
+
+        button {
+          width: 20%;
+          height: 100%;
+          border: none;
+          outline: none;
+          background: linear-gradient(90deg, $mainGreen, $lightestGreen);
+          border-radius: 20px;
+          color: $fontWhite;
+          cursor: pointer;
+          transition: all 0.5s ease;
+          font-weight: 700;
+          animation: showUp 1s ease;
+          box-shadow: 5px 5px 7px $shadowGray1, -5px -5px 7px $shadowWhite;
+
+          &:hover {
+            filter: brightness(1.3);
+            transform: scale(1.05);
+          }
+        }
+      }
+
+      #filtersContainer {
+        width: 100%;
+        height: 5%;
+        animation: showUp 1s ease;
+        margin-bottom: 20px;
+
+        #filter {
+          width: 100%;
+          height: 100%;
+          background-color: $mainBackground;
+          border-radius: 20px;
+          box-shadow: 5px 5px 7px $shadowGray1, -5px -5px 7px $shadowWhite;
+        }
+      }
+
+      #tableMainContainer {
+        width: 100%;
+        height: 82%;
+        margin-bottom: 20px;
+        box-shadow: 5px 5px 10px $shadowGray1, -5px -5px 10px $shadowWhite;
+        overflow: auto;
+        border-radius: 20px;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+
+        &::-webkit-scrollbar {
+          display: none;
+        }
+
+        #legendContainer {
+          width: 100%;
+          height: 5%;
+          background-color: $mainBackground;
+          box-shadow: 0 9px 10px -4px $shadowGray2;
+          border-radius: 20px 20px 0 0;
+          position: fixed;
+          overflow: hidden;
+
+          #legend {
+            width: 100%;
+            height: 100%;
+            @include flexStart;
+
+            div {
+              padding-left: 10px;
+              width: 100px;
+              height: 100%;
+              @include flexStartCenter;
+              color: $fontGray;
+              font-weight: bold;
+              font-size: 1.2rem;
+
+              &:first-child {
+                margin-left: 10px;
+              }
+            }
+          }
+        }
+
+        #tableContainer {
+          box-shadow: -10px -10px 15px $mainBackground,
+            10px 10px 15px $shadowGray1, inset 6px 6px 9px $shadowGray1,
+            inset -6px -6px 9px $shadowWhite;
+          margin-top: 30px;
+
+          #playersTable {
+            width: 100%;
+            height: 100%;
+            margin: auto 0;
+
+            //   border-radius: 20px;
+            tbody {
+              height: 25px;
+              display: block;
+              &:first-child {
+                margin-top: 10px;
+              }
+            }
+
+            tr {
+              width: auto;
+              // height: 25px;
+              display: block;
+              border-radius: 20px;
+              margin: 0 10px;
+              animation: elementFloatDown 1s ease backwards
+                calc(var(--index) * 0.055s);
+
+              td {
+                padding-left: 10px;
+                margin: 10px;
+              }
+            }
+            .green {
+              // background-color: $mainGreen;
+              box-shadow: 2px 2px 2px $shadowGray1;
+              background: linear-gradient(150deg, $mainGreen, $lighterGreen);
+              color: $fontWhite;
+              height: 100%;
+            }
+
+            .white {
+              // background-color: $mainBackground;
+              background-color: transparent;
+              color: $fontGray;
+              height: 100%;
+            }
+          }
+        }
+      }
+    }
+
+    .blured {
+      background-color: red;
+      display: hidden;
+    }
+  }
+
+  #playerAddition {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(1.5px);
+    background-color: rgba(125, 125, 125, 0.5);
+    @include flexCenter;
+    transition: all 0.5s ease-in-out;
+
+    #addingWindow {
+      width: 40%;
+      height: 60%;
+      background-color: $mainBackground;
+      border-radius: 20px;
+      box-shadow: 0 0 25px 5px $shadowGray3;
+      @include flexEvenly;
+      transition: all 0.5s ease-in-out;
+
+      #playerInputData {
+        // background-color: red;
+        width: 50%;
+        height: 100%;
+        @include flexColumnEvenly;
+
+        input {
+          border: none;
+          outline: none;
+          background: $mainBackground;
+          color: $fontGray;
+          border-radius: 20px;
+          box-shadow: inset 8px 8px 8px $shadowGray1,
+            inset -8px -8px 8px $shadowWhite;
+          padding-left: 10px;
+          height: 30px;
+          width: 200px;
+          animation: elementFloatDown 0.5s ease backwards 0.5s;
+        }
+      }
+
+      #playerSelectData {
+        // background-color: green;
+        width: 50%;
+        height: 100%;
+        @include flexColumnEvenly;
+
+        select {
+          width: 200px;
+          height: 30px;
+          background-color: $mainBackground;
+          border: none;
+          outline: none;
+          border-radius: 20px;
+          box-shadow: 5px 5px 7px $shadowGray1, -5px -5px 7px $shadowWhite;
+          padding-left: 10px;
+          color: $fontGray;
+          text-align: center;
+          margin-right: 15px;
+          animation: elementFloatDown 0.5s ease backwards 0.5s;
+        }
+
+        button {
+          width: 150px;
+          height: 30px;
+          border: none;
+          outline: none;
+          background: linear-gradient(90deg, $mainGreen, $lightestGreen);
+          border-radius: 20px;
+          color: $fontWhite;
+          cursor: pointer;
+          transition: all 0.5s ease;
+          font-weight: 700;
+
+          box-shadow: 5px 5px 7px $shadowGray1, -5px -5px 7px $shadowWhite;
+          animation: elementFloatDown 0.5s ease backwards 0.5s;
+
+          &:hover {
+            filter: brightness(1.3);
+            transform: scale(1.05);
+          }
+        }
+      }
+    }
+  }
+}
+
+.hidden {
+  display: none !important;
+  transition: all 0.5s ease-in-out;
+}
+
+.showUpAnimation {
+  animation: addPlayerAnimation 0.5s ease-in-out;
+}
+
+.floatDownAnimation {
+  animation: elementFloatDown 1s ease-in-out
+    calc(0.1s * attr(data-animation-delay number 1));
+}

@@ -1,0 +1,55 @@
+// IMPORTED STUFF
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+// SET UP
+html {
+  font-size: 62.5%;
+  font-family: 'Poppins';
+}
+
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+// PRINT FORM VARIABLES ============================================================================
+// Paper padding
+$printSideMargin: 9mm;
+$printTopMargin: 7mm;
+$printBottomMargin: 14mm;
+
+$smallPadding: 0.5mm;
+
+// font sizing
+$h1: 2rem;
+$h2: 0.95rem;
+$h3: 0.8rem;
+$h4: 0.65rem;
+$h5: 0.25rem;
+// ==================================================================================================
+
+// Font style
+$highlightedFont: Helvetica, Arial, sans-serif;
+$mainFont: 'Poppins', Helvetica, Arial;
+
+// Colors
+$grayColor: rgb(216, 216, 216);
+$greenCard: rgb(22, 155, 0);
+$yellowCard: rgb(255, 247, 53);
+$redCard: rgb(255, 54, 54);
+$editButton: rgb(63, 204, 70);
+$printButton: rgb(44, 158, 245);
+$mainBackground: #ecf0f3;
+$shadowWhite: #fff;
+$shadowGray1: #cbced1;
+$shadowGray2: #a7aaaf;
+$shadowGray3: #5f5f5f;
+$fontGray: #555;
+$fontLightGray: #aaa;
+$fontWhite: #fff;
+$mainGreen: #1e381e;
+$lighterGreen: #345f34;
+$lightestGreen: #447e44;

@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hockey Portal | Match Report</title>
+    <!-- <author name="Vid Kranjec"> -->
+    <link rel="stylesheet" href="../style/tisk/zapisnik-tisk.css" />
+    <script src="../javascript/matchReportForm.js" defer></script>
+  </head>
+  <body>
+    <main id="printForm">
+      <section id="topContainer">
+        <section id="associationContainer">
+          <div id="associationName">
+            <h2>ZVEZA ZA HOKEJ NA TRAVI SLOVENIJE</h2>
+          </div>
+          <div id="addressContainer">
+            <h3>Mladinska 3</h3>
+            <h3>9000 Murska Sobota</h3>
+            <h3>Email: info@zhnts.si</h3>
+          </div>
+        </section>
+        <img src="../img/ZHNTS_logo.png" alt="Association logo" id="logo" />
+      </section>
+      <section>
+        <h1 id="title">ZAPISNIK TEKME</h1>
+      </section>
+      <section id="basicData">
+        <!-- V posamezne div dodaj <p> tags za vnose  -->
+        <div id="date"><h3>Datum:</h3></div>
+        <div id="time"><h3>Ura:</h3></div>
+        <div id="group"><h3>Skupina:</h3></div>
+        <div id="location"><h3>Kraj:</h3></div>
+        <div id="pitch"><h3>Igrišče:</h3></div>
+        <div id="matchNumber"><h3>Številka tekme:</h3></div>
+      </section>
+      <section id="resultsMainContainer">
+        <div id="resultsTitle"><h1>REZULTAT</h1></div>
+        <div id="resultsContainer">
+          <div id="homeResults"><h3>Ekipa:</h3></div>
+          <div id="resultsData">
+            <div id="finalResults"><h3>Končni:</h3></div>
+            <div id="halftimeResults"><h3>Polčas:</h3></div>
+            <div id="penaltyResults"><h3>Penali:</h3></div>
+          </div>
+          <div id="guestResult"><h3>Ekipa:</h3></div>
+        </div>
+      </section>
+      <section id="playersMainContainer">
+        <section id="homeTeam">
+          <div id="placeholderHome">
+            <div id="substitutionTimeHome">
+              <h4>
+                Zam.<br />
+                čas
+              </h4>
+            </div>
+            <div id="startingPositionHome">
+              <h4>
+                Zač.<br />
+                pos.
+              </h4>
+            </div>
+            <div id="jerseyNumberHome">
+              <h4>
+                Št.<br />
+                dresa
+              </h4>
+            </div>
+            <div id="playerNameHome" class="playerName">
+              <h2>PRIIMEK IN IME</h2>
+            </div>
+            <div id="greenCardHome">
+              <h4>Zeleni</h4>
+              <span class="triangle"></span>
+            </div>
+            <div id="yellowCardHome">
+              <h4>Rumeni</h4>
+              <span class="square"></span>
+            </div>
+            <div id="redCardHome">
+              <h4>Rdeči</h4>
+              <span class="circle"></span>
+            </div>
+          </div>
+          <div id="playersHome">
+            <div data-home-player="player1" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-home-player="player2" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-home-player="player3" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-home-player="player4" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-home-player="player5" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-home-player="player6" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-home-player="player7" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-home-player="player8" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-home-player="player9" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-home-player="player10" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-home-player="player11" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-home-player="player12" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-home-player="player13" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-home-player="player14" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-home-player="player15" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-home-player="player16" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-home-player="player17" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-home-player="player18" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div class="coach">
+              <h4>Trener:</h4>
+              <textarea rows="1" wrap="hard" maxlength="40"></textarea>
+              <span id="homeCoach"></span>
+            </div>
+          </div>
+          <div id="officialHome">
+            <div id="teamManagerHome">
+              <h4>Vodja Ekipe:</h4>
+              <textarea rows="1" wrap="hard" maxlength="54"></textarea>
+            </div>
+            <div id="umpireHome">
+              <h4>Sodnik:</h4>
+              <textarea rows="1" wrap="hard" maxlength="54"></textarea>
+            </div>
+            <div id="judgeGuest">
+              <h4>Delegat:</h4>
+              <textarea rows="1" wrap="hard" maxlength="54"></textarea>
+            </div>
+            <div id="tournamentOfficial">
+              <h4>Uradnik tekmovanja:</h4>
+              <textarea rows="1" wrap="hard" maxlength="54"></textarea>
+            </div>
+          </div>
+        </section>
+        <section id="guestTeam">
+          <div id="placeholderGuest">
+            <div id="substitutionTimeGuest">
+              <h4>
+                Zam.<br />
+                čas
+              </h4>
+            </div>
+            <div id="startingPositionGuest">
+              <h4>
+                Zač.<br />
+                pos.
+              </h4>
+            </div>
+            <div id="jerseyNumberGuest">
+              <h4>
+                Št.<br />
+                dresa
+              </h4>
+            </div>
+            <div id="playerNameGuest" class="playerName">
+              <h2>PRIIMEK IN IME</h2>
+            </div>
+            <div id="greenCardGuest">
+              <h4>Zeleni</h4>
+              <span class="triangle"></span>
+            </div>
+            <div id="yellowCardGuest">
+              <h4>Rumeni</h4>
+              <span class="square"></span>
+            </div>
+            <div id="redCardGuest">
+              <h4>Rdeči</h4>
+              <span class="circle"></span>
+            </div>
+          </div>
+          <div id="playersGuest">
+            <div data-guest-player="player1" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-guest-player="player2" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-guest-player="player3" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-guest-player="player4" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-guest-player="player5" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-guest-player="player6" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-guest-player="player7" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-guest-player="player8" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-guest-player="player9" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-guest-player="player10" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-guest-player="player11" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-guest-player="player12" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-guest-player="player13" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-guest-player="player14" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-guest-player="player15" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-guest-player="player16" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-guest-player="player17" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div data-guest-player="player18" class="player">
+              <div class="playerSub"></div>
+              <div class="playerStart"></div>
+              <div class="playerNum"></div>
+              <div class="playerName"></div>
+              <div class="playerGreen"></div>
+              <div class="playerYellow"></div>
+              <div class="playerRed"></div>
+            </div>
+            <div class="coach">
+              <h4>Trener:</h4>
+              <textarea rows="1" wrap="hard" maxlength="40"></textarea>
+              <span id="homeCoach"></span>
+            </div>
+          </div>
+          <div id="officialHome">
+            <div id="teamManagerGuest">
+              <h4>Vodja Ekipe:</h4>
+              <textarea rows="1" wrap="hard" maxlength="54"></textarea>
+            </div>
+            <div id="umpireGuest">
+              <h4>Sodnik:</h4>
+              <textarea rows="1" wrap="hard" maxlength="54"></textarea>
+            </div>
+            <div id="judgeGuest">
+              <h4>Delegat:</h4>
+              <textarea rows="1" wrap="hard" maxlength="54"></textarea>
+            </div>
+            <div id="reserveUmpire">
+              <h4>Rezervni sodnik:</h4>
+              <textarea rows="1" wrap="hard" maxlength="54"></textarea>
+            </div>
+          </div>
+        </section>
+      </section>
+      <section id="scoreboardMainContainer">
+        <div id="scoreboardContainer">
+          <div class="scoreboardTemplate">
+            <div class="scoreboardPlaceholder">
+              <div class="scoreboardTeam">Ekipa</div>
+              <div class="scoreboardTime">Minuta</div>
+              <div class="scoreboardNumber">Št.</div>
+              <div class="scoreboardType">Tip</div>
+              <div class="scoreboardScore">Rezultat</div>
+            </div>
+            <div class="scoreboardData">
+              <div class="scoreboardRow">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+              <div class="scoreboardRow">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+              <div class="scoreboardRow">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+              <div class="scoreboardRow">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+              <div class="scoreboardRow">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+              <div class="scoreboardRow">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+          </div>
+          <div class="scoreboardTemplate">
+            <div class="scoreboardPlaceholder">
+              <div class="scoreboardTeam">Ekipa</div>
+              <div class="scoreboardTime">Minuta</div>
+              <div class="scoreboardNumber">Št.</div>
+              <div class="scoreboardType">Tip</div>
+              <div class="scoreboardScore">Rezultat</div>
+            </div>
+            <div class="scoreboardData">
+              <div class="scoreboardRow">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+              <div class="scoreboardRow">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+              <div class="scoreboardRow">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+              <div class="scoreboardRow">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+              <div class="scoreboardRow">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+              <div class="scoreboardRow">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+          </div>
+          <div class="scoreboardTemplate">
+            <div class="scoreboardPlaceholder">
+              <div class="scoreboardTeam">Ekipa</div>
+              <div class="scoreboardTime">Minuta</div>
+              <div class="scoreboardNumber">Št.</div>
+              <div class="scoreboardType">Tip</div>
+              <div class="scoreboardScore">Rezultat</div>
+            </div>
+            <div class="scoreboardData">
+              <div class="scoreboardRow">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+              <div class="scoreboardRow">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+              <div class="scoreboardRow">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+              <div class="scoreboardRow">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+              <div class="scoreboardRow">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+              <div class="scoreboardRow">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section id="scoreboardComments">
+          <h4 id="comments">Pripombe:</h4>
+          <h4 id="goalType">
+            Oznake: AK - akcija, KK - kratki kot, KS - kazenski strel
+          </h4>
+          <section id="commentsInputContainer">
+            <textarea rows="3" wrap="hard" maxlength="333"></textarea>
+          </section>
+        </section>
+      </section>
+    </main>
+    <section id="buttonContainer">
+      <button type="submit" id="editButton">Uredi</button>
+      <button type="submit" id="printButton">Natisni</button>
+    </section>
+  </body>
+</html>
