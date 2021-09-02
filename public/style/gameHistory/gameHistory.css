@@ -1,0 +1,312 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+html {
+  font-size: 62.5%;
+  font-family: 'Poppins';
+}
+
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+@-webkit-keyframes showUp {
+  0% {
+    opacity: 0;
+    -webkit-transform: scale(0.8);
+            transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+
+@keyframes showUp {
+  0% {
+    opacity: 0;
+    -webkit-transform: scale(0.8);
+            transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+
+@-webkit-keyframes addPlayerAnimation {
+  0% {
+    opacity: 0;
+    -webkit-backdrop-filter: blur(0px);
+            backdrop-filter: blur(0px);
+  }
+  100% {
+    opacity: 1;
+    -webkit-backdrop-filter: blur(1.5px);
+            backdrop-filter: blur(1.5px);
+  }
+}
+
+@keyframes addPlayerAnimation {
+  0% {
+    opacity: 0;
+    -webkit-backdrop-filter: blur(0px);
+            backdrop-filter: blur(0px);
+  }
+  100% {
+    opacity: 1;
+    -webkit-backdrop-filter: blur(1.5px);
+            backdrop-filter: blur(1.5px);
+  }
+}
+
+@-webkit-keyframes elementFloatDown {
+  from {
+    opacity: 0;
+    -webkit-transform: translateY(-1vh);
+            transform: translateY(-1vh);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+}
+
+@keyframes elementFloatDown {
+  from {
+    opacity: 0;
+    -webkit-transform: translateY(-1vh);
+            transform: translateY(-1vh);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+}
+
+@-webkit-keyframes elementFloatLeft {
+  0% {
+    -webkit-transform: translate(50%, 0);
+            transform: translate(50%, 0);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translate(0, 0);
+            transform: translate(0, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes elementFloatLeft {
+  0% {
+    -webkit-transform: translate(50%, 0);
+            transform: translate(50%, 0);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translate(0, 0);
+            transform: translate(0, 0);
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes elementFloatRight {
+  0% {
+    -webkit-transform: translate(-50%, 0);
+            transform: translate(-50%, 0);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translate(0, 0);
+            transform: translate(0, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes elementFloatRight {
+  0% {
+    -webkit-transform: translate(-50%, 0);
+            transform: translate(-50%, 0);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translate(0, 0);
+            transform: translate(0, 0);
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes blinking {
+  0% {
+    color: #fb6161;
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+  100% {
+    color: #fb6161;
+    -webkit-transform: scale(1.2);
+            transform: scale(1.2);
+  }
+}
+
+@keyframes blinking {
+  0% {
+    color: #fb6161;
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+  100% {
+    color: #fb6161;
+    -webkit-transform: scale(1.2);
+            transform: scale(1.2);
+  }
+}
+
+@-webkit-keyframes startAnimation {
+  0% {
+    color: #9eed82;
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+  50% {
+    color: #9eed82;
+    -webkit-transform: scale(1.2);
+            transform: scale(1.2);
+  }
+  100% {
+    color: #9eed82;
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+
+@keyframes startAnimation {
+  0% {
+    color: #9eed82;
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+  50% {
+    color: #9eed82;
+    -webkit-transform: scale(1.2);
+            transform: scale(1.2);
+  }
+  100% {
+    color: #9eed82;
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+
+#incompatible {
+  width: 100vw;
+  height: 100vh;
+  background: -webkit-gradient(linear, left top, right top, from(#1e381e), to(#447e44));
+  background: linear-gradient(90deg, #1e381e, #447e44);
+  padding: 3rem 1rem;
+  display: none;
+}
+
+#incompatible h1 {
+  color: #fff;
+  font-size: clamp(1.8rem, 7vw, 4rem);
+  text-align: center;
+  margin-bottom: 5rem;
+}
+
+#incompatible h2 {
+  color: #ecf0f3;
+  font-size: clamp(0.9rem, 4vw, 2rem);
+  text-align: center;
+}
+
+body {
+  background-color: #ecf0f3;
+  overflow-x: hidden;
+}
+
+body header {
+  width: 100vw;
+  height: 10vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 0 50px 0 20px;
+}
+
+body header img {
+  width: 50px;
+  height: 50px;
+  margin: auto 0;
+}
+
+body header .menuHamburger {
+  width: 30px;
+  height: 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: #ecf0f3;
+  padding: 6px 3px;
+  border-radius: 50%;
+  cursor: pointer;
+  -webkit-box-shadow: 5px 5px 7px #cbced1, -5px -5px 7px #fff;
+          box-shadow: 5px 5px 7px #cbced1, -5px -5px 7px #fff;
+}
+
+body header .menuHamburger:active {
+  -webkit-box-shadow: 0 0 2px #ecf0f3, 0 0 2px #cbced1, inset 6px 6px 9px #cbced1, inset -6px -6px 9px #fff;
+          box-shadow: 0 0 2px #ecf0f3, 0 0 2px #cbced1, inset 6px 6px 9px #cbced1, inset -6px -6px 9px #fff;
+}
+
+body header .menuHamburger .line {
+  width: 80%;
+  height: 15%;
+  background-color: #5f5f5f;
+  border-radius: 2px;
+}
+
+@media only screen and (max-width: 768px) {
+  body > *:not(#incompatible) {
+    display: none;
+  }
+  #incompatible {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-pack: space-evenly;
+        -ms-flex-pack: space-evenly;
+            justify-content: space-evenly;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+  }
+}
+/*# sourceMappingURL=gameHistory.css.map */

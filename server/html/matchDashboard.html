@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zapisnik tekem</title>
+    <!-- <author name="Vid Kranjec |Kranjex|"> -->
+    <link rel="stylesheet" href="/style/zaslon/matchDashboard.css" />
+    <!-- <link
+      rel="stylesheet"
+      href="../../public/style/zaslon/matchDashboard.css"
+    /> -->
+    <link rel="icon" href="../../public/img/ZHNTS_logo.png" />
+    <script src="/javascript/matchDashboard.js" defer></script>
+  </head>
+  <body>
+    <section id="incompatible">
+      <h1>
+        Spletna stran ni podprta za vašo napravo ali pa širina brskalnika ni
+        kompatibilna.
+      </h1>
+      <h2>
+        Poskusite znova na računalniku ali prenosniku ali tabličnem računalniku
+        oziroma povečajte širino brskalnika.
+      </h2>
+    </section>
+    <section id="setUpWindowContainer">
+      <header>
+        <img src="/img/ZHNTS_logo.png" alt="Association logo" id="logo" />
+        <div class="menuHamburger">
+          <div class="line" id="line1"></div>
+          <div class="line" id="line2"></div>
+          <div class="line" id="line3"></div>
+        </div>
+      </header>
+      <section id="welcomeText"><h1>Pozdravljen "Delegat"</h1></section>
+      <section id="matchSetUpContainer">
+        <section id="basicDataContainer">
+          <h1>Splošni podatki</h1>
+          <input
+            type="text"
+            name="reportDate"
+            id="reportDate"
+            placeholder="Datum"
+          />
+          <input
+            type="text"
+            name="reportTime"
+            id="reportTime"
+            placeholder="Ura"
+          />
+          <input
+            type="text"
+            name="reportGroup"
+            id="reportGroup"
+            placeholder="Selekcija"
+          />
+          <input
+            type="text"
+            name="reportLocation"
+            id="reportLocation"
+            placeholder="Kraj"
+          />
+          <input
+            type="text"
+            name="reportPitch"
+            id="reportPitch"
+            placeholder="Igrišče"
+          />
+          <input
+            type="text"
+            name="reportNumber"
+            id="reportNumber"
+            placeholder="Številka tekme"
+          />
+        </section>
+        <section id="timeSettingsContainer">
+          <h1>Periode</h1>
+          <input type="number" placeholder="Dolžina periode v minutah" />
+          <input type="number" placeholder="Št. period" />
+        </section>
+      </section>
+      <section id="officialsSetUpContainer">
+        <h1>Osebje</h1>
+        <input
+          type="text"
+          name="umpire1"
+          id="umpire1"
+          class="umpireInput"
+          placeholder="Sodnik 1"
+        />
+        <input
+          type="text"
+          name="umpire2"
+          id="umpire2"
+          class="umpireInput"
+          placeholder="Sodnik 2"
+        />
+        <input
+          type="text"
+          name="judge"
+          id="judge"
+          class="judgeInput"
+          placeholder="Delegat"
+        />
+        <input
+          type="text"
+          name="tournamentOfficial"
+          id="tournamentOfficial"
+          class="judgeInput"
+          placeholder="Uradnik Tekmovanja"
+        />
+        <input
+          type="text"
+          name="reserveUmpire"
+          id="reserveUmpire"
+          class="judgeInput"
+          placeholder="Rezervni sodnik"
+        />
+      </section>
+      <section id="teamSetUpContainer">
+        <section id="homeTeamSetUp" class="teamSetUp">
+          <h1>Domača ekipa</h1>
+          <section id="homeTeamContainer" class="teamContainer">
+            <button class="addTeam">Izberi ekipo</button>
+          </section>
+          <section id="homeCoachesContainer" class="coachesContainer">
+            <input
+              type="text"
+              name="homeCoach"
+              id="homeCoach"
+              placeholder="Trener"
+            />
+            <input
+              type="text"
+              name="homeManager"
+              id="homeManager"
+              placeholder="Vodja Ekipe"
+            />
+          </section>
+        </section>
+        <section id="guestTeamSetUp" class="teamSetUp">
+          <h1>Gostujoča ekipa</h1>
+          <section id="homeTeamContainer" class="teamContainer">
+            <button class="addTeam">Izberi ekipo</button>
+          </section>
+          <section id="guestCoachesContainer" class="coachesContainer">
+            <input
+              type="text"
+              name="guestCoach"
+              id="guestCoach"
+              placeholder="Trener"
+            />
+            <input
+              type="text"
+              name="guestManager"
+              id="guestManager"
+              placeholder="Vodja Ekipe"
+            />
+          </section>
+        </section>
+      </section>
+      <button id="closeButton">Potrdi in nadaljuj</button>
+    </section>
+    <main id="mainScreen">
+      <section id="homeTeam">
+        <div id="homeScoreContainer" class="scoreContainer">
+          <h1 id="homeName" class="teamName">HK Moravske Toplice</h1>
+          <h2 id="homeScore" class="teamScore">0</h2>
+        </div>
+        <section id="homePlayersContainer" class="playersContainer"></section>
+        <div class="backgroundContainer" id="backgroundContainerHome">
+          <div id="image"></div>
+        </div>
+      </section>
+      <section id="dashboardContainer">
+        <div id="stopwatch">
+          <button id="addSecond">+</button>
+          <h1 id="stopwatchContent">00:00</h1>
+          <button id="substractSecond">-</button>
+        </div>
+        <section id="dashboard">
+          <section id="buttons">
+            <button id="startButton">START</button>
+            <button id="stopButton">STOP</button>
+            <button id="goalButton">GOL</button>
+            <button id="cardButton">KARTON</button>
+            <div id="goalTypeContainer"></div>
+            <div id="cardTypeContainer"></div>
+          </section>
+          <section id="history"></section>
+        </section>
+      </section>
+      <section id="guestTeam">
+        <div id="guestScoreContainer" class="scoreContainer">
+          <h1 id="guestName" class="teamName">HK Lipovci</h1>
+          <h2 id="guestScore" class="teamScore">0</h2>
+        </div>
+        <section id="guestPlayersContainer" class="playersContainer"></section>
+        <div class="backgroundContainer" id="backgroundContainerGuest">
+          <div id="image"></div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

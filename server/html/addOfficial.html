@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/img/ZHNTS_logo.png" />
+    <link rel="stylesheet" href="/style/addOfficial/addofficial.css" />
+    <script src="/javascript/addofficial.js" defer></script>
+    <title>Dodajanje uporabnika |</title>
+  </head>
+  <body>
+    <section id="incompatible">
+      <h1>
+        Spletna stran ni podprta za vašo napravo ali pa širina brskalnika ni
+        kompatibilna.
+      </h1>
+      <h2>
+        Poskusite znova na računalniku ali prenosniku ali tabličnem računalniku
+        oziroma povečajte širino brskalnika.
+      </h2>
+    </section>
+    <header>
+      <a href="./playerCommision"
+        ><img src="/img/ZHNTS_logo.png" alt="Association logo" id="logo"
+      /></a>
+      <div class="menuHamburger">
+        <div class="line" id="line1"></div>
+        <div class="line" id="line2"></div>
+        <div class="line" id="line3"></div>
+      </div>
+    </header>
+    <main>
+      <section id="addUserContainer">
+        <h1>Dodaj uporabnika spletnega portala</h1>
+        <input type="text" name="name" id="name" placeholder="Ime" / required>
+        <input
+          type="text"
+          name="lastName"
+          id="lastName"
+          placeholder="Priimek"
+          required
+        />
+        <input
+          type="email"
+          name="email"
+          id="email"
+          placeholder="Email"
+          required
+        />
+        <input
+          type="date"
+          name="dateOfBirth"
+          id="dateOfBirth"
+          placeholder="Datum rojstva"
+          required
+        />
+        <select
+          name="userRole"
+          id="userRole"
+          placeholder="Vloga uporabnika"
+          required
+        >
+          <option value="Delegat">Delegat</option>
+          <option value="Komisija">Komisija</option>
+        </select>
+        <button>Dodaj uporabnika</button>
+      </section>
+      <section id="tableMainContainer">
+        <div id="tableLegend">
+          <h1>Ime</h1>
+          <h1>Priimek</h1>
+          <h1>Email</h1>
+          <h1>Vloga</h1>
+        </div>
+        <div id="tableContainer">
+          <table id="table"></table>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

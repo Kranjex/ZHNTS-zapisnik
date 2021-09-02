@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/img/ZHNTS_logo.png" />
+    <link rel="stylesheet" href="/style/playersTable/playersTable.css" />
+    <!-- <script type="module" src="/javascript/firebaseApp.js"></script> -->
+    <script type="module" src="/javascript/playersTable.js"></script>
+    <title>Tabela igralcev |</title>
+  </head>
+  <body>
+    <section id="incompatible">
+      <h1>
+        Spletna stran ni podprta za vašo napravo ali pa širina brskalnika ni
+        kompatibilna.
+      </h1>
+      <h2>
+        Poskusite znova na računalniku ali prenosniku ali tabličnem računalniku
+        oziroma povečajte širino brskalnika.
+      </h2>
+    </section>
+    <header>
+      <a href="./playerCommision"
+        ><img src="/img/ZHNTS_logo.png" alt="Association logo" id="logo"
+      /></a>
+      <div class="menuHamburger">
+        <div class="line" id="line1"></div>
+        <div class="line" id="line2"></div>
+        <div class="line" id="line3"></div>
+      </div>
+    </header>
+    <main>
+      <section id="table">
+        <section id="searchFunctions">
+          <div id="searchBar">
+            <svg class="svg-icon" viewBox="0 0 20 20">
+              <path
+                d="M18.125,15.804l-4.038-4.037c0.675-1.079,1.012-2.308,1.01-3.534C15.089,4.62,12.199,1.75,8.584,1.75C4.815,1.75,1.982,4.726,2,8.286c0.021,3.577,2.908,6.549,6.578,6.549c1.241,0,2.417-0.347,3.44-0.985l4.032,4.026c0.167,0.166,0.43,0.166,0.596,0l1.479-1.478C18.292,16.234,18.292,15.968,18.125,15.804 M8.578,13.99c-3.198,0-5.716-2.593-5.733-5.71c-0.017-3.084,2.438-5.686,5.74-5.686c3.197,0,5.625,2.493,5.64,5.624C14.242,11.548,11.621,13.99,8.578,13.99 M16.349,16.981l-3.637-3.635c0.131-0.11,0.721-0.695,0.876-0.884l3.642,3.639L16.349,16.981z"
+              ></path>
+            </svg>
+            <input
+              type="text"
+              name="searchBar"
+              id="searchBarInput"
+              placeholder="Išči igralce po imenu, priimku, letnici rojstva..."
+            />
+          </div>
+          <select name="clubSelection" id="clubSelection">
+            <option value="">HK Moravske Toplice</option>
+            <option value="">HK Lipovci</option>
+            <option value="">HK Predanovci</option>
+          </select>
+          <select name="groupSelection" id="groupSelection">
+            <option value="">u10</option>
+            <option value="">u16</option>
+            <option value="">Članice</option>
+          </select>
+          <button id="addPlayer">Dodaj igralca</button>
+        </section>
+        <section id="filtersContainer">
+          <div id="filter">
+            <div class="filterButton">
+              Datum Rojstva <span class="none"></span>
+            </div>
+            <div class="filterButton">
+              Številka dresa <span class="none"></span>
+            </div>
+            <div class="filterButton">Goli <span class="none"></span></div>
+            <div class="filterButton">
+              Zeleni karton <span class="none"></span>
+            </div>
+            <div class="filterButton">
+              Rumeni karton <span class="none"></span>
+            </div>
+            <div class="filterButton">
+              Rdeči karton <span class="none"></span>
+            </div>
+          </div>
+        </section>
+        <section id="tableMainContainer">
+          <div id="legendContainer">
+            <div id="legend">
+              <div>Ime</div>
+              <div>Priimek</div>
+              <div>Št.</div>
+              <div>Datum roj.</div>
+              <div>Spol</div>
+              <div>Klub</div>
+              <div>u__</div>
+              <div>u__</div>
+              <div>G</div>
+              <div>Z</div>
+              <div>R</div>
+              <div>R</div>
+            </div>
+          </div>
+          <div id="tableContainer">
+            <table id="playersTable" style="height: 500px"></table>
+          </div>
+        </section>
+      </section>
+    </main>
+    <section id="playerAddition" class="hidden">
+      <section id="addingWindow">
+        <button id="closeButton">
+          <div class="line"></div>
+          <div class="line"></div>
+        </button>
+        <form id="playerAddForm">
+          <div id="playerInputData">
+            <div>
+              <input
+                type="text"
+                name="playerName"
+                id="playerNameInput"
+                placeholder="Ime"
+              />
+            </div>
+            <div>
+              <input
+                type="text"
+                name="playerLastName"
+                id="playerLastNameInput"
+                placeholder="Priimek"
+              />
+            </div>
+            <div>
+              <input
+                type="text"
+                name="playerNumber"
+                id="playerNumberInput"
+                placeholder="Številka dresa"
+              />
+            </div>
+            <div>
+              <input
+                type="date"
+                name="playerBirthdate"
+                id="playerBirthDateInput"
+                placeholder="Datum rojstva (dd.mm.llll)"
+              />
+            </div>
+            <select name="playerGender" id="playerGenderSelect">
+              <option value="moški">Moški</option>
+              <option value="ženska">Ženska</option>
+            </select>
+          </div>
+          <div id="playerSelectData">
+            <select name="playerClub" id="playerClubSelect">
+              <option value="HK Moravske Toplice">HK Moravske Toplice</option>
+              <option value="HK Lipovci">HK Lipovci</option>
+              <option value="Hk Predanovci">Hk Predanovci</option>
+            </select>
+            <div id="selectionContainer">
+              <select name="playerSelection1" id="playerSelection1">
+                <option value="test10">u10</option>
+              </select>
+              <select name="playerSelection2" id="playerSelection2">
+                <option value="Članice">Članice</option>
+              </select>
+            </div>
+            <select name="playerSpecialMarks" id="playerSpecialMarksSelect">
+              <option value="igralec">Igralec</option>
+              <option value="Kapetan">Kapetan</option>
+              <option value="Vratar">Vratar</option>
+            </select>
+            <button id="windowAddPlayer" type="submit">Dodaj igralca</button>
+          </div>
+        </form>
+      </section>
+    </section>
+  </body>
+</html>

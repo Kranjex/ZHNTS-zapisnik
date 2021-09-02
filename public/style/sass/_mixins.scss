@@ -1,0 +1,71 @@
+// GLOBAL MIXINS
+@mixin flexCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flexCenterColumn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flexStart {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+@mixin flexStartCenter {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+@mixin flexColumnStart {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+@mixin flexBetween {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+@mixin flexColumnBetween {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+@mixin flexColumnEvenly {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+@mixin flexEvenly {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+@mixin textArea($width, $height) {
+  textarea {
+    padding: 0 $smallPadding;
+    width: $width;
+    height: $height;
+    border: none;
+    resize: none;
+    font: $h2 $mainFont;
+    overflow: hidden;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}

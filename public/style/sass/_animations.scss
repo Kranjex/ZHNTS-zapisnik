@@ -1,0 +1,81 @@
+@keyframes showUp {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes addPlayerAnimation {
+  0% {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+  100% {
+    opacity: 1;
+    backdrop-filter: blur(1.5px);
+  }
+}
+
+@keyframes elementFloatDown {
+  from {
+    opacity: 0;
+    transform: translateY(-1vh);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes elementFloatLeft {
+  0% {
+    transform: translate(50%, 0);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes elementFloatRight {
+  0% {
+    transform: translate(-50%, 0);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes blinking {
+  0% {
+    color: $stopButton;
+    transform: scale(1);
+  }
+  100% {
+    // color: transparent;
+    color: $stopButton;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes startAnimation {
+  0% {
+    color: $startButton;
+    transform: scale(1);
+  }
+  50% {
+    color: $startButton;
+    transform: scale(1.2);
+  }
+  100% {
+    color: $startButton;
+    transform: scale(1);
+  }
+}
