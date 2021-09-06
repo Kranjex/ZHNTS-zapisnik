@@ -46,9 +46,13 @@ export function sendData(object) {
 const playersArray = [];
 const playersData = ref(database, 'players/');
 
-await getPlayers();
+let color;
+let colorPicker = 1,
+  delay = 1;
 
-async function getPlayers() {
+export async function getPlayers() {
+  const table = document.getElementById('playersTable');
+  table.innerHTML = '';
   onValue(playersData, (snapshot) => {
     snapshot.forEach((value) => {
       // Naredi template za igralca, da še enkrat dobi vse podatke, enako kot pri sendData();
@@ -70,13 +74,56 @@ async function getPlayers() {
       //   playersArray.push(value.toJSON());
       //   console.log(value.val().name);
       playersArray.push(player);
-      //   console.log(player.name);
+      //   console.log(player.club);
+
+      switch (colorPicker) {
+        case 1:
+          color = 'green';
+          break;
+        case -1:
+          color = 'white';
+          break;
+      }
+
+      const row = `<tr class="${color}" style="--index: ${delay}">
+                            <td style="width:11%;">${player.name}</td>
+                            <td style="width:15%;">${player.lastName}</td>
+                            <td style="width:4%;">${player.number}</td>
+                            <td style="width:10%;">${player.birthDate}</td>
+                            <td style="width:7%;">${player.gender}</td>
+                            <td style="width:15%;">${player.club}</td>
+                            <td style="width:6%;">${player.selection1}</td>
+                            <td style="width:6%;">${player.selection2}</td>
+                            <td style="width:8%;">${player.specialMarks}</td>
+                            <td style="width:auto;">${player.goals}</td>
+                            <td style="width:auto;">${player.cards.green}</td>
+                            <td style="width:auto;">${player.cards.yellow}</td>
+                            <td style="width:auto;">${player.cards.red}</td>
+                            <td style="width:2%;" class="delete">X</td>
+                        </tr>`;
+      table.innerHTML += row;
+      colorPicker *= -1;
+      delay++;
     });
   });
-  console.log(playersArray);
+  console.log(colorPicker);
 }
+
+// const reference = ref(database, 'players/');
+// onValue(reference, (snapshot) => {
+//   snapshot.forEach(function (child) {
+//     // console.log(child.key + ' : ' + child.val());
+//     console.log(child.val().name + ' --- ' + JSON.stringify(child.val().name));
+//     playersArray.push(JSON.stringify(child.val().name));
+//   });
+// });
+
+console.log(playersArray);
 
 // Write into database - USERS
 // Read from database - USERS
 
 export { playersArray };
+
+// Function for displaying players
+function displayPlayers() {}

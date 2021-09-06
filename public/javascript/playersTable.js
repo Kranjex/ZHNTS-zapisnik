@@ -1,5 +1,5 @@
 // FIREBASE IMPORTS
-import { sendData, playersArray } from './firebaseApp.js';
+import { sendData, playersArray, getPlayers } from './firebaseApp.js';
 // playersDatabase = JSON.parse(playersArray);
 // console.log(playersDatabase);
 
@@ -11,10 +11,10 @@ const array = [
   { name: 'John' },
 ];
 
-// console.log(playersArray);
-playersArray.forEach((player) => {
-  console.log(player);
-});
+console.log(array);
+// playersArray.forEach((player) => {
+//   console.log(player);
+// });
 
 // Constant Variables
 const addButton = document.getElementById('addPlayer');
@@ -102,8 +102,9 @@ filterButtons.forEach((button) => {
 //   return searches;
 // }
 
-let colorPicker = 1;
+// let colorPicker = 1;
 // displayPlayer(playersArray);
+getPlayers();
 
 function displayPlayer(element) {
   const table = document.getElementById('playersTable');
