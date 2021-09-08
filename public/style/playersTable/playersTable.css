@@ -635,28 +635,27 @@ body main #table #tableMainContainer #legendContainer #legend div:nth-child(9), 
 }
 
 body main #table #tableMainContainer #tableContainer {
-  -webkit-box-shadow: -10px -10px 15px #ecf0f3, 10px 10px 15px #cbced1, inset 6px 6px 9px #cbced1, inset -6px -6px 9px #fff;
-          box-shadow: -10px -10px 15px #ecf0f3, 10px 10px 15px #cbced1, inset 6px 6px 9px #cbced1, inset -6px -6px 9px #fff;
   margin-top: 30px;
 }
 
 body main #table #tableMainContainer #tableContainer #playersTable {
   width: 100%;
-  height: 100%;
   margin: auto 0;
 }
 
 body main #table #tableMainContainer #tableContainer #playersTable tbody {
-  height: 25px;
+  height: auto;
   display: block;
+  font-size: 1.3rem;
 }
 
 body main #table #tableMainContainer #tableContainer #playersTable tbody:first-child {
-  margin-top: 10px;
+  margin-top: 2%;
 }
 
 body main #table #tableMainContainer #tableContainer #playersTable tr {
   width: auto;
+  height: 40px;
   display: block;
   border-radius: 20px;
   margin: 0 10px;
@@ -678,6 +677,10 @@ body main #table #tableMainContainer #tableContainer #playersTable tr td {
   margin: 10px 5px;
 }
 
+body main #table #tableMainContainer #tableContainer #playersTable tr td:nth-of-type(1), body main #table #tableMainContainer #tableContainer #playersTable tr td:nth-of-type(2) {
+  font-size: 1.5rem;
+}
+
 body main #table #tableMainContainer #tableContainer #playersTable tr .delete {
   cursor: pointer;
 }
@@ -687,13 +690,11 @@ body main #table #tableMainContainer #tableContainer #playersTable .green {
           box-shadow: 2px 2px 2px #cbced1;
   background: linear-gradient(150deg, #1e381e, #345f34);
   color: #fff;
-  height: 100%;
 }
 
 body main #table #tableMainContainer #tableContainer #playersTable .white {
   background-color: transparent;
   color: #555;
-  height: 100%;
 }
 
 body #playerAddition {

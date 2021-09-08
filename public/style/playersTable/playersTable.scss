@@ -320,28 +320,25 @@ body {
         }
 
         #tableContainer {
-          box-shadow: -10px -10px 15px $mainBackground,
-            10px 10px 15px $shadowGray1, inset 6px 6px 9px $shadowGray1,
-            inset -6px -6px 9px $shadowWhite;
           margin-top: 30px;
 
           #playersTable {
             width: 100%;
-            height: 100%;
+            // height: 100%;
             margin: auto 0;
 
-            //   border-radius: 20px;
             tbody {
-              height: 25px;
+              height: auto;
               display: block;
+              font-size: 1.3rem;
               &:first-child {
-                margin-top: 10px;
+                margin-top: 2%;
               }
             }
 
             tr {
               width: auto;
-              // height: 25px;
+              height: 40px;
               display: block;
               border-radius: 20px;
               margin: 0 10px;
@@ -353,9 +350,10 @@ body {
                 padding-left: 10px;
                 margin: 10px 5px;
 
-                // &:last-child {
-                //   cursor: pointer;
-                // }
+                &:nth-of-type(1),
+                &:nth-of-type(2) {
+                  font-size: 1.5rem;
+                }
               }
 
               .delete {
@@ -367,14 +365,12 @@ body {
               box-shadow: 2px 2px 2px $shadowGray1;
               background: linear-gradient(150deg, $mainGreen, $lighterGreen);
               color: $fontWhite;
-              height: 100%;
             }
 
             .white {
               // background-color: $mainBackground;
               background-color: transparent;
               color: $fontGray;
-              height: 100%;
             }
           }
         }
