@@ -2,14 +2,6 @@
 const chalk = require('chalk');
 const path = require('path');
 
-// import FIREBASE - already installed in NPM
-// const admin = require('firebase-admin');
-// const serviceAccount = require('./zhnts-hockey-portal-firebase-adminsdk-9flc7-61a1ee601a.json');
-
-// admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
-// const db = admin.firestore;
-
-// console.log(db);
 // Express initialization
 const express = require('express');
 const app = express();

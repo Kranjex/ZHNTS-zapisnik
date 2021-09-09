@@ -2,13 +2,16 @@
 
 // FIREBASE IMPORTS
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js';
+// Firestore imports
 import {
-  getDatabase,
-  ref,
-  set,
-  onValue,
-  push,
-} from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js';
+  getFirestore,
+  collection,
+  addDoc,
+  doc,
+  setDoc,
+  getDocs,
+} from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js';
+// Config key import
 import { getFirebaseConfig } from './firebaseConfig.js';
 
 // Initialize Firebase
@@ -16,8 +19,10 @@ const firebaseAppConfig = getFirebaseConfig();
 const firebaseApp = initializeApp(firebaseAppConfig);
 
 // Initialize Firebase database
-const database = getDatabase();
-const playerRef = ref(database, 'players');
+// const database = getDatabase();
+const database = getFirestore();
+// const playerRef = ref(database, 'players');
+const playerRef = collection(database, 'players');
 
 if (firebaseApp) {
   console.log('Initializing Firebase');
@@ -62,7 +67,6 @@ playerForm.addEventListener('submit', (e) => {
     goals: 0,
     cards: { green: 0, yellow: 0, red: 0 },
   };
-  // createPlyer(newPlayer);
   createPlayer(newPlayer);
 });
 
@@ -86,6 +90,7 @@ filterButtons.forEach((button) => {
   });
 });
 
+// DISPLAYING PLAYERS IN TABLE
 // SEARCHBAR
 // searchBar.addEventListener('keyup', () => {
 //   let value = searchBar.value;
@@ -121,8 +126,7 @@ let colorPicker = 1,
 const table = document.getElementById('playersTable');
 
 function displayPlayer(element) {
-  // table.innerHTML = '';
-
+  table.innerHTML = '';
   switch (colorPicker) {
     case 1:
       color = 'green';
@@ -131,16 +135,15 @@ function displayPlayer(element) {
       color = 'white';
       break;
   }
-
-  const name = element.val().name;
-  const lastName = element.val().lastName;
-  const number = element.val().number;
-  const birthDate = element.val().birthDate;
-  const gender = element.val().gender;
-  const club = element.val().club;
-  const selection1 = element.val().selection1;
-  const selection2 = element.val().selection2;
-  const specialMarks = element.val().specialMarks;
+  const name = element.data().name;
+  const lastName = element.data().lastName;
+  const number = element.data().number;
+  const birthDate = element.data().birthDate;
+  const gender = element.data().gender;
+  const club = element.data().club;
+  const selection1 = element.data().selection1;
+  const selection2 = element.data().selection2;
+  const specialMarks = element.data().specialMarks;
   const goals = 0;
   const cards = { green: 0, yellow: 0, red: 0 };
   // const deleteIcon = document.createElement('div');
@@ -167,53 +170,50 @@ function displayPlayer(element) {
 }
 
 // Function for creating players in database
-function createPlayer(object) {
-  const newPlayer = push(playerRef);
-  set(newPlayer, {
-    name: object.name,
-    lastName: object.lastName,
-    number: object.number,
-    birthDate: object.birthDate,
-    gender: object.gender,
-    club: object.club,
-    selection1: object.selection1,
-    selection2: object.selection2,
-    specialMarks: object.specialMarks,
-    goals: object.name,
-    cards: { green: 0, yellow: 0, red: 0 },
-  });
+async function createPlayer(object) {
+  try {
+    const newPlayer = await addDoc(playerRef, {
+      name: object.name,
+      lastName: object.lastName,
+      number: object.number,
+      birthDate: object.birthDate,
+      gender: object.gender,
+      club: object.club,
+      selection1: object.selection1,
+      selection2: object.selection2,
+      specialMarks: object.specialMarks,
+      goals: object.name,
+      cards: { green: 0, yellow: 0, red: 0 },
+    });
+    console.log('Document.written with ID: ', newPlayer.id);
+  } catch (error) {
+    console.error('Error adding player to the database: ', error);
+  }
 }
 
 // Function for getting players data from database
 async function getPlayers() {
-  table.innerHTML = '';
-  const searchBar = document.getElementById('searchBarInput');
-  onValue(playerRef, (snapshot) => {
-    searchBar.addEventListener('keyup', () => {
-      const content = searchBar.value.toLowerCase();
-      table.innerHTML = '';
-      colorPicker = 1;
-      snapshot.forEach((value) => {
-        if (
-          value.val().name.toLowerCase().includes(content) ||
-          value.val().lastName.toLowerCase().includes(content) ||
-          value.val().number.toLowerCase().includes(content) ||
-          searchBar.value === ''
-        ) {
-          displayPlayer(value);
-        }
-      });
-    });
+  const documents = [];
+  const querySnapshot = await getDocs(playerRef);
+  querySnapshot.forEach((doc) => {
+    documents.push(doc.data());
   });
+  return documents;
 }
 
-function initialPlayerShowUp() {
-  onValue(playerRef, (snapshot) => {
-    snapshot.forEach((value) => {
-      displayPlayer(value);
-    });
-  });
-}
-
-initialPlayerShowUp();
 getPlayers();
+
+const players = Promise.resolve(getPlayers());
+players.then((value) => {
+  console.log(value);
+});
+
+// Sorting function for descending order
+function descOrder() {}
+// Sorting function for ascending order
+function ascOrder() {}
+// Sorting function for default order
+function defaultOrder() {}
+
+// Delete Player function
+function deletePlayer() {}

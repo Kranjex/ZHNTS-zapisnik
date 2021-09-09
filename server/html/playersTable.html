@@ -48,20 +48,22 @@
             />
           </div>
           <select name="clubSelection" id="clubSelection">
-            <option value="">HK Moravske Toplice</option>
-            <option value="">HK Lipovci</option>
-            <option value="">HK Predanovci</option>
+            <option value="vsi">Vsi Klubi</option>
+            <option value="HK Moravske Toplice">HK Moravske Toplice</option>
+            <option value="HK Lipovci">HK Lipovci</option>
+            <option value="HK Predanovci">HK Predanovci</option>
           </select>
           <select name="groupSelection" id="groupSelection">
-            <option value="">u10</option>
-            <option value="">u16</option>
-            <option value="">Članice</option>
+            <option value="vsi">Vse</option>
+            <option value="u10">u10</option>
+            <option value="u16">u16</option>
+            <option value="clanice">Članice</option>
           </select>
           <button id="addPlayer">Dodaj igralca</button>
         </section>
         <section id="filtersContainer">
           <div id="filter">
-            <div class="filterButton">
+            <div class="filterButton" data-filter="birthDate">
               Datum Rojstva <span class="none"></span>
             </div>
             <div class="filterButton">
