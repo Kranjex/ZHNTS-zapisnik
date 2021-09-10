@@ -1,5 +1,3 @@
-/* Preseli ves firebaseConfig.js file v ta file, tisti file naj bo samo za pridobitev firebase config key, vse ostale funkcije naj bodo v tem filu, querying naredi znotraj firebasa - pazi na omejitve glede read in write, querying = search bar, filters, zamenjava podatkovne baze za firestore in po potrebi izbriši ta projekt in naredi novega - podatkovna baza in omejitve */
-
 // FIREBASE IMPORTS
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js';
 // Firestore imports
@@ -8,7 +6,7 @@ import {
   collection,
   addDoc,
   doc,
-  setDoc,
+  deleteDoc,
   getDocs,
 } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js';
 // Config key import
@@ -19,10 +17,9 @@ const firebaseAppConfig = getFirebaseConfig();
 const firebaseApp = initializeApp(firebaseAppConfig);
 
 // Initialize Firebase database
-// const database = getDatabase();
 const database = getFirestore();
-// const playerRef = ref(database, 'players');
 const playerRef = collection(database, 'players');
+const playersDatabase = await getPlayers();
 
 if (firebaseApp) {
   console.log('Initializing Firebase');
@@ -34,6 +31,8 @@ const windowAddButton = document.getElementById('windowAddPlayer');
 const mainContent = document.getElementById('playerAddition');
 const filterButtons = document.querySelectorAll('.filterButton');
 const windowCloseButton = document.getElementById('closeButton');
+const table = document.getElementById('playersTable');
+// const tds = document.querySelectorAll('td');
 
 // Adding window system
 // Open / close buttons
@@ -85,70 +84,73 @@ filterButtons.forEach((button) => {
     } else {
       filterArrows.item(1).classList.remove('up');
       filterArrows.item(1).classList.add('none');
+      defaultOrder();
       // default sort
     }
   });
 });
 
 // DISPLAYING PLAYERS IN TABLE
-// SEARCHBAR
-// searchBar.addEventListener('keyup', () => {
-//   let value = searchBar.value;
-//   let data = searchDatabase(value, playersArray);
-//   displayPlayer(data);
-// });
+// Searchbar event listener
+const searchBar = document.getElementById('searchBarInput');
+searchBar.addEventListener('keyup', () => {
+  let value = searchBar.value;
+  let data = searchDatabase(value, playersDatabase);
+  displayPlayer(data);
+});
 
-// function searchDatabase(value, array) {
-//   let searches = [];
-//   for (let i = 0; i < array.length; i++) {
-//     value = value.toLowerCase();
-//     let name = array[i].name.toLowerCase();
-//     let lastname = array[i].last_name.toLowerCase();
-//     let club = array[i].Club.toLowerCase();
-//     if (
-//       name.includes(value) ||
-//       lastname.includes(value) ||
-//       club.includes(value)
-//     ) {
-//       searches.push(array[i]);
-//     }
-//   }
-//   return searches;
-// }
-// let colorPicker = 1;
-// displayPlayer(playersArray);
-// getPlayers();
-
-let colorPicker = 1,
-  delay = 1,
-  color;
-
-const table = document.getElementById('playersTable');
-
-function displayPlayer(element) {
-  table.innerHTML = '';
-  switch (colorPicker) {
-    case 1:
-      color = 'green';
-      break;
-    case -1:
-      color = 'white';
-      break;
+// Database (array) searching function
+function searchDatabase(value, array) {
+  let searches = [];
+  for (let i = 0; i < array.length; i++) {
+    value = value.toLowerCase();
+    if (
+      array[i].data.name.toLowerCase().includes(value) ||
+      array[i].data.lastName.toLowerCase().includes(value) ||
+      array[i].data.club.toLowerCase().includes(value) ||
+      array[i].data.selection1.toLowerCase().includes(value) ||
+      array[i].data.selection2.toLowerCase().includes(value) ||
+      array[i].data.gender.toLowerCase().includes(value)
+    ) {
+      searches.push(array[i]);
+    }
   }
-  const name = element.data().name;
-  const lastName = element.data().lastName;
-  const number = element.data().number;
-  const birthDate = element.data().birthDate;
-  const gender = element.data().gender;
-  const club = element.data().club;
-  const selection1 = element.data().selection1;
-  const selection2 = element.data().selection2;
-  const specialMarks = element.data().specialMarks;
-  const goals = 0;
-  const cards = { green: 0, yellow: 0, red: 0 };
-  // const deleteIcon = document.createElement('div');
-  // deleteIcon.classList.add('deleteIcon');
-  const row = `<tr class="${color}" style="--index: ${delay}">
+  return searches;
+}
+
+// Function for displaying players in table
+function displayPlayer(array) {
+  console.log(array);
+  // Styling variables
+  let colorPicker = 1,
+    delay = 1,
+    color;
+  table.innerHTML = '';
+
+  for (let i = 0; i < array.length; i++) {
+    switch (colorPicker) {
+      case 1:
+        color = 'green';
+        break;
+      case -1:
+        color = 'white';
+        break;
+    }
+
+    const name = array[i].data.name;
+    const lastName = array[i].data.lastName;
+    const number = array[i].data.number;
+    const birthDate = array[i].data.birthDate;
+    const gender = array[i].data.gender;
+    const club = array[i].data.club;
+    const selection1 = array[i].data.selection1;
+    const selection2 = array[i].data.selection2;
+    const specialMarks = array[i].data.specialMarks;
+    const goals = 0;
+    const cards = { green: 0, yellow: 0, red: 0 };
+    // const deleteIcon = document.createElement('div');
+    // deleteIcon.classList.add('deleteIcon');
+    const row = `<tr class="${color}" style="--index: ${delay}">
                             <td style="width:11%;">${name}</td>
                             <td style="width:15%;">${lastName}</td>
                             <td style="width:4%;">${number}</td>
@@ -163,13 +165,17 @@ function displayPlayer(element) {
                             <td style="width:auto;">${cards.yellow}</td>
                             <td style="width:auto;">${cards.red}</td>
                             <td style="width:2%;" class="delete">X</td>
+                            <td style="width: 0%; display: none;">${array[i].id}</td>
                         </tr>`;
-  table.innerHTML += row;
-  colorPicker *= -1;
-  delay++;
+    table.innerHTML += row;
+    colorPicker *= -1;
+    delay++;
+  }
 }
+displayPlayer(playersDatabase);
 
 // Function for creating players in database
+// Dodaj refresh funkcijo ob dodajanju novega igralca
 async function createPlayer(object) {
   try {
     const newPlayer = await addDoc(playerRef, {
@@ -193,27 +199,105 @@ async function createPlayer(object) {
 
 // Function for getting players data from database
 async function getPlayers() {
-  const documents = [];
+  const playersData = [];
   const querySnapshot = await getDocs(playerRef);
-  querySnapshot.forEach((doc) => {
-    documents.push(doc.data());
+  querySnapshot.forEach((player) => {
+    const playerObject = { id: player.id, data: player.data() };
+    playersData.push(playerObject);
   });
-  return documents;
+  return playersData;
 }
-
 getPlayers();
 
-const players = Promise.resolve(getPlayers());
-players.then((value) => {
-  console.log(value);
-});
-
 // Sorting function for descending order
-function descOrder() {}
+function descOrder(array) {
+  // array.unshift() doda element na začetek arraya
+  const descOrderArray = [];
+  let first = array[0];
+  for (let i = 0; i < array.length; i++) {
+    if (array[i] >= first) {
+      descOrderArray.unshift(array[i]);
+      first = array[i];
+    }
+  }
+  return descOrderArray;
+}
 // Sorting function for ascending order
-function ascOrder() {}
+function ascOrder() {
+  const ascOrderArray = [];
+  let last = array[0];
+  for (let i = 0; i < array.length; i++) {
+    if (array[i] <= first) {
+      ascOrderArray.unshift(array[i]);
+      last = array[i];
+    }
+  }
+  return ascOrderArray;
+}
 // Sorting function for default order
-function defaultOrder() {}
+function defaultOrder() {
+  displayPlayer(playersDatabase);
+}
 
 // Delete Player function
-function deletePlayer() {}
+async function deletePlayer() {
+  let id = this.parentNode.cells[14].innerHTML;
+  let background = window
+    .getComputedStyle(this.parentNode, '')
+    .getPropertyValue('background-color');
+  console.log(background);
+  if (this.dataset.status === 'once') {
+    alert(
+      'St prepričani, da želite izbrisati igralca? \n Za izbris igralca še enkrat kliknite na ikono za brisanje.'
+    );
+    this.setAttribute('data-status', '');
+    this.parentNode.style.background = '#fb6161';
+    setTimeout(() => {
+      this.setAttribute('data-status', 'once');
+      this.parentNode.style.background =
+        'linear-gradient(90deg, #1e381e, #345f34)';
+    }, 4000);
+  } else if (this.dataset.status === '') {
+    console.log('Izbrisali ste igralca');
+    await deleteDoc(doc(playerRef, `${id}`));
+    location.reload();
+  }
+}
+
+// Deleting system
+const deleteIcons = await getIcons();
+deleteIcons.forEach((icon) => {
+  icon.setAttribute('data-status', 'once');
+  icon.addEventListener('click', deletePlayer);
+});
+
+// Function for getting delete icons after they are loaded
+async function getIcons() {
+  return document.querySelectorAll('.delete');
+}
+
+// Club selection filter listener
+const clubSelection = document.getElementById('clubSelection');
+// Dodaj samostojno funkcijo za iskanje igralcev glede na klub
+clubSelection.addEventListener('change', () => {
+  const value = clubSelection.options[clubSelection.selectedIndex].value;
+  if (value === 'vsi') {
+    displayPlayer(playersDatabase);
+  } else {
+    const data = searchDatabase(value, playersDatabase);
+    displayPlayer(data);
+  }
+});
+
+// Group selection filter listener
+const groupSelection = document.getElementById('groupSelection');
+// Dodaj samostojno funkcijo za iskanje igralcev glede selekcije
+groupSelection.addEventListener('change', () => {
+  const value = groupSelection.options[groupSelection.selectedIndex].value;
+  if (value === 'vse') {
+    displayPlayer(playersDatabase);
+  } else {
+    const data = searchDatabase(value, playersDatabase);
+    displayPlayer(data);
+  }
+});
