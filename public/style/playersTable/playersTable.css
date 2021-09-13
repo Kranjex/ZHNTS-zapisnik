@@ -644,7 +644,6 @@ body main #table #tableMainContainer #tableContainer #playersTable {
 }
 
 body main #table #tableMainContainer #tableContainer #playersTable tbody {
-  height: auto;
   display: block;
   font-size: 1.3rem;
 }
@@ -682,7 +681,9 @@ body main #table #tableMainContainer #tableContainer #playersTable tr td:nth-of-
 }
 
 body main #table #tableMainContainer #tableContainer #playersTable tr .delete {
+  pointer-events: auto;
   cursor: pointer;
+  text-align: center;
 }
 
 body main #table #tableMainContainer #tableContainer #playersTable .green {

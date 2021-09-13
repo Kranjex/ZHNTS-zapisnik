@@ -236,16 +236,14 @@ body {
 }
 
 body #formContainer {
-  -webkit-transform: scale(1);
-          transform: scale(1);
   margin: auto auto;
-  width: 430px;
-  height: 700px;
+  width: 23vw;
+  height: 65vh;
   background-color: #ecf0f3;
   -webkit-box-shadow: 13px 13px 20px #cbced1, -13px -13px 20px #fff;
           box-shadow: 13px 13px 20px #cbced1, -13px -13px 20px #fff;
-  padding: 60px 35px 35px 35px;
-  border-radius: 40px;
+  padding: 30px 15px 15px 15px;
+  border-radius: 20px;
   -webkit-animation: showUp 1s ease-out;
           animation: showUp 1s ease-out;
 }
@@ -253,8 +251,8 @@ body #formContainer {
 body #formContainer #logo {
   background: url("../../img/ZHNTS_logo.png") center;
   background-size: cover;
-  width: 100px;
-  height: 100px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   margin: 0 auto;
   -webkit-box-shadow: 0 0 2px #5f5f5f, 0 0 0 5px #ecf0f3, 8px 8px 15px #a7aaaf, -8px -8px 15px #fff;
@@ -266,6 +264,12 @@ body #formContainer #title {
   font-size: 28px;
   padding-top: 24px;
   letter-spacing: 0.5px;
+  background: -webkit-gradient(linear, left top, left bottom, from(#1e381e), to(#447e44));
+  background: linear-gradient(180deg, #1e381e, #447e44);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 3rem;
+  text-align: center;
 }
 
 body #formContainer #subtitle {
@@ -277,56 +281,81 @@ body #formContainer #subtitle {
 
 body #formContainer #fields {
   width: 100%;
-  padding: 75px 5px 5px 5px;
+  padding: 35px 5px 5px 5px;
 }
 
 body #formContainer #fields input {
+  width: 90%;
   border: none;
   outline: none;
   background: none;
-  font-size: 18px;
+  font-size: 1.3rem;
   color: #555;
-  padding: 20px 10px 20px 5px;
+  padding: 10px 5px 10px 5px;
 }
 
 body #formContainer #fields .email,
 body #formContainer #fields .password {
-  margin-bottom: 30px;
-  border-radius: 25px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-bottom: 20px;
+  border-radius: 20px;
   -webkit-box-shadow: inset 8px 8px 8px #cbced1, inset -8px -8px 8px #fff;
           box-shadow: inset 8px 8px 8px #cbced1, inset -8px -8px 8px #fff;
 }
 
-body #formContainer #fields svg {
-  height: 25px;
-  margin: 0 10px -3px 25px;
+body #formContainer #fields #resetEmailNotification {
+  width: 100%;
+  font-size: 1.1rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  display: none;
+  -webkit-transition: display 0.5s ease-out;
+  transition: display 0.5s ease-out;
+  color: #1e381e;
 }
 
-body #formContainer #fields #loginButton {
+body #formContainer #fields svg {
+  height: 20px;
+  margin: auto 0 auto 10px;
+}
+
+body #formContainer #fields #loginButton,
+body #formContainer #fields #sendButton {
   outline: none;
   border: none;
   cursor: pointer;
   width: 100%;
-  height: 60px;
-  border-radius: 30px;
-  font-size: 20px;
+  height: 40px;
+  border-radius: 20px;
+  font-size: 1.3rem;
   font-weight: 700;
   font-family: Helvetica;
   color: #fff;
   text-align: center;
-  background-color: #1e381e;
+  background: -webkit-gradient(linear, left top, right top, from(#1e381e), to(#345f34));
+  background: linear-gradient(90deg, #1e381e, #345f34);
   -webkit-box-shadow: 3px 3px 8px #cbced1, -3px -3px 8px #fff;
           box-shadow: 3px 3px 8px #cbced1, -3px -3px 8px #fff;
-  -webkit-transition: all 0.5s;
-  transition: all 0.5s;
+  -webkit-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
 }
 
-body #formContainer #fields #loginButton:hover {
-  background-color: #345f34;
+body #formContainer #fields #loginButton:hover,
+body #formContainer #fields #sendButton:hover {
+  -webkit-filter: brightness(1.5);
+          filter: brightness(1.5);
 }
 
-body #formContainer #fields #loginButton:active {
-  background-color: #447e44;
+body #formContainer #fields #sendButton {
+  display: none;
 }
 
 body #formContainer #fields #links {
@@ -334,10 +363,13 @@ body #formContainer #fields #links {
   text-align: center;
 }
 
-body #formContainer #fields #links a {
-  text-decoration: none;
+body #formContainer #fields #links button {
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
   color: #aaa;
-  font-size: 15px;
+  font-size: 1.1rem;
 }
 
 body #formContainer #logo,

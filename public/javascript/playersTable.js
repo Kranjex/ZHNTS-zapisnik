@@ -67,6 +67,7 @@ playerForm.addEventListener('submit', (e) => {
     cards: { green: 0, yellow: 0, red: 0 },
   };
   createPlayer(newPlayer);
+  playerForm.reset();
 });
 
 // Filter system
@@ -120,7 +121,6 @@ function searchDatabase(value, array) {
 
 // Function for displaying players in table
 function displayPlayer(array) {
-  console.log(array);
   // Styling variables
   let colorPicker = 1,
     delay = 1,
@@ -191,13 +191,13 @@ async function createPlayer(object) {
       goals: object.name,
       cards: { green: 0, yellow: 0, red: 0 },
     });
-    console.log('Document.written with ID: ', newPlayer.id);
+    console.log('Document written with ID: ', newPlayer.id);
   } catch (error) {
     console.error('Error adding player to the database: ', error);
   }
 }
 
-// Function for getting players data from database
+// Function for getting players data from the database
 async function getPlayers() {
   const playersData = [];
   const querySnapshot = await getDocs(playerRef);
@@ -254,8 +254,12 @@ async function deletePlayer() {
     this.parentNode.style.background = '#fb6161';
     setTimeout(() => {
       this.setAttribute('data-status', 'once');
-      this.parentNode.style.background =
-        'linear-gradient(90deg, #1e381e, #345f34)';
+      if (this.parentNode.classList.contains('green')) {
+        this.parentNode.style.background =
+          'linear-gradient(90deg, #1e381e, #345f34)';
+      } else {
+        this.parentNode.style.background = 'transparent';
+      }
     }, 4000);
   } else if (this.dataset.status === '') {
     console.log('Izbrisali ste igralca');

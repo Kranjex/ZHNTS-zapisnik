@@ -22,21 +22,20 @@ body {
   transition: all 0.5s;
 
   #formContainer {
-    transform: scale(1);
     margin: auto auto;
-    width: 430px;
-    height: 700px;
+    width: 23vw;
+    height: 65vh;
     background-color: $mainBackground;
     box-shadow: 13px 13px 20px $shadowGray1, -13px -13px 20px $shadowWhite;
-    padding: 60px 35px 35px 35px;
-    border-radius: 40px;
+    padding: 30px 15px 15px 15px;
+    border-radius: 20px;
     animation: showUp 1s ease-out;
 
     #logo {
       background: url('../../img/ZHNTS_logo.png') center;
       background-size: cover;
-      width: 100px;
-      height: 100px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
       margin: 0 auto;
       box-shadow: 0 0 2px $shadowGray3, 0 0 0 5px $mainBackground,
@@ -48,6 +47,13 @@ body {
       font-size: 28px;
       padding-top: 24px;
       letter-spacing: 0.5px;
+
+      // color: $mainGreen;
+      background: linear-gradient(180deg, $mainGreen, $lightestGreen);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 3rem;
+      text-align: center;
     }
 
     #subtitle {
@@ -59,63 +65,79 @@ body {
 
     #fields {
       width: 100%;
-      padding: 75px 5px 5px 5px;
+      padding: 35px 5px 5px 5px;
 
       input {
+        width: 90%;
         border: none;
         outline: none;
         background: none;
-        font-size: 18px;
+        font-size: 1.3rem;
         color: $fontGray;
-        padding: 20px 10px 20px 5px;
+        padding: 10px 5px 10px 5px;
       }
 
       .email,
       .password {
-        margin-bottom: 30px;
-        border-radius: 25px;
+        @include flexStartCenter;
+        margin-bottom: 20px;
+        border-radius: 20px;
         box-shadow: inset 8px 8px 8px $shadowGray1,
           inset -8px -8px 8px $shadowWhite;
       }
 
-      svg {
-        height: 25px;
-        margin: 0 10px -3px 25px;
+      #resetEmailNotification {
+        width: 100%;
+        font-size: 1.1rem;
+        text-align: center;
+        margin-bottom: 1rem;
+        display: none;
+        transition: display 0.5s ease-out;
+        color: $mainGreen;
       }
 
-      #loginButton {
+      svg {
+        height: 20px;
+        margin: auto 0 auto 10px;
+      }
+
+      #loginButton,
+      #sendButton {
         outline: none;
         border: none;
         cursor: pointer;
         width: 100%;
-        height: 60px;
-        border-radius: 30px;
-        font-size: 20px;
+        height: 40px;
+        border-radius: 20px;
+        font-size: 1.3rem;
         font-weight: 700;
         font-family: Helvetica;
         color: $fontWhite;
         text-align: center;
-        background-color: $mainGreen;
+        background: linear-gradient(90deg, $mainGreen, $lighterGreen);
         box-shadow: 3px 3px 8px $shadowGray1, -3px -3px 8px $shadowWhite;
-        transition: all 0.5s;
+        transition: all 0.3s ease-out;
 
         &:hover {
-          background-color: $lighterGreen;
+          filter: brightness(1.5);
         }
+      }
 
-        &:active {
-          background-color: $lightestGreen;
-        }
+      #sendButton {
+        display: none;
       }
 
       #links {
         padding-top: 20px;
         text-align: center;
 
-        a {
-          text-decoration: none;
+        button {
+          background: none;
+          border: none;
+          outline: none;
+          cursor: pointer;
           color: $fontLightGray;
-          font-size: 15px;
+          font-size: 1.1rem;
         }
       }
     }

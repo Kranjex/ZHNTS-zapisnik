@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="/img/ZHNTS_logo.png" />
     <link rel="stylesheet" href="/style/addOfficial/addofficial.css" />
-    <script src="/javascript/addofficial.js" defer></script>
+    <script type="module" src="/javascript/addofficial.js" defer></script>
     <title>Dodajanje uporabnika |</title>
   </head>
   <body>
@@ -29,9 +29,13 @@
         <div class="line" id="line2"></div>
         <div class="line" id="line3"></div>
       </div>
+      <ul>
+        <li><a href="#">Pomoč</a></li>
+        <li><a href="#" id="logOut">Odjava</a></li>
+      </ul>
     </header>
     <main>
-      <section id="addUserContainer">
+      <form id="addUserContainer">
         <h1>Dodaj uporabnika spletnega portala</h1>
         <input type="text" name="name" id="name" placeholder="Ime" / required>
         <input
@@ -50,8 +54,8 @@
         />
         <input
           type="date"
-          name="dateOfBirth"
-          id="dateOfBirth"
+          name="birthDate"
+          id="birthDate"
           placeholder="Datum rojstva"
           required
         />
@@ -64,8 +68,8 @@
           <option value="Delegat">Delegat</option>
           <option value="Komisija">Komisija</option>
         </select>
-        <button>Dodaj uporabnika</button>
-      </section>
+        <button type="submit">Dodaj uporabnika</button>
+      </form>
       <section id="tableMainContainer">
         <div id="tableLegend">
           <h1>Ime</h1>

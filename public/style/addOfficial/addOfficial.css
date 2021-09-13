@@ -245,6 +245,7 @@ body header {
       -ms-flex-align: center;
           align-items: center;
   padding: 0 50px 0 20px;
+  position: relative;
 }
 
 body header img {
@@ -289,8 +290,51 @@ body header .menuHamburger .line {
   border-radius: 2px;
 }
 
+body header ul {
+  list-style: none;
+  position: absolute;
+  right: 80px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+}
+
+body header ul li {
+  margin-right: 20px;
+  display: none;
+}
+
+body header ul li:nth-of-type(1) {
+  -webkit-animation-delay: 0.4s;
+          animation-delay: 0.4s;
+}
+
+body header ul li:nth-of-type(2) {
+  -webkit-animation-delay: 0.2s;
+          animation-delay: 0.2s;
+}
+
+body header ul li a {
+  text-decoration: none;
+  color: #555;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+body header ul .show {
+  display: inline-block;
+  -webkit-animation: elementFloatLeft 0.3s ease-out backwards;
+          animation: elementFloatLeft 0.3s ease-out backwards;
+}
+
 body main {
-  width: 85vw;
+  width: 80vw;
   height: 88vh;
   background-color: #ecf0f3;
   border-radius: 20px;
@@ -375,7 +419,6 @@ body main #addUserContainer select {
   padding-left: 10px;
   color: #555;
   text-align: center;
-  margin-right: 15px;
   -webkit-animation: elementFloatDown 0.5s ease backwards 0.5s;
           animation: elementFloatDown 0.5s ease backwards 0.5s;
 }

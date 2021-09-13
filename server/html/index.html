@@ -7,16 +7,19 @@
     <title>Hockey Portal | Login</title>
     <!-- <author name="Vid Kranjec"> -->
     <!-- <link rel="stylesheet" href="../../public/style/index/index-style.css" /> -->
-    <link rel="stylesheet" href="/style/index/index-style.css" />
-    <link rel="icon" href="../../public/img/ZHNTS_logo.png" />
-    <script src="../../public/javascript/index.js"></script>
+    <link rel="stylesheet" href="style/index/index-style.css" />
+    <link rel="icon" href="img/ZHNTS_logo.png" />
+    <script type="module" src="javascript/index.js"></script>
   </head>
   <body>
     <section id="formContainer">
       <div id="logo"></div>
-      <div id="title">Match Portal</div>
+      <div id="title">Hokejski Portal</div>
       <div id="subtitle">ZHNTS</div>
       <form id="fields">
+        <h2 id="resetEmailNotification">
+          Vnesite svoj email za ponastavitev gesla.
+        </h2>
         <div class="email">
           <svg class="svg-icon" viewBox="0 0 20 20">
             <path
@@ -31,6 +34,7 @@
             required
           />
         </div>
+
         <div class="password">
           <svg class="svg-icon" viewBox="0 0 20 20">
             <path
@@ -40,14 +44,15 @@
           <input
             type="password"
             name="password"
-            placeholder="Password:"
+            placeholder="Geslo:"
             id="passwordInput"
             required
           />
         </div>
-        <button id="loginButton">Login</button>
+        <button id="loginButton" type="submit">Prijava</button>
+        <button id="sendButton" type="submit">Pošlji</button>
         <div id="links">
-          <a href="#">Forgot password?</a>
+          <button id="passwordButton">Pozabljeno geslo?</button>
         </div>
       </form>
     </section>
