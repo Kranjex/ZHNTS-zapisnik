@@ -24,7 +24,7 @@ body {
   #formContainer {
     margin: auto auto;
     width: 23vw;
-    height: 65vh;
+    height: 55vh;
     background-color: $mainBackground;
     box-shadow: 13px 13px 20px $shadowGray1, -13px -13px 20px $shadowWhite;
     padding: 30px 15px 15px 15px;
@@ -80,7 +80,7 @@ body {
       .email,
       .password {
         @include flexStartCenter;
-        margin-bottom: 20px;
+        margin-bottom: 40px;
         border-radius: 20px;
         box-shadow: inset 8px 8px 8px $shadowGray1,
           inset -8px -8px 8px $shadowWhite;

@@ -63,19 +63,42 @@ form.addEventListener('submit', (e) => {
 
 // Authentication interface
 auth.onAuthStateChanged((user) => {
-  getUsers();
   if (user) {
-    console.log('User: ', user);
+    getUsers(user);
+    const data = { email: user.email };
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    };
+    fetch('/', options);
+    console.log('User logged in: ' + user.email);
   } else {
     console.log('User logged out');
   }
 });
 
 // Function for getting users database
-async function getUsers() {
+async function getUsers(object) {
   const querySnapshot = await getDocs(usersRef);
   querySnapshot.forEach((user) => {
-    console.log(user.data().email);
+    if (user.data().email == object.email) {
+      switch (user.data().role) {
+        case 'Delegat':
+          console.log('User is delegat');
+          // POST to server - Delegat
+          async () => {
+            // const newReponse = await fetch('')
+          };
+          location.href = '/matchDashboard';
+          break;
+        case 'Komisija':
+          console.log('User is komisija');
+          // POST to server - Komisija
+          location.href = '/playerCommision';
+          break;
+      }
+    }
   });
 }
 
@@ -97,10 +120,9 @@ passwordResetLink.addEventListener('click', () => {
       .then(() => {
         form.reset();
         alert('Email je poslan. Preverite svoj e-poštni predal.');
-        console.log('Email je poslan. Preverite svoj e-poštni predal.');
       })
       .catch((error) => {
-        console.error(error);
+        console.error('Error occured while sending email: ', error);
       });
   });
 });

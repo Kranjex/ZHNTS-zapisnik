@@ -327,6 +327,49 @@ body #setUpWindowContainer header .menuHamburger .line {
   border-radius: 2px;
 }
 
+body #setUpWindowContainer header ul {
+  list-style: none;
+  position: absolute;
+  right: 80px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+}
+
+body #setUpWindowContainer header ul li {
+  margin-right: 20px;
+  display: none;
+}
+
+body #setUpWindowContainer header ul li:nth-of-type(1) {
+  -webkit-animation-delay: 0.4s;
+          animation-delay: 0.4s;
+}
+
+body #setUpWindowContainer header ul li:nth-of-type(2) {
+  -webkit-animation-delay: 0.2s;
+          animation-delay: 0.2s;
+}
+
+body #setUpWindowContainer header ul li a {
+  text-decoration: none;
+  color: #555;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+body #setUpWindowContainer header ul .show {
+  display: inline-block;
+  -webkit-animation: elementFloatLeft 0.3s ease-out backwards;
+          animation: elementFloatLeft 0.3s ease-out backwards;
+}
+
 body #setUpWindowContainer #welcomeText {
   margin: 3vh 0;
   -webkit-transform: translateY(-50%);

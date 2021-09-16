@@ -19,6 +19,12 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/html/index.html');
 });
 
+const usersEmails = [];
+app.post('/', (req, res) => {
+  usersEmails.push(req.body);
+  console.log(usersEmails);
+});
+
 // Commision's pages
 app.get('/playerCommision', (req, res) => {
   res.sendFile(__dirname + '/html/playerCommision.html');

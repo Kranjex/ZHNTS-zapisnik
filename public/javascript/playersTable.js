@@ -201,11 +201,15 @@ async function createPlayer(object) {
 async function getPlayers() {
   const playersData = [];
   const querySnapshot = await getDocs(playerRef);
-  querySnapshot.forEach((player) => {
-    const playerObject = { id: player.id, data: player.data() };
-    playersData.push(playerObject);
-  });
-  return playersData;
+  if (querySnapshot) {
+    querySnapshot.forEach((player) => {
+      const playerObject = { id: player.id, data: player.data() };
+      playersData.push(playerObject);
+    });
+    return playersData;
+  } else {
+    console.log('No internet connection or no players available.');
+  }
 }
 getPlayers();
 
@@ -242,29 +246,25 @@ function defaultOrder() {
 // Delete Player function
 async function deletePlayer() {
   let id = this.parentNode.cells[14].innerHTML;
-  let background = window
-    .getComputedStyle(this.parentNode, '')
-    .getPropertyValue('background-color');
-  console.log(background);
-  if (this.dataset.status === 'once') {
-    alert(
-      'St prepričani, da želite izbrisati igralca? \n Za izbris igralca še enkrat kliknite na ikono za brisanje.'
-    );
-    this.setAttribute('data-status', '');
+  this.parentNode.style.background = '#fb6161';
+  const deleteConfirmation = confirm(
+    `Ste prepričani, da želite izbrisati ${this.parentNode.cells[0].innerHTML} ${this.parentNode.cells[1].innerHTML}?`
+  );
+  if (deleteConfirmation) {
     this.parentNode.style.background = '#fb6161';
-    setTimeout(() => {
-      this.setAttribute('data-status', 'once');
-      if (this.parentNode.classList.contains('green')) {
-        this.parentNode.style.background =
-          'linear-gradient(90deg, #1e381e, #345f34)';
-      } else {
-        this.parentNode.style.background = 'transparent';
-      }
-    }, 4000);
-  } else if (this.dataset.status === '') {
-    console.log('Izbrisali ste igralca');
+    this.parentNode.style.color = '#fff';
     await deleteDoc(doc(playerRef, `${id}`));
-    location.reload();
+    setTimeout(() => {
+      location.reload();
+    }, 3000);
+  } else {
+    if (this.parentNode.classList.contains('green')) {
+      this.parentNode.style.background =
+        'linear-gradient(90deg, #1e381e, #345f34)';
+    } else {
+      this.parentNode.style.background = 'transparent';
+      this.parentNode.style.color = '#555';
+    }
   }
 }
 

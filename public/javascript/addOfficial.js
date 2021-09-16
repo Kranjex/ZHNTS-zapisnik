@@ -7,6 +7,7 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signOut,
+  onAuthStateChanged,
 } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js';
 // Firebase database import
 import {
@@ -30,6 +31,15 @@ if (firebaseApp) {
   console.log('Initializing Firebase');
 }
 
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    console.log('User signed in');
+  } else {
+    console.log('User not signed in.');
+  }
+});
+
+// Menu navigation bar functions
 const menuIcon = document.querySelector('.menuHamburger');
 const links = document.querySelectorAll('li');
 menuIcon.addEventListener('click', () => {
@@ -45,6 +55,7 @@ logOut.addEventListener('click', (e) => {
   e.preventDefault();
   signOut(auth).then(() => {
     console.log('Logged out');
+    location.href = '/';
   });
 });
 

@@ -238,7 +238,7 @@ body {
 body #formContainer {
   margin: auto auto;
   width: 23vw;
-  height: 65vh;
+  height: 55vh;
   background-color: #ecf0f3;
   -webkit-box-shadow: 13px 13px 20px #cbced1, -13px -13px 20px #fff;
           box-shadow: 13px 13px 20px #cbced1, -13px -13px 20px #fff;
@@ -305,7 +305,7 @@ body #formContainer #fields .password {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
   border-radius: 20px;
   -webkit-box-shadow: inset 8px 8px 8px #cbced1, inset -8px -8px 8px #fff;
           box-shadow: inset 8px 8px 8px #cbced1, inset -8px -8px 8px #fff;
