@@ -29,7 +29,7 @@ body {
     box-shadow: 13px 13px 20px $shadowGray1, -13px -13px 20px $shadowWhite;
     padding: 30px 15px 15px 15px;
     border-radius: 20px;
-    animation: showUp 1s ease-out;
+    animation: showUpMorph 1s ease-out;
 
     #logo {
       background: url('../../img/ZHNTS_logo.png') center;

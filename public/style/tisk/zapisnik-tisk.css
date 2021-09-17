@@ -205,6 +205,40 @@ html {
   }
 }
 
+@-webkit-keyframes showUpMorph {
+  0% {
+    -webkit-box-shadow: 13px 13px 20px #cbced100, -13px -13px 20px #ffffff00;
+            box-shadow: 13px 13px 20px #cbced100, -13px -13px 20px #ffffff00;
+    opacity: 0;
+    -webkit-transform: scale(0.8);
+            transform: scale(0.8);
+  }
+  100% {
+    -webkit-box-shadow: 13px 13px 20px #cbced1, -13px -13px 20px #fff;
+            box-shadow: 13px 13px 20px #cbced1, -13px -13px 20px #fff;
+    opacity: 1;
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+
+@keyframes showUpMorph {
+  0% {
+    -webkit-box-shadow: 13px 13px 20px #cbced100, -13px -13px 20px #ffffff00;
+            box-shadow: 13px 13px 20px #cbced100, -13px -13px 20px #ffffff00;
+    opacity: 0;
+    -webkit-transform: scale(0.8);
+            transform: scale(0.8);
+  }
+  100% {
+    -webkit-box-shadow: 13px 13px 20px #cbced1, -13px -13px 20px #fff;
+            box-shadow: 13px 13px 20px #cbced1, -13px -13px 20px #fff;
+    opacity: 1;
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+
 * {
   padding: 0;
   margin: 0;

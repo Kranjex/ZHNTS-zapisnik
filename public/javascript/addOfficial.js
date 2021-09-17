@@ -27,15 +27,31 @@ const auth = getAuth();
 const database = getFirestore();
 const usersRef = collection(database, 'users');
 
-if (firebaseApp) {
-  console.log('Initializing Firebase');
+// Function for getting users database
+async function getUsersRole(object) {
+  const querySnapshot = await getDocs(usersRef);
+  querySnapshot.forEach((user) => {
+    if (user.data().email == object.email) {
+      // console.log(user.data().role);
+      return user.data().role;
+    }
+  });
 }
 
-auth.onAuthStateChanged((user) => {
-  if (user) {
-    console.log('User signed in');
-  } else {
-    console.log('User not signed in.');
+// Check if user is signed in and check its role
+auth.onAuthStateChanged(async (user) => {
+  const response = await fetch('/checkRole');
+  const role = await response.json();
+  console.log(role);
+
+  if (!user) {
+    document.body.style.display = 'none';
+    alert('You need to sign in first.');
+    location.href = '/';
+  } else if (role != 'Komisija') {
+    document.body.style.display = 'none';
+    alert('You do not have the permission to access this page. ' + role);
+    location.href = history.back();
   }
 });
 

@@ -1,6 +1,7 @@
-// FIREBASE IMPORTS
+// Config key import
+import { getFirebaseConfig } from './firebaseConfig.js';
+// Firebase imports
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js';
-// Firestore imports
 import {
   getFirestore,
   collection,
@@ -9,21 +10,51 @@ import {
   deleteDoc,
   getDocs,
 } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js';
-// Config key import
-import { getFirebaseConfig } from './firebaseConfig.js';
+// Firebase authentication imports
+import {
+  getAuth,
+  signOut,
+  onAuthStateChanged,
+} from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js';
 
 // Initialize Firebase
 const firebaseAppConfig = getFirebaseConfig();
 const firebaseApp = initializeApp(firebaseAppConfig);
+const auth = getAuth();
 
 // Initialize Firebase database
 const database = getFirestore();
 const playerRef = collection(database, 'players');
 const playersDatabase = await getPlayers();
 
-if (firebaseApp) {
-  console.log('Initializing Firebase');
+// Function for getting users database
+async function getUsers(object) {
+  const querySnapshot = await getDocs(usersRef);
+  querySnapshot.forEach((user) => {
+    if (user.data().email == object.email) {
+      // console.log(user.data().role);
+      return user.data().role;
+    }
+  });
 }
+
+// Check if user is signed in and check its role
+// Update: Probaj dodati role kak node response || role kak local variable (zaradi refreshanja strani)
+auth.onAuthStateChanged(async (user) => {
+  const response = await fetch('/checkRole');
+  const role = await response.json();
+  console.log(role);
+
+  if (!user) {
+    document.body.style.display = 'none';
+    alert('You need to sign in first.');
+    location.href = '/';
+  } else if (role != 'Komisija') {
+    document.body.style.display = 'none';
+    alert('You do not have the permission to access this page. ' + role);
+    location.href = history.back();
+  }
+});
 
 // Constant Variables
 const addButton = document.getElementById('addPlayer');

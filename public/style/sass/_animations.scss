@@ -79,3 +79,16 @@
     transform: scale(1);
   }
 }
+
+@keyframes showUpMorph {
+  0% {
+    box-shadow: 13px 13px 20px #cbced100, -13px -13px 20px #ffffff00;
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    box-shadow: 13px 13px 20px $shadowGray1, -13px -13px 20px $shadowWhite;
+    opacity: 1;
+    transform: scale(1);
+  }
+}

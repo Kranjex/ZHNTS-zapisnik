@@ -46,8 +46,8 @@ form.addEventListener('submit', (e) => {
     .then(() => {
       signInWithEmailAndPassword(auth, email, password)
         .then((cred) => {
-          console.log('User signed-in: ' + cred.user.email);
           if (cred.user) {
+            sendRequest(cred.user.email);
           }
         })
         .catch((error) => {
@@ -62,44 +62,72 @@ form.addEventListener('submit', (e) => {
 });
 
 // Authentication interface
-auth.onAuthStateChanged((user) => {
+auth.onAuthStateChanged(async (user) => {
+  const response = await fetch('/checkRole');
+  const role = await response.json();
   if (user) {
-    getUsers(user);
-    const data = { email: user.email };
-    const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    };
-    fetch('/', options);
-    console.log('User logged in: ' + user.email);
-  } else {
-    console.log('User logged out');
+    switch (role) {
+      case 'Delegat':
+        location.href = '/matchDashboard';
+        break;
+      case 'Komisija':
+        location.href = '/playerCommision';
+        break;
+    }
   }
 });
 
 // Function for getting users database
-async function getUsers(object) {
+// async function getUsers(object) {
+//   const querySnapshot = await getDocs(usersRef);
+//   querySnapshot.forEach((user) => {
+//     if (user.data().email == object.email) {
+//       console.log(user.data().role);
+//       return user.data().role;
+//     }
+//   });
+// }
+
+// Use for better security (back-end)
+// Function for posting request to server
+async function sendRequest(object) {
   const querySnapshot = await getDocs(usersRef);
+  let userRole;
   querySnapshot.forEach((user) => {
-    if (user.data().email == object.email) {
-      switch (user.data().role) {
-        case 'Delegat':
-          console.log('User is delegat');
-          // POST to server - Delegat
-          async () => {
-            // const newReponse = await fetch('')
-          };
-          location.href = '/matchDashboard';
-          break;
-        case 'Komisija':
-          console.log('User is komisija');
-          // POST to server - Komisija
-          location.href = '/playerCommision';
-          break;
-      }
+    if (user.data().email == object) {
+      userRole = user.data().role;
     }
   });
+
+  const data = { role: userRole };
+  const options = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  };
+  switch (userRole) {
+    case 'Delegat':
+      // POST to server - Delegat
+      fetch('/', options)
+        .then(() => {
+          window.location.href = '/matchDashboard';
+        })
+        .catch((error) => {
+          console.error('Error fetching: ', error);
+        });
+
+      break;
+    case 'Komisija':
+      // POST to server - Komisija
+      fetch('/', options)
+        .then(() => {
+          window.location.href = '/playerCommision';
+        })
+        .catch((error) => {
+          console.error('Error fetching: ', error);
+        });
+      break;
+  }
 }
 
 // Reset password link event
