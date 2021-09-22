@@ -13,9 +13,10 @@ app.use(express.json({ limit: '1mb' }));
 // Port variable
 const PORT = 3000;
 
-let currentRole;
+let currentRole = 'none';
 // Routes
 // Login page
+// Dodaj middleware, ki preveri, če je že kak user role in v primeru, da je preusmeri nazaj.
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/html/index.html');
 });
@@ -52,7 +53,12 @@ app.get('/addOfficial', (req, res) => {
 
 // Response route for checking user function
 app.get('/checkRole', (req, res) => {
-  res.json(currentRole.role);
+  if (currentRole == 'none') {
+    res.json('none');
+  } else {
+    console.log(currentRole.role);
+    res.json(currentRole.role);
+  }
 });
 
 // Listening function

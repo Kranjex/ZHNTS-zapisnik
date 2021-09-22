@@ -20,21 +20,10 @@ const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth();
 // Initialize Firebase database
 const database = getFirestore();
-const usersRef = collection(database, 'users');
-
-// Function for getting users database
-async function getUsers(object) {
-  const querySnapshot = await getDocs(usersRef);
-  querySnapshot.forEach((user) => {
-    if (user.data().email == object.email) {
-      // console.log(user.data().role);
-      return user.data().role;
-    }
-  });
-}
+const playersRef = collection(database, 'players');
+const playersDatabase = await getPlayers();
 
 // Check if user is signed in and check its role
-// Kopiraj v vse file
 auth.onAuthStateChanged(async (user) => {
   const response = await fetch('/checkRole');
   const role = await response.json();
@@ -102,46 +91,6 @@ logOut.addEventListener('click', (e) => {
   });
 });
 
-// Set up window close
-closeButton.onclick = () => {
-  const safetyProtector = confirm(
-    'Ste prepričani, da želite nadaljevati? \n Zaradi varnosti preglejte podatke še enkrat.'
-  );
-  if (safetyProtector) {
-    setUpWindowContainer.style.display = 'none';
-
-    mainScreen.style.display = 'flex';
-    document.getElementById('homeTeam').style.animation =
-      'elementFloatLeft 2s ease backwards 1.1s';
-    document.getElementById('dashboardContainer').style.animation =
-      'elementFloatDown 1s ease-out backwards .2s';
-    document.getElementById('guestTeam').style.animation =
-      'elementFloatRight 2s ease backwards 1.1s';
-
-    // Local Storage system
-    //Basic Data
-    localStorage.clear();
-    localStorage.setItem('reportDate', reportDate.value);
-    localStorage.setItem('reportTime', reportTime.value);
-    localStorage.setItem('reportGroup', reportGroup.value);
-    localStorage.setItem('reportLocation', reportLocation.value);
-    localStorage.setItem('reportPitch', reportPitch.value);
-    localStorage.setItem('reportMatchNumber', reportMatchNumber.value);
-    // Officials
-    localStorage.setItem('umpire1', umpire1.value);
-    localStorage.setItem('umpire2', umpire2.value);
-    localStorage.setItem('judge', judge.value);
-    localStorage.setItem('tournamentOfficial', tournamentOfficial.value);
-    localStorage.setItem('reserveUmpire', reserveUmpire.value);
-    // Home coaches
-    localStorage.setItem('homeCoach', homeCoach.value);
-    localStorage.setItem('homeManager', homeManager.value);
-    // Guest coaches
-    localStorage.setItem('guestCoach', guestCoach.value);
-    localStorage.setItem('guestManager', guestManager.value);
-  }
-};
-
 // Date set for set up window
 const optionsDate = { year: 'numeric', month: 'numeric', day: 'numeric' };
 let date = new Date();
@@ -203,4 +152,139 @@ substractSecondButton.onclick = () => {
     seconds--;
   }
   displayTime();
+};
+
+// Function for getting players
+async function getPlayers() {
+  const playersData = [];
+  const querySnapshot = await getDocs(playersRef);
+  if (querySnapshot) {
+    querySnapshot.forEach((player) => {
+      const playerObject = { id: player.id, data: player.data() };
+      playersData.push(playerObject);
+    });
+    return playersData;
+  } else {
+    console.log('No internet connection or no players available.');
+  }
+}
+
+// Button event listener for home team
+let homeData = [];
+const homeTeamButton = document.getElementById('addHomeTeam');
+homeTeamButton.addEventListener('click', () => {
+  homeTeamButton.style.display = 'none';
+  const homeTeamSelectionContainer = document.getElementById(
+    'homeTeamSelectionContainer'
+  );
+  homeTeamSelectionContainer.style.display = 'flex';
+  homeTeamSelectionContainer.style.animation = 'showUp 0.5s ease-out';
+  const clubSelection = document.querySelectorAll('.homeTeamSelection');
+  clubSelection.forEach((club) => {
+    club.addEventListener('click', () => {
+      homeTeamSelectionContainer.style.display = 'none';
+      localStorage.setItem('homeTeam', club.innerHTML);
+      searchPlayers(homeData, club, 'home', homeTeamSelectionContainer);
+    });
+  });
+});
+
+// Button event listener for guest team
+let guestData = [];
+const guestTeamButton = document.getElementById('addGuestTeam');
+guestTeamButton.addEventListener('click', () => {
+  guestTeamButton.style.display = 'none';
+  const guestTeamSelectionContainer = document.getElementById(
+    'guestTeamSelectionContainer'
+  );
+  guestTeamSelectionContainer.style.display = 'flex';
+  guestTeamSelectionContainer.style.animation = 'showUp 0.5s ease-out';
+  const clubSelection = document.querySelectorAll('.guestTeamSelection');
+  clubSelection.forEach((club) => {
+    club.addEventListener('click', () => {
+      guestTeamSelectionContainer.style.display = 'none';
+      localStorage.setItem('guestTeam', club.innerHTML);
+      console.log(club.innerHTML);
+      searchPlayers(guestData, club, 'guest', guestTeamSelectionContainer);
+    });
+  });
+});
+
+// Function for searching players
+function searchPlayers(data, club, team, container) {
+  let counter = 0;
+  playersDatabase.forEach((player) => {
+    // Dodaj še primerjavo selekcij
+    console.log(reportGroup.value);
+    if (reportGroup.value != '') {
+      if (
+        player.data.club == club.dataset.club &&
+        (reportGroup.value.toLowerCase() == player.data.selection1 ||
+          reportGroup.value.toLowerCase() == player.dataselection2)
+      ) {
+        data.push(player);
+        const playerRowContainer = document.createElement('div');
+        playerRowContainer.className = 'playerRowContainer';
+        const playerRow = document.createElement('input');
+        playerRow.setAttribute('type', 'checkbox');
+        playerRow.setAttribute('name', `player${counter}`);
+        playerRow.setAttribute('style', `--index:${counter}`);
+        const playerRowLabel = document.createElement('label');
+        playerRowLabel.setAttribute('for', `player${counter}`);
+        playerRowLabel.innerHTML = `${player.data.name} ${player.data.lastName} ${player.data.number} ${player.data.specialMarks}`;
+        const teamContainer = document.getElementById(`${team}TeamContainer`);
+        playerRowContainer.append(playerRow, playerRowLabel);
+        teamContainer.append(playerRowContainer);
+        counter++;
+      }
+    } else {
+      container.style.display = 'flex';
+    }
+  });
+}
+
+// Set up window close
+closeButton.onclick = () => {
+  const safetyProtector = confirm(
+    'Ste prepričani, da želite nadaljevati? \n Zaradi varnosti preglejte podatke še enkrat.'
+  );
+  if (safetyProtector) {
+    setUpWindowContainer.style.display = 'none';
+
+    mainScreen.style.display = 'flex';
+    document.getElementById('homeTeam').style.animation =
+      'elementFloatLeft 2s ease backwards 1.1s';
+    document.getElementById('dashboardContainer').style.animation =
+      'elementFloatDown 1s ease-out backwards .2s';
+    document.getElementById('guestTeam').style.animation =
+      'elementFloatRight 2s ease backwards 1.1s';
+
+    // Local Storage system
+    //Basic Data
+    localStorage.clear();
+    localStorage.setItem('reportDate', reportDate.value);
+    localStorage.setItem('reportTime', reportTime.value);
+    localStorage.setItem('reportGroup', reportGroup.value);
+    localStorage.setItem('reportLocation', reportLocation.value);
+    localStorage.setItem('reportPitch', reportPitch.value);
+    localStorage.setItem('reportMatchNumber', reportMatchNumber.value);
+    // Officials
+    localStorage.setItem('umpire1', umpire1.value);
+    localStorage.setItem('umpire2', umpire2.value);
+    localStorage.setItem('judge', judge.value);
+    localStorage.setItem('tournamentOfficial', tournamentOfficial.value);
+    localStorage.setItem('reserveUmpire', reserveUmpire.value);
+    // Home coaches
+    localStorage.setItem('homeCoach', homeCoach.value);
+    localStorage.setItem('homeManager', homeManager.value);
+    // Guest coaches
+    localStorage.setItem('guestCoach', guestCoach.value);
+    localStorage.setItem('guestManager', guestManager.value);
+
+    // Add home players to the local storage
+    localStorage.setItem('homePlayers', JSON.stringify(homeData));
+    console.log(homeData);
+    // Add guest players to the local storage
+    localStorage.setItem('guestPlayers', JSON.stringify(guestData));
+  }
 };

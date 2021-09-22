@@ -22,17 +22,6 @@ const auth = getAuth();
 const database = getFirestore();
 const usersRef = collection(database, 'users');
 
-// Function for getting users database
-async function getUsers(object) {
-  const querySnapshot = await getDocs(usersRef);
-  querySnapshot.forEach((user) => {
-    if (user.data().email == object.email) {
-      // console.log(user.data().role);
-      return user.data().role;
-    }
-  });
-}
-
 // Check if user is signed in and check its role
 auth.onAuthStateChanged(async (user) => {
   const response = await fetch('/checkRole');
@@ -61,6 +50,34 @@ console.log(screenWidth, screenHeight);
 console.log(windowWidth, windowHeight, ratio);
 
 window.onload = () => {
+  // Add basic data
   const date = document.getElementById('date');
   date.textContent = localStorage.getItem('reportDate');
+
+  // Add home players to the report
+  const homePlayersPlaceholders = document.querySelectorAll(
+    '[data-home-player] playerName'
+  );
+  console.log(homePlayersPlaceholders);
+  const homePlayers = localStorage.getItem('homePlayers');
+  homePlayersPlaceholders.forEach((placeholder) => {
+    for (let i = 0; i < homePlayers; ) {
+      placeholder.textContent = homePlayers[i];
+      console.log('homePlayers'[i]);
+      i++;
+    }
+  });
+  // Add guest players to the report
+  const guestPlayersPlaceholders = document.querySelectorAll(
+    '[data-guest-player] playerName'
+  );
+  console.log(guestPlayersPlaceholders);
+  const guestPlayers = localStorage.getItem('guestPlayers');
+  guestPlayersPlaceholders.forEach((placeholder) => {
+    for (let i = 0; i < guestPlayers; ) {
+      placeholder.textContent = guestPlayers[i];
+      console.log('guestPlayers'[i]);
+      i++;
+    }
+  });
 };

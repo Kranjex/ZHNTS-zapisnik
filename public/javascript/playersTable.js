@@ -27,17 +27,6 @@ const database = getFirestore();
 const playerRef = collection(database, 'players');
 const playersDatabase = await getPlayers();
 
-// Function for getting users database
-async function getUsers(object) {
-  const querySnapshot = await getDocs(usersRef);
-  querySnapshot.forEach((user) => {
-    if (user.data().email == object.email) {
-      // console.log(user.data().role);
-      return user.data().role;
-    }
-  });
-}
-
 // Check if user is signed in and check its role
 // Update: Probaj dodati role kak node response || role kak local variable (zaradi refreshanja strani)
 auth.onAuthStateChanged(async (user) => {
@@ -242,7 +231,6 @@ async function getPlayers() {
     console.log('No internet connection or no players available.');
   }
 }
-getPlayers();
 
 // Sorting function for descending order
 function descOrder(array) {

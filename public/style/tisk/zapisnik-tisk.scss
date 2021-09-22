@@ -220,6 +220,8 @@ body {
 
           div {
             border-right: 1px solid black;
+            font-size: $h2;
+            @include flexCenter;
 
             &:last-child {
               border-right: none;

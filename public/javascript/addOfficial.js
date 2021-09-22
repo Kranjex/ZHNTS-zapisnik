@@ -27,17 +27,6 @@ const auth = getAuth();
 const database = getFirestore();
 const usersRef = collection(database, 'users');
 
-// Function for getting users database
-async function getUsersRole(object) {
-  const querySnapshot = await getDocs(usersRef);
-  querySnapshot.forEach((user) => {
-    if (user.data().email == object.email) {
-      // console.log(user.data().role);
-      return user.data().role;
-    }
-  });
-}
-
 // Check if user is signed in and check its role
 auth.onAuthStateChanged(async (user) => {
   const response = await fetch('/checkRole');

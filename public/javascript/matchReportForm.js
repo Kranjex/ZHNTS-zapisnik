@@ -22,17 +22,6 @@ const auth = getAuth();
 const database = getFirestore();
 const usersRef = collection(database, 'users');
 
-// Function for getting users database
-async function getUsers(object) {
-  const querySnapshot = await getDocs(usersRef);
-  querySnapshot.forEach((user) => {
-    if (user.data().email == object.email) {
-      // console.log(user.data().role);
-      return user.data().role;
-    }
-  });
-}
-
 // Check if user is signed in and check its role
 auth.onAuthStateChanged(async (user) => {
   const response = await fetch('/checkRole');
@@ -99,19 +88,33 @@ window.onload = () => {
     localStorage.getItem('guestCoach'));
   const guestManager = (document.getElementById('guestManager').textContent =
     localStorage.getItem('guestManager'));
-};
 
-window.onunload = () => {
-  // localStorage.removeItem('reportDate');
-  // localStorage.removeItem('reportTime');
-  // localStorage.removeItem('reportGroup');
-  // localStorage.removeItem('reportLocation');
-  // localStorage.removeItem('reportPitch');
-  // localStorage.removeItem('reportMatchNumber');
-  // localStorage.removeItem('umpire1');
-  // localStorage.removeItem('umpire2');
-  // localStorage.removeItem('judge');
-  // localStorage.removeItem('tournamentOfficial');
-  // localStorage.removeItem('reserveUmpire');
-  // localStorage.clear();
+  // Add home players to the report
+  const homePlayersNames = document.querySelectorAll(
+    '[data-home-player] > .playerName'
+  );
+  const homePlayersNumbers = document.querySelectorAll(
+    '[data-home-player] > .playerNum'
+  );
+  const homePlayers = JSON.parse(localStorage.getItem('homePlayers'));
+  for (let i = 0; i < homePlayers.length; ) {
+    homePlayersNames[i].innerHTML =
+      homePlayers[i].data.name + ' ' + homePlayers[i].data.lastName;
+    homePlayersNumbers[i].innerHTML = homePlayers[i].data.number;
+    i++;
+  }
+  // Add guest players to the report
+  const guestPlayersNames = document.querySelectorAll(
+    '[data-guest-player] > .playerName'
+  );
+  const guestPlayersNumbers = document.querySelectorAll(
+    '[data-guest-player] > .playerNum'
+  );
+  const guestPlayers = JSON.parse(localStorage.getItem('guestPlayers'));
+  for (let i = 0; i < guestPlayers.length; ) {
+    guestPlayersNames[i].innerHTML =
+      guestPlayers[i].data.name + ' ' + guestPlayers[i].data.lastName;
+    guestPlayersNumbers[i].innerHTML = guestPlayers[i].data.number;
+    i++;
+  }
 };

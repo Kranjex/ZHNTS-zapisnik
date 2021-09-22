@@ -26,10 +26,24 @@ const database = getFirestore();
 const usersRef = collection(database, 'users');
 // Initialize Firebase authentication
 const auth = getAuth();
+console.log(auth.currentUser);
 
 if (firebaseApp) {
   console.log('Initializing Firebase');
 }
+window.onload = () => {
+  // Deluje samo enkart
+  const perfEntries = performance.getEntriesByType('navigation');
+  if (perfEntries[0].type === 'back_forward') {
+    location.reload(true);
+  }
+
+  if (auth.currentUser != null) {
+    window.location.href = history.back();
+  } else {
+    console.log('No user is signed in.');
+  }
+};
 
 // Constant Variables
 const loginButton = document.getElementById('loginButton');
@@ -65,6 +79,7 @@ form.addEventListener('submit', (e) => {
 auth.onAuthStateChanged(async (user) => {
   const response = await fetch('/checkRole');
   const role = await response.json();
+
   if (user) {
     switch (role) {
       case 'Delegat':
@@ -77,18 +92,6 @@ auth.onAuthStateChanged(async (user) => {
   }
 });
 
-// Function for getting users database
-// async function getUsers(object) {
-//   const querySnapshot = await getDocs(usersRef);
-//   querySnapshot.forEach((user) => {
-//     if (user.data().email == object.email) {
-//       console.log(user.data().role);
-//       return user.data().role;
-//     }
-//   });
-// }
-
-// Use for better security (back-end)
 // Function for posting request to server
 async function sendRequest(object) {
   const querySnapshot = await getDocs(usersRef);
