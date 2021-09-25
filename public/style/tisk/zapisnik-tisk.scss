@@ -221,6 +221,7 @@ body {
           div {
             border-right: 1px solid black;
             font-size: $h2;
+
             @include flexCenter;
 
             &:last-child {
@@ -393,12 +394,12 @@ button {
   // border: 3px solid rgb(49, 163, 55);
 }
 
-@media screen and (min-width: 3000px) {
-  html {
-    -moz-transform: scale(2);
-    zoom: 200%;
-  }
-}
+// @media screen and (min-width: 3000px) {
+//   html {
+//     -moz-transform: scale(2);
+//     zoom: 200%;
+//   }
+// }
 
 @media print {
   body * {

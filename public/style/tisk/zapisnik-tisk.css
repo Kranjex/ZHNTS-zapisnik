@@ -830,13 +830,6 @@ button {
   background: linear-gradient(45deg, #3fcc46, #48e250);
 }
 
-@media screen and (min-width: 3000px) {
-  html {
-    -moz-transform: scale(2);
-    zoom: 200%;
-  }
-}
-
 @media print {
   body * {
     visibility: hidden;

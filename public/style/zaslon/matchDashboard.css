@@ -406,10 +406,12 @@ body #setUpWindowContainer header ul .show {
 
 body #setUpWindowContainer #welcomeText {
   margin: 3vh 0;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
-  -webkit-animation: showUp 0.7s ease-in-out backwards;
-          animation: showUp 0.7s ease-in-out backwards;
+  -webkit-animation: showUp 0.7s ease-in-out;
+          animation: showUp 0.7s ease-in-out;
+  -webkit-transition: -webkit-transform 1s ease-in-out;
+  transition: -webkit-transform 1s ease-in-out;
+  transition: transform 1s ease-in-out;
+  transition: transform 1s ease-in-out, -webkit-transform 1s ease-in-out;
 }
 
 body #setUpWindowContainer #welcomeText h1 {
@@ -658,6 +660,34 @@ body #setUpWindowContainer #teamSetUpContainer .teamSetUp .teamContainer {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+}
+
+body #setUpWindowContainer #teamSetUpContainer .teamSetUp .teamContainer .checkButton {
+  width: 100px;
+  height: 30px;
+  border: none;
+  outline: none;
+  background-color: #ecf0f3;
+  background: -webkit-gradient(linear, left top, right top, from(#1e381e), to(#447e44));
+  background: linear-gradient(90deg, #1e381e, #447e44);
+  border-radius: 20px;
+  -webkit-box-shadow: 5px 5px 7px #cbced1, -5px -5px 7px #fff;
+          box-shadow: 5px 5px 7px #cbced1, -5px -5px 7px #fff;
+  margin: 0.5rem 0;
+  padding: 5px;
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  -webkit-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
+  cursor: pointer;
+}
+
+body #setUpWindowContainer #teamSetUpContainer .teamSetUp .teamContainer .checkButton:hover {
+  -webkit-filter: brightness(1.3);
+          filter: brightness(1.3);
+  -webkit-transform: scale(1.05);
+          transform: scale(1.05);
 }
 
 body #setUpWindowContainer #teamSetUpContainer .teamSetUp .coachesContainer {
@@ -1044,12 +1074,34 @@ body main #dashboardContainer #dashboard #history {
   width: 100%;
   height: 100%;
   padding: 1rem;
+  overflow-x: hidden;
+  overflow: auto;
 }
 
 body main #dashboardContainer #dashboard #history .periodStart {
   width: 100%;
   height: 20px;
   background-color: #9eed82;
+}
+
+body main #dashboardContainer #dashboard #history .periodStop {
+  width: 100%;
+  height: 20px;
+  background-color: #fb6161;
+}
+
+body main #dashboardContainer #dashboard #history .periodStart,
+body main #dashboardContainer #dashboard #history .periodStop {
+  padding-left: 0.5rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 body main #homeTeam,
@@ -1129,6 +1181,112 @@ body main #guestTeam .playersContainer {
           box-shadow: 5px 5px 7px #cbced1, -5px -5px 7px #fff;
   width: 100%;
   height: 80%;
+  padding: 1rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  overflow: auto;
+}
+
+body main #homeTeam .playersContainer .playerRowContainer,
+body main #guestTeam .playersContainer .playerRowContainer {
+  width: 100%;
+  height: 3rem;
+  margin-bottom: 0.2rem;
+  font-size: 1.5rem;
+  border-radius: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 0 1rem;
+}
+
+body main #homeTeam .playersContainer .playerRowContainer:nth-of-type(even),
+body main #guestTeam .playersContainer .playerRowContainer:nth-of-type(even) {
+  background-color: #fff;
+}
+
+body main #homeTeam .playersContainer .playerRowContainer > *,
+body main #guestTeam .playersContainer .playerRowContainer > * {
+  margin: auto 0;
+}
+
+body main #homeTeam .playersContainer .playerRowContainer .triangle,
+body main #guestTeam .playersContainer .playerRowContainer .triangle {
+  width: 0;
+  height: 0;
+  border-left: 1rem solid transparent;
+  border-right: 1rem solid transparent;
+  border-bottom: 2rem solid #169b00;
+}
+
+body main #homeTeam .playersContainer .playerRowContainer .square,
+body main #guestTeam .playersContainer .playerRowContainer .square {
+  width: 2rem;
+  height: 2rem;
+  background-color: #fff735;
+}
+
+body main #homeTeam .playersContainer .playerRowContainer .circle,
+body main #guestTeam .playersContainer .playerRowContainer .circle {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: #ff3636;
+}
+
+body main #homeTeam .playersContainer .playerRowContainer .triangle,
+body main #homeTeam .playersContainer .playerRowContainer .square,
+body main #homeTeam .playersContainer .playerRowContainer .circle,
+body main #guestTeam .playersContainer .playerRowContainer .triangle,
+body main #guestTeam .playersContainer .playerRowContainer .square,
+body main #guestTeam .playersContainer .playerRowContainer .circle {
+  cursor: pointer;
+  opacity: 0.3;
+}
+
+body main #homeTeam .playersContainer .playerRowContainer .triangle:hover,
+body main #homeTeam .playersContainer .playerRowContainer .square:hover,
+body main #homeTeam .playersContainer .playerRowContainer .circle:hover,
+body main #guestTeam .playersContainer .playerRowContainer .triangle:hover,
+body main #guestTeam .playersContainer .playerRowContainer .square:hover,
+body main #guestTeam .playersContainer .playerRowContainer .circle:hover {
+  opacity: 1;
+}
+
+body main #homeTeam .playersContainer .playerRowContainer .cardContainer,
+body main #guestTeam .playersContainer .playerRowContainer .cardContainer {
+  width: 18%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+body main #homeTeam .playersContainer .playerRowContainer .boldNumber,
+body main #guestTeam .playersContainer .playerRowContainer .boldNumber {
+  font-weight: 1000;
 }
 
 body main #homeTeam #backgroundContainerHome {

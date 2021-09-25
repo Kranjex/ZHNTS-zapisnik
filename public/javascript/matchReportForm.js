@@ -23,21 +23,21 @@ const database = getFirestore();
 const usersRef = collection(database, 'users');
 
 // Check if user is signed in and check its role
-auth.onAuthStateChanged(async (user) => {
-  const response = await fetch('/checkRole');
-  const role = await response.json();
-  console.log(role);
+// auth.onAuthStateChanged(async (user) => {
+//   const response = await fetch('/checkRole');
+//   const role = await response.json();
+//   console.log(role);
 
-  if (!user) {
-    document.body.style.display = 'none';
-    alert('You need to sign in first.');
-    location.href = '/';
-  } else if (role != 'Delegat') {
-    document.body.style.display = 'none';
-    alert('You do not have the permission to access this page. ' + role);
-    location.href = history.back();
-  }
-});
+//   if (!user) {
+//     document.body.style.display = 'none';
+//     alert('You need to sign in first.');
+//     location.href = '/';
+//   } else if (role != 'Delegat') {
+//     document.body.style.display = 'none';
+//     alert('You do not have the permission to access this page. ' + role);
+//     location.href = history.back();
+//   }
+// });
 
 const printButton = document.getElementById('printButton');
 const editButton = document.getElementById('editButton');
@@ -62,6 +62,12 @@ window.onload = () => {
   const matchNumber = (document.getElementById(
     'matchNumberContent'
   ).textContent = localStorage.getItem('reportMatchNumber'));
+
+  // Teams
+  const homeTeam = (document.getElementById('homeTeam').textContent =
+    localStorage.getItem('homeTeam'));
+  const guestTeam = (document.getElementById('guestTeam').textContent =
+    localStorage.getItem('guestTeam'));
 
   // Officials
   const umpire1 = (document.getElementById('umpire1Content').textContent =
