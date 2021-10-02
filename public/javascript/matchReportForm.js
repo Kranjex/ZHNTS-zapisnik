@@ -50,50 +50,50 @@ printButton.addEventListener('click', () => {
 window.onload = () => {
   // Basic Data
   const date = (document.getElementById('dateContent').textContent =
-    localStorage.getItem('reportDate'));
+    sessionStorage.getItem('reportDate'));
   const time = (document.getElementById('timeContent').textContent =
-    localStorage.getItem('reportTime'));
+    sessionStorage.getItem('reportTime'));
   const group = (document.getElementById('groupContent').textContent =
-    localStorage.getItem('reportGroup'));
+    sessionStorage.getItem('reportGroup'));
   const location = (document.getElementById('locationContent').textContent =
-    localStorage.getItem('reportLocation'));
+    sessionStorage.getItem('reportLocation'));
   const pitch = (document.getElementById('pitchContent').textContent =
-    localStorage.getItem('reportPitch'));
+    sessionStorage.getItem('reportPitch'));
   const matchNumber = (document.getElementById(
     'matchNumberContent'
-  ).textContent = localStorage.getItem('reportMatchNumber'));
+  ).textContent = sessionStorage.getItem('reportMatchNumber'));
 
   // Teams
   const homeTeam = (document.getElementById('homeTeam').textContent =
-    localStorage.getItem('homeTeam'));
+    sessionStorage.getItem('homeTeam'));
   const guestTeam = (document.getElementById('guestTeam').textContent =
-    localStorage.getItem('guestTeam'));
+    sessionStorage.getItem('guestTeam'));
 
   // Officials
   const umpire1 = (document.getElementById('umpire1Content').textContent =
-    localStorage.getItem('umpire1'));
+    sessionStorage.getItem('umpire1'));
   const umpire2 = (document.getElementById('umpire2Content').textContent =
-    localStorage.getItem('umpire2'));
+    sessionStorage.getItem('umpire2'));
   const judge = (document.getElementById('judgeContent').textContent =
-    localStorage.getItem('judge'));
+    sessionStorage.getItem('judge'));
   const tournamentOfficial = (document.getElementById(
     'tournamentOfficialContent'
-  ).textContent = localStorage.getItem('tournamentOfficial'));
+  ).textContent = sessionStorage.getItem('tournamentOfficial'));
   const reserveUmpire = (document.getElementById(
     'reserveUmpireContent'
-  ).textContent = localStorage.getItem('reserveUmpire'));
+  ).textContent = sessionStorage.getItem('reserveUmpire'));
 
   // Home coaches
   const homeCoach = (document.getElementById('homeCoach').textContent =
-    localStorage.getItem('homeCoach'));
+    sessionStorage.getItem('homeCoach'));
   const homeManager = (document.getElementById('homeManager').textContent =
-    localStorage.getItem('homeManager'));
+    sessionStorage.getItem('homeManager'));
 
   // Guest coaches
   const guestCoach = (document.getElementById('guestCoach').textContent =
-    localStorage.getItem('guestCoach'));
+    sessionStorage.getItem('guestCoach'));
   const guestManager = (document.getElementById('guestManager').textContent =
-    localStorage.getItem('guestManager'));
+    sessionStorage.getItem('guestManager'));
 
   // Add home players to the report
   const homePlayersNames = document.querySelectorAll(
@@ -102,7 +102,7 @@ window.onload = () => {
   const homePlayersNumbers = document.querySelectorAll(
     '[data-home-player] > .playerNum'
   );
-  const homePlayers = JSON.parse(localStorage.getItem('homePlayers'));
+  const homePlayers = JSON.parse(sessionStorage.getItem('homePlayers'));
   for (let i = 0; i < homePlayers.length; ) {
     homePlayersNames[i].innerHTML =
       homePlayers[i].data.name + ' ' + homePlayers[i].data.lastName;
@@ -116,11 +116,67 @@ window.onload = () => {
   const guestPlayersNumbers = document.querySelectorAll(
     '[data-guest-player] > .playerNum'
   );
-  const guestPlayers = JSON.parse(localStorage.getItem('guestPlayers'));
+  const guestPlayers = JSON.parse(sessionStorage.getItem('guestPlayers'));
   for (let i = 0; i < guestPlayers.length; ) {
     guestPlayersNames[i].innerHTML =
       guestPlayers[i].data.name + ' ' + guestPlayers[i].data.lastName;
     guestPlayersNumbers[i].innerHTML = guestPlayers[i].data.number;
     i++;
   }
+  // Add goals to the report
+  const goalsArray = JSON.parse(sessionStorage.getItem('goalsArray'));
+  const scoreboardRow = document.querySelectorAll('.scoreboardRow');
+  let counter = 1;
+  for (let i = 0; i < goalsArray.length; i++) {
+    switch (goalsArray[i].team) {
+      case 'HK Moravske Toplice':
+        goalsArray[i].team = 'HKMT';
+        break;
+      case 'HK Lipovci':
+        goalsArray[i].team = 'HKL';
+        break;
+      case 'HK Predanovci':
+        goalsArray[i].team = 'HKP';
+        break;
+    }
+    scoreboardRow[i].childNodes[1].textContent = goalsArray[i].team;
+    scoreboardRow[i].childNodes[3].textContent = goalsArray[i].timestamp;
+    scoreboardRow[i].childNodes[5].textContent = counter;
+    scoreboardRow[i].childNodes[7].textContent = goalsArray[i].type;
+    scoreboardRow[i].childNodes[9].textContent = goalsArray[i].score;
+    counter++;
+  }
+  // Add cards to the report
+  const playerRows = document.querySelectorAll('.player');
+  console.log(playerRows[13].childNodes[7].innerHTML);
+  const cardsArray = JSON.parse(sessionStorage.getItem('cardsArray'));
+  const greenCardPlaceholders = document.querySelectorAll('.playerGreen');
+  const yellowCardPlaceholders = document.querySelectorAll('.playerYellow');
+  const redCardPlaceholders = document.querySelectorAll('.playerRed');
+
+  for (let i = 0; i < cardsArray.length; i++) {
+    // if (playerRows[i].childNodes[7].innerHTML !== '') {
+    switch (cardsArray[i].type) {
+      case 'green':
+        greenCardPlaceholders[cardsArray[i].player].textContent =
+          cardsArray[i].timestamp;
+        break;
+      case 'yellow':
+        yellowCardPlaceholders[cardsArray[i].player].textContent =
+          cardsArray[i].timestamp;
+        break;
+      case 'red':
+        redCardPlaceholders[cardsArray[i].player].textContent =
+          cardsArray[i].timestamp;
+        break;
+    }
+    // } else {
+    //   i--;
+    // }
+  }
+
+  // Final results
+  const finalResultsContainer =
+    document.getElementById('finalResults').children[1];
+  finalResultsContainer.textContent = goalsArray[goalsArray.length - 1].score;
 };

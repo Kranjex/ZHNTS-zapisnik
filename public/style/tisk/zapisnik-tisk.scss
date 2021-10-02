@@ -134,6 +134,17 @@ body {
             width: 48mm;
             border: 1px solid black;
             border-bottom: none;
+            @include flexStartCenter;
+            position: relative;
+
+            &:first-child {
+              h3:last-child {
+                position: absolute;
+                left: 50%;
+                transform: translate(-50%, 0);
+                font-size: calc(#{$h2} * 1.5);
+              }
+            }
 
             &:last-child {
               border-bottom: 1px solid black;
@@ -333,7 +344,10 @@ body {
 
               div {
                 border-right: 1px solid black;
-                font: $h3 $mainFont;
+                background: transparent;
+                text-align: center;
+                // @include flexCenter;
+                font: $h2 $mainFont;
 
                 &:last-child {
                   border-right: none;

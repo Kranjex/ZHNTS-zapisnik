@@ -561,9 +561,15 @@ body {
             }
             &:nth-child(3) {
               box-shadow: 0px 10px 15px -5px $shadowGray2;
+              width: calc(100% / 3);
             }
             &:nth-child(4) {
+              box-shadow: 0px 10px 15px -7px $shadowGray2;
+              width: calc(100% / 3);
+            }
+            &:nth-child(5) {
               box-shadow: 0px 10px 15px -5px $shadowGray2;
+              width: calc(100% / 3);
             }
           }
 
@@ -604,9 +610,15 @@ body {
             background-color: $stopButton;
           }
           .periodStart,
-          .periodStop {
+          .periodStop,
+          .goalRow {
             padding-left: 0.5rem;
             @include flexStartCenter;
+          }
+          .goalRow,
+          .cardRow {
+            width: 100%;
+            height: 20px;
           }
         }
       }
@@ -654,11 +666,11 @@ body {
         height: 80%;
         padding: 1rem;
         @include flexColumnStart;
-        overflow: auto;
+        overflow: scroll;
 
         .playerRowContainer {
           width: 100%;
-          height: 3rem;
+          height: 4rem;
           margin-bottom: 0.2rem;
           font-size: 1.5rem;
           border-radius: 20px;
@@ -673,21 +685,22 @@ body {
             margin: auto 0;
           }
 
+          $cardSize: 2.5rem;
           .triangle {
             width: 0;
             height: 0;
-            border-left: 1rem solid transparent;
-            border-right: 1rem solid transparent;
-            border-bottom: 2rem solid $greenCard;
+            border-left: calc(#{$cardSize} * 0.5) solid transparent;
+            border-right: calc(#{$cardSize} * 0.5) solid transparent;
+            border-bottom: $cardSize solid $greenCard;
           }
           .square {
-            width: 2rem;
-            height: 2rem;
+            width: $cardSize;
+            height: $cardSize;
             background-color: $yellowCard;
           }
           .circle {
-            width: 2rem;
-            height: 2rem;
+            width: $cardSize;
+            height: $cardSize;
             border-radius: 50%;
             background-color: $redCard;
           }
@@ -698,19 +711,25 @@ body {
             cursor: pointer;
             opacity: 0.3;
           }
-          .triangle:hover,
-          .square:hover,
-          .circle:hover {
+
+          .fullOpacity {
             opacity: 1;
           }
 
           .cardContainer {
-            width: 18%;
+            width: 20%;
             @include flexBetween;
           }
 
           .boldNumber {
             font-weight: 1000;
+          }
+          .penaltyTimer {
+            width: 10%;
+            background-color: $stopButton;
+            border-radius: 20px;
+            font-weight: 700;
+            @include flexCenter;
           }
         }
       }
@@ -736,7 +755,7 @@ body {
           // background-image: url('../../img/HKMT_logo.gif');
           // background-size: 50%;
           // background-repeat: no-repeat;
-          background: url('../../img/HKMT_logo.gif') no-repeat;
+          background-repeat: no-repeat;
           background-size: 100%;
           z-index: 10;
         }
@@ -762,7 +781,7 @@ body {
           // background-image: url('../../img/HKMT_logo.gif');
           // background-size: 50%;
           // background-repeat: no-repeat;
-          background: url('../../img/HKL_logo.png') no-repeat;
+          background-repeat: no-repeat;
           background-size: 100%;
           z-index: 10;
         }

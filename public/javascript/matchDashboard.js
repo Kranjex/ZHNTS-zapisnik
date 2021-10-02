@@ -6,6 +6,8 @@ import {
   getFirestore,
   collection,
   getDocs,
+  updateDoc,
+  doc,
 } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js';
 // Firebase authentication imports
 import {
@@ -133,7 +135,7 @@ homeTeamButton.addEventListener('click', () => {
   clubSelection.forEach((club) => {
     club.addEventListener('click', () => {
       homeTeamSelectionContainer.style.display = 'none';
-      localStorage.setItem('homeTeam', club.innerHTML);
+      sessionStorage.setItem('homeTeam', club.innerHTML);
       searchPlayers(homeData, club, 'home', homeTeamSelectionContainer);
     });
   });
@@ -153,7 +155,7 @@ guestTeamButton.addEventListener('click', () => {
   clubSelection.forEach((club) => {
     club.addEventListener('click', () => {
       guestTeamSelectionContainer.style.display = 'none';
-      localStorage.setItem('guestTeam', club.innerHTML);
+      sessionStorage.setItem('guestTeam', club.innerHTML);
       searchPlayers(guestData, club, 'guest', guestTeamSelectionContainer);
     });
   });
@@ -189,6 +191,7 @@ function searchPlayers(data, club, team, container) {
       container.style.display = 'flex';
     }
   });
+  // Check all checkboxes button
   const checkButton = document.createElement('button');
   checkButton.setAttribute('class', 'checkButton');
   checkButton.innerHTML = 'Izberi vse';
@@ -219,24 +222,24 @@ closeButton.onclick = () => {
 
     // Local Storage system
     //Basic Data
-    localStorage.setItem('reportDate', reportDate.value);
-    localStorage.setItem('reportTime', reportTime.value);
-    localStorage.setItem('reportGroup', reportGroup.value);
-    localStorage.setItem('reportLocation', reportLocation.value);
-    localStorage.setItem('reportPitch', reportPitch.value);
-    localStorage.setItem('reportMatchNumber', reportMatchNumber.value);
+    sessionStorage.setItem('reportDate', reportDate.value);
+    sessionStorage.setItem('reportTime', reportTime.value);
+    sessionStorage.setItem('reportGroup', reportGroup.value);
+    sessionStorage.setItem('reportLocation', reportLocation.value);
+    sessionStorage.setItem('reportPitch', reportPitch.value);
+    sessionStorage.setItem('reportMatchNumber', reportMatchNumber.value);
     // Officials
-    localStorage.setItem('umpire1', umpire1.value);
-    localStorage.setItem('umpire2', umpire2.value);
-    localStorage.setItem('judge', judge.value);
-    localStorage.setItem('tournamentOfficial', tournamentOfficial.value);
-    localStorage.setItem('reserveUmpire', reserveUmpire.value);
+    sessionStorage.setItem('umpire1', umpire1.value);
+    sessionStorage.setItem('umpire2', umpire2.value);
+    sessionStorage.setItem('judge', judge.value);
+    sessionStorage.setItem('tournamentOfficial', tournamentOfficial.value);
+    sessionStorage.setItem('reserveUmpire', reserveUmpire.value);
     // Home coaches
-    localStorage.setItem('homeCoach', homeCoach.value);
-    localStorage.setItem('homeManager', homeManager.value);
+    sessionStorage.setItem('homeCoach', homeCoach.value);
+    sessionStorage.setItem('homeManager', homeManager.value);
     // Guest coaches
-    localStorage.setItem('guestCoach', guestCoach.value);
-    localStorage.setItem('guestManager', guestManager.value);
+    sessionStorage.setItem('guestCoach', guestCoach.value);
+    sessionStorage.setItem('guestManager', guestManager.value);
 
     // Add home players to the local storage
     const homeTeamContainer = document.getElementById('homeTeamContainer');
@@ -249,9 +252,8 @@ closeButton.onclick = () => {
         homePlayers.push(homeData[i]);
       }
     }
-    localStorage.setItem('homePlayers', JSON.stringify(homePlayers));
+    sessionStorage.setItem('homePlayers', JSON.stringify(homePlayers));
     showHomePlayers('home');
-    playerEventListener('home');
 
     // Add guest players to the local storage
     const guestTeamContainer = document.getElementById('guestTeamContainer');
@@ -264,18 +266,35 @@ closeButton.onclick = () => {
         guestPlayers.push(guestData[i]);
       }
     }
-    localStorage.setItem('guestPlayers', JSON.stringify(guestPlayers));
+    sessionStorage.setItem('guestPlayers', JSON.stringify(guestPlayers));
     showHomePlayers('guest');
-    playerEventListener('guest');
 
     // Display clubs' names
     const homeTeamNameContainer = (document.getElementById(
       'homeName'
-    ).innerHTML = localStorage.getItem('homeTeam'));
+    ).textContent = sessionStorage.getItem('homeTeam'));
 
     const guestTeamNameContainer = (document.getElementById(
       'guestName'
-    ).innerHTML = localStorage.getItem('guestTeam'));
+    ).textContent = sessionStorage.getItem('guestTeam'));
+
+    // Display clubs' logos
+    // Home logo
+    const homeLogo = document.querySelector(
+      '#backgroundContainerHome > #image'
+    );
+    homeLogo.style.backgroundImage = `url(../img/${sessionStorage
+      .getItem('homeTeam')
+      .trim()
+      .replace(/ /g, '_')}.png)`;
+    // Guest logo
+    const guestLogo = document.querySelector(
+      '#backgroundContainerGuest > #image'
+    );
+    guestLogo.style.backgroundImage = `url(../img/${sessionStorage
+      .getItem('guestTeam')
+      .trim()
+      .replace(/ /g, '_')}.png)`;
   }
 };
 
@@ -298,7 +317,39 @@ function displayTime() {
   stopwatch.textContent = `${Tminutes}${minutes}:${Tseconds}${seconds}`;
 }
 
-let timerProtector = true;
+let period = 1; // For displaying period start in history section
+function checkTime() {
+  // Check period length
+  if (periodLength.value > 10) {
+    if (stopwatch.textContent === periodLength.value.toString() + ':00') {
+      console.log('Time is here!');
+      // Play sound
+      stopButton.click();
+      period++;
+    }
+  } else {
+    if (stopwatch.textContent === '0' + periodLength.value.toString() + ':00') {
+      console.log('Time is here!');
+      // Play sound
+      stopButton.click();
+      period++;
+    }
+  }
+  // Check period count
+  const totalTime = parseInt(periodLength.value) * parseInt(periodNumber.value);
+  if (periodLength.value > 10) {
+    if (stopwatch.textContent === totalTime.toString() + ':00') {
+      alert('Game is finished.');
+    }
+  } else {
+    if (stopwatch.textContent === '0' + totalTime.toString() + ':00') {
+      alert('Game is finished.');
+    }
+  }
+}
+
+let periodStartAdded = 0; // For displaying period start in history section§
+let timerProtector = true; // For timer protection
 const historyContainer = document.getElementById('history');
 
 startButton.addEventListener('click', () => {
@@ -322,6 +373,7 @@ startButton.addEventListener('click', () => {
         Tminutes++;
       }
       displayTime();
+      checkTime();
     }, 1000);
 
     stopButton.addEventListener('click', () => {
@@ -339,10 +391,243 @@ startButton.addEventListener('click', () => {
     });
 
     // Show that period [i] started
-    const startRow = document.createElement('div');
-    startRow.innerHTML = `Začetek 1. četrtine - ${Tminutes}${minutes}:${Tseconds}${seconds}`;
-    startRow.setAttribute('class', 'periodStart');
-    historyContainer.append(startRow);
+    if (periodStartAdded < period) {
+      const startRow = document.createElement('div');
+      startRow.innerHTML = `Začetek ${period}. periode - ${Tminutes}${minutes}:${Tseconds}${seconds}`;
+      startRow.setAttribute('class', 'periodStart');
+      historyContainer.append(startRow);
+      periodStartAdded++;
+    }
+
+    // System for displaying and adding goals
+    let homeGoalCount = 0;
+    let guestGoalCount = 0;
+    let goalType = '';
+    let goalsArray = [];
+    // Buttons
+    const actionButton = document.getElementById('actionButton');
+    const cornerButton = document.getElementById('cornerButton');
+    const penaltyButton = document.getElementById('penaltyButton');
+
+    // Dodaj update metodo za posodabljanje podatkovne baze igralcev (goli in kartoni)
+
+    // Action type
+    actionButton.addEventListener('click', function () {
+      goalType = 'AK';
+      const players = document.querySelectorAll(`.playerRowContainer`);
+      players.forEach((player) => {
+        // Animations and style
+        player.style.cursor = 'pointer';
+        // Event listener
+        player.addEventListener('click', () => {
+          console.log(player.dataset.playerid);
+          if (player.style.cursor === 'pointer') {
+            const team = player.dataset.team;
+            // Home team
+            if (team === 'home-player') {
+              homeGoalCount++;
+              const homeScore = (document.getElementById(
+                'homeScore'
+              ).innerHTML = homeGoalCount);
+              const homeTeamName = sessionStorage.getItem('homeTeam').trim();
+              goalEvent(
+                player,
+                homeTeamName,
+                goalType,
+                homeGoalCount,
+                guestGoalCount,
+                goalsArray
+              );
+            } // Guest Team
+            else if (team === 'guest-player') {
+              guestGoalCount++;
+              const guestScore = (document.getElementById(
+                'guestScore'
+              ).innerHTML = guestGoalCount);
+              const guestTeamName = sessionStorage.getItem('guestTeam').trim();
+              goalEvent(
+                player,
+                guestTeamName,
+                goalType,
+                homeGoalCount,
+                guestGoalCount,
+                goalsArray
+              );
+            }
+            players.forEach((player) => {
+              player.style.cursor = 'default';
+            });
+          }
+        });
+      });
+    });
+
+    // Corner type
+    cornerButton.addEventListener('click', function () {
+      goalType = 'KK';
+      const players = document.querySelectorAll(`.playerRowContainer`);
+      players.forEach((player) => {
+        // Animations and style
+        player.style.cursor = 'pointer';
+        // Event listener
+        player.addEventListener('click', () => {
+          if (player.style.cursor === 'pointer') {
+            const team = player.dataset.team;
+            // Home team
+            if (team === 'home-player') {
+              homeGoalCount++;
+              const homeScore = (document.getElementById(
+                'homeScore'
+              ).innerHTML = homeGoalCount);
+              const homeTeamName = sessionStorage.getItem('homeTeam').trim();
+              goalEvent(
+                player,
+                homeTeamName,
+                goalType,
+                homeGoalCount,
+                guestGoalCount,
+                goalsArray
+              );
+            } // Guest Team
+            else if (team === 'guest-player') {
+              guestGoalCount++;
+              const guestScore = (document.getElementById(
+                'guestScore'
+              ).innerHTML = guestGoalCount);
+              const guestTeamName = sessionStorage.getItem('guestTeam').trim();
+              goalEvent(
+                player,
+                guestTeamName,
+                goalType,
+                homeGoalCount,
+                guestGoalCount,
+                goalsArray
+              );
+            }
+            players.forEach((player) => {
+              player.style.cursor = 'default';
+            });
+          }
+        });
+      });
+    });
+
+    // Penalty type
+    penaltyButton.addEventListener('click', function () {
+      goalType = 'KS';
+      const players = document.querySelectorAll(`.playerRowContainer`);
+      players.forEach((player) => {
+        // Animations and style
+        player.style.cursor = 'pointer';
+        // Event listener
+        player.addEventListener('click', () => {
+          if (player.style.cursor === 'pointer') {
+            const team = player.dataset.team;
+            // Home team
+            if (team === 'home-player') {
+              homeGoalCount++;
+              const homeScore = (document.getElementById(
+                'homeScore'
+              ).innerHTML = homeGoalCount);
+              const homeTeamName = sessionStorage.getItem('homeTeam').trim();
+              goalEvent(
+                player,
+                homeTeamName,
+                goalType,
+                homeGoalCount,
+                guestGoalCount,
+                goalsArray
+              );
+            } // Guest Team
+            else if (team === 'guest-player') {
+              guestGoalCount++;
+              const guestScore = (document.getElementById(
+                'guestScore'
+              ).innerHTML = guestGoalCount);
+              const guestTeamName = sessionStorage.getItem('guestTeam').trim();
+              goalEvent(
+                player,
+                guestTeamName,
+                goalType,
+                homeGoalCount,
+                guestGoalCount,
+                goalsArray
+              );
+            }
+            players.forEach((player) => {
+              player.style.cursor = 'default';
+            });
+          }
+        });
+      });
+    });
+
+    // System for displaying and adding cards
+    const cardsContainers = document.querySelectorAll('.cardContainer');
+    let cardsArray = [];
+    // Green card
+    const greenCards = document.querySelectorAll('.triangle');
+    for (let i = 0; i < greenCards.length; i++) {
+      greenCards[i].addEventListener('click', () => {
+        greenCards[i].classList.toggle('fullOpacity');
+        const mainScreen = document.querySelector('#mainScreen');
+        const playerRow = mainScreen.querySelectorAll('.playerRowContainer');
+        const penaltyTimer = document.createElement('div');
+        playerRow[i].insertBefore(penaltyTimer, cardsContainers[i]);
+        addCard(playersDatabase, 'green', playerRow[i]);
+        countdownTimer('green', penaltyTimer, playerRow[i]);
+        const time = parseInt(Tminutes) * 10 + parseInt(minutes) + 1 + "'";
+        console.log(time);
+        cardSorage(cardsArray, i, time, 'green');
+        greenCards[i].style.pointerEvents = 'none';
+      });
+    }
+    // Yellow card
+    const yellowCards = document.querySelectorAll('.square');
+    for (let i = 0; i < yellowCards.length; i++) {
+      yellowCards[i].addEventListener('click', () => {
+        const mainScreen = document.querySelector('#mainScreen');
+        const playerRow = mainScreen.querySelectorAll('.playerRowContainer');
+        const penaltyTimer = document.createElement('div');
+        let yellowDuration = window.prompt(
+          'Vnesite dolžino kazni: \n Milejša kazen: 5 min \n Strožja kazen: 10 min '
+        );
+        if (yellowDuration == 5) {
+          yellowCards[i].classList.toggle('fullOpacity');
+          addCard(playersDatabase, 'yellow', playerRow[i]);
+          countdownTimer('yellow5', penaltyTimer, playerRow[i]);
+          playerRow[i].insertBefore(penaltyTimer, cardsContainers[i]);
+        } else if (yellowDuration == 10) {
+          yellowCards[i].classList.toggle('fullOpacity');
+          addCard(playersDatabase, 'yellow', playerRow[i]);
+          countdownTimer('yellow10', penaltyTimer, playerRow[i]);
+          playerRow[i].insertBefore(penaltyTimer, cardsContainers[i]);
+        }
+        const time = parseInt(Tminutes) * 10 + parseInt(minutes) + 1 + "'";
+        console.log(time);
+        cardSorage(cardsArray, i, time, 'yellow');
+      });
+    }
+    // Red card
+    const redCards = document.querySelectorAll('.circle');
+    for (let i = 0; i < redCards.length; i++) {
+      redCards[i].addEventListener('click', () => {
+        redCards[i].classList.toggle('fullOpacity');
+        const mainScreen = document.querySelector('#mainScreen');
+        const playerRow = mainScreen.querySelectorAll('.playerRowContainer');
+        const penaltyTimer = document.createElement('div');
+        penaltyTimer.classList.add('penaltyTimer');
+        penaltyTimer.textContent = 'Izključen';
+        playerRow[i].insertBefore(penaltyTimer, cardsContainers[i]);
+        playerRow[i].style.backgroundColor = '#fb6161';
+        playerRow[i].style.pointerEvents = 'none';
+        playerRow[i].style.cursor = 'not-allowed';
+        addCard(playersDatabase, 'red', playerRow[i]);
+        const time = parseInt(Tminutes) * 10 + parseInt(minutes) + 1 + "'";
+        console.log(time);
+        cardSorage(cardsArray, i, time, 'red');
+      });
+    }
   }
 });
 
@@ -369,33 +654,213 @@ substractSecondButton.onclick = () => {
 // Function for displaying players in dashboard
 function showHomePlayers(team) {
   const container = document.getElementById(team + 'PlayersContainer');
-  const playersArray = JSON.parse(localStorage.getItem(team + 'Players'));
+  const playersArray = JSON.parse(sessionStorage.getItem(team + 'Players'));
   playersArray.forEach((player) => {
     const data = player.data;
     const playerRowContainer = document.createElement('div');
     playerRowContainer.setAttribute('data-team', team + '-player');
     playerRowContainer.setAttribute('class', 'playerRowContainer');
     playerRowContainer.innerHTML = `<div><b class="boldNumber">${data.number}</b>  ${data.name} ${data.lastName}</div> <div class="cardContainer"><span class="triangle"></span><span class="square"></span><span class="circle"></span></div>`;
+    playerRowContainer.setAttribute('data-playerId', player.id);
     container.append(playerRowContainer);
   });
 }
 
-// Function for players event listener
-function playerEventListener(team) {
-  const dashboardHomePlayers = document
-    .querySelectorAll(`[data-team = "${team}-player"]`)
-    .forEach((player) => {
-      player.addEventListener('click', () => {
-        // console.log(`${player.innerHTML}`);
-        console.log(this);
-      });
+// Function for updating goals and scores
+// Preveri funkcijo in jo zamenjaj v event listenerjih
+function addGoal(type, homeGoalCount, guestGoalCount) {
+  let goalType = type;
+  // Functionality for goal types
+  const players = document.querySelectorAll(`.playerRowContainer`);
+  players.forEach((player) => {
+    // Animations and style
+    player.style.cursor = 'pointer';
+    // Event listener
+    player.addEventListener('click', () => {
+      if (player.style.cursor === 'pointer') {
+        const team = player.dataset.team;
+        // Home team
+        if (team === 'home-player') {
+          homeGoalCount++;
+          const homeScore = (document.getElementById('homeScore').innerHTML =
+            homeGoalCount);
+          const homeTeamName = sessionStorage.getItem('homeTeam').trim();
+          goalEvent(player, homeTeamName, goalType);
+        } // Guest Team
+        else if (team === 'guest-player') {
+          guestGoalCount++;
+          const guestScore = (document.getElementById('homeScore').innerHTML =
+            guestGoalCount);
+          const guestTeamName = sessionStorage.getItem('guestTeam').trim();
+          goalEvent(player, guestTeamName, goalType);
+        }
+        players.forEach((player) => {
+          player.style.cursor = 'default';
+        });
+      }
     });
+  });
 }
 
-// Function for displaying and adding goals
-function addGoal() {
-  console.log(this);
+// Function for ading goal event in history section and session storage
+function goalEvent(
+  player,
+  team,
+  type,
+  homeGoalCount,
+  guestGoalCount,
+  goalsArray
+) {
+  // Display name in history section
+  const goalRow = document.createElement('div');
+  const time = parseInt(Tminutes) * 10 + parseInt(minutes) + 1;
+  goalRow.innerHTML = `<b>${time}' GOL  ${type} : </b> ${player.textContent} - ${team}`;
+  goalRow.setAttribute('class', 'goalRow');
+  historyContainer.append(goalRow);
+  // Save to session storage for report
+  const newGoal = {
+    team: team,
+    score: `${homeGoalCount}:${guestGoalCount}`,
+    timestamp: time + "'",
+    type: type,
+  };
+  console.log(newGoal);
+  goalsArray.push(newGoal);
+  sessionStorage.setItem('goalsArray', JSON.stringify(goalsArray));
+  // Update player's database
+  playersDatabase.forEach(async (playerOfArray) => {
+    if (playerOfArray.id === player.dataset.playerid) {
+      const goalsRef = doc(database, 'players', playerOfArray.id);
+      const playerGoals = playerOfArray.data.goals;
+      await updateDoc(goalsRef, { goals: playerGoals + 1 });
+    }
+  });
 }
-// Funkcija z this
 
-// Function for displaying and adding cards
+// Timer function for cards' stopwatch
+function countdownTimer(type, penaltyTimer, player) {
+  penaltyTimer.classList.add('penaltyTimer');
+  switch (type) {
+    case 'green':
+      penaltyTimer.textContent = '2:00';
+      player.style.pointerEvents = 'none';
+      player.style.cursor = 'not-allowed';
+      let secondsG = 0,
+        TsecondsG = 0,
+        minutesG = 2,
+        TminutesG = 0;
+      countdown(secondsG, TsecondsG, minutesG, TminutesG, penaltyTimer, player);
+      break;
+    case 'yellow5':
+      penaltyTimer.textContent = '5:00';
+      player.style.pointerEvents = 'none';
+      player.style.cursor = 'not-allowed';
+      let secondsY5 = 0,
+        TsecondsY5 = 0,
+        minutesY5 = 5,
+        TminutesY5 = 0;
+      countdown(
+        secondsY5,
+        TsecondsY5,
+        minutesY5,
+        TminutesY5,
+        penaltyTimer,
+        player
+      );
+      break;
+    case 'yellow10':
+      penaltyTimer.textContent = '10:00';
+      player.style.pointerEvents = 'none';
+      player.style.cursor = 'not-allowed';
+      let secondsY10 = 0,
+        TsecondsY10 = 0,
+        minutesY10 = 0,
+        TminutesY10 = 1;
+      countdown(
+        secondsY10,
+        TsecondsY10,
+        minutesY10,
+        TminutesY10,
+        penaltyTimer,
+        player
+      );
+      break;
+  }
+}
+
+// Countdown timer function
+function countdown(seconds, Tseconds, minutes, Tminutes, textContent, player) {
+  const countdownTimer = setInterval(() => {
+    seconds--;
+    if (seconds < 0) {
+      seconds = 9;
+      Tseconds--;
+    }
+    if (Tseconds < 0) {
+      Tseconds = 5;
+      minutes--;
+    }
+    if (minutes < 0) {
+      minutes = 9;
+      Tminutes--;
+    }
+    if (minutes === 0 && Tseconds === 0 && seconds === 0) {
+      textContent.style.display = 'none';
+      player.style.pointerEvents = 'auto';
+      player.style.cursor = 'default';
+      clearInterval(countdownTimer);
+      penaltyTimer.parentNode.removeChild(penaltyTimer);
+    }
+    textContent.textContent = `${minutes}:${Tseconds}${seconds}`;
+  }, 1000);
+}
+
+// Function for adding cards to players database
+function addCard(database1, type, player) {
+  console.log('Card added');
+  playersDatabase.forEach(async (playerOfArray) => {
+    if (playerOfArray.id === player.dataset.playerid) {
+      const cardsRef = doc(playersRef, playerOfArray.id);
+      console.log(cardsRef);
+      const greenCard = playerOfArray.data.cards.green;
+      const yellowCard = playerOfArray.data.cards.yellow;
+      const redCard = playerOfArray.data.cards.red;
+      switch (type) {
+        case 'green':
+          await updateDoc(cardsRef, 'cards', {
+            green: greenCard + 1,
+            yellow: yellowCard,
+            red: redCard,
+          });
+          break;
+        case 'yellow':
+          await updateDoc(cardsRef, 'cards', {
+            green: greenCard,
+            yellow: yellowCard + 1,
+            red: redCard,
+          });
+          break;
+        case 'red':
+          await updateDoc(cardsRef, 'cards', {
+            green: greenCard,
+            yellow: yellowCard,
+            red: redCard + 1,
+          });
+          break;
+      }
+    }
+  });
+}
+
+// Function for saving cards to session storage
+function cardSorage(array, player, time, type) {
+  const newCard = {
+    player: player,
+    timestamp: time,
+    type: type,
+  };
+  array.push(newCard);
+  sessionStorage.setItem('cardsArray', JSON.stringify(array));
+}
+// Function for displaying cards in history section
+function cardHistory() {}

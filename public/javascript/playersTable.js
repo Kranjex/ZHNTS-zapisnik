@@ -166,8 +166,12 @@ function displayPlayer(array) {
     const selection1 = array[i].data.selection1;
     const selection2 = array[i].data.selection2;
     const specialMarks = array[i].data.specialMarks;
-    const goals = 0;
-    const cards = { green: 0, yellow: 0, red: 0 };
+    const goals = array[i].data.goals;
+    const cards = {
+      green: array[i].data.cards.green,
+      yellow: array[i].data.cards.yellow,
+      red: array[i].data.cards.red,
+    };
     // const deleteIcon = document.createElement('div');
     // deleteIcon.classList.add('deleteIcon');
     const row = `<tr class="${color}" style="--index: ${delay}">
@@ -208,7 +212,7 @@ async function createPlayer(object) {
       selection1: object.selection1,
       selection2: object.selection2,
       specialMarks: object.specialMarks,
-      goals: object.name,
+      goals: 0,
       cards: { green: 0, yellow: 0, red: 0 },
     });
     console.log('Document written with ID: ', newPlayer.id);

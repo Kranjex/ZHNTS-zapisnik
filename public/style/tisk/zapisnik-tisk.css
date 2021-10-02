@@ -433,6 +433,24 @@ body main #resultsMainContainer #resultsContainer #resultsData div {
   width: 48mm;
   border: 1px solid black;
   border-bottom: none;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  position: relative;
+}
+
+body main #resultsMainContainer #resultsContainer #resultsData div:first-child h3:last-child {
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translate(-50%, 0);
+          transform: translate(-50%, 0);
+  font-size: calc(0.95rem * 1.5);
 }
 
 body main #resultsMainContainer #resultsContainer #resultsData div:last-child {
@@ -764,7 +782,9 @@ body main #scoreboardMainContainer #scoreboardContainer .scoreboardTemplate .sco
 
 body main #scoreboardMainContainer #scoreboardContainer .scoreboardTemplate .scoreboardData .scoreboardRow div {
   border-right: 1px solid black;
-  font: 0.8rem "Poppins", Helvetica, Arial;
+  background: transparent;
+  text-align: center;
+  font: 0.95rem "Poppins", Helvetica, Arial;
 }
 
 body main #scoreboardMainContainer #scoreboardContainer .scoreboardTemplate .scoreboardData .scoreboardRow div:last-child {
