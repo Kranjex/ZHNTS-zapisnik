@@ -417,6 +417,18 @@ body main #resultsMainContainer #resultsContainer div:first-child, body main #re
   width: 72mm;
   height: 10mm;
   padding-left: 0.5mm;
+  position: relative;
+}
+
+body main #resultsMainContainer #resultsContainer div:first-child h2:last-child, body main #resultsMainContainer #resultsContainer div:last-child h2:last-child {
+  text-align: center;
+  font-size: calc(0.95rem* 1.5);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  width: 100%;
 }
 
 body main #resultsMainContainer #resultsContainer div:first-child:first-child, body main #resultsMainContainer #resultsContainer div:last-child:first-child {

@@ -147,32 +147,47 @@ window.onload = () => {
     counter++;
   }
   // Add cards to the report
-  const playerRows = document.querySelectorAll('.player');
-  console.log(playerRows[13].childNodes[7].innerHTML);
   const cardsArray = JSON.parse(sessionStorage.getItem('cardsArray'));
+
   const greenCardPlaceholders = document.querySelectorAll('.playerGreen');
+  const greenCardArray = [];
+  for (let i = 0; i < greenCardPlaceholders.length; i++) {
+    if (greenCardPlaceholders[i].parentNode.childNodes[7].textContent !== '') {
+      greenCardArray.push(greenCardPlaceholders[i]);
+    }
+  }
+
   const yellowCardPlaceholders = document.querySelectorAll('.playerYellow');
+  const yellowCardArray = [];
+  for (let i = 0; i < yellowCardPlaceholders.length; i++) {
+    if (yellowCardPlaceholders[i].parentNode.childNodes[7].textContent !== '') {
+      yellowCardArray.push(yellowCardPlaceholders[i]);
+    }
+  }
+
   const redCardPlaceholders = document.querySelectorAll('.playerRed');
+  const redCardArray = [];
+  for (let i = 0; i < redCardPlaceholders.length; i++) {
+    if (redCardPlaceholders[i].parentNode.childNodes[7].textContent !== '') {
+      redCardArray.push(redCardPlaceholders[i]);
+    }
+  }
 
   for (let i = 0; i < cardsArray.length; i++) {
-    // if (playerRows[i].childNodes[7].innerHTML !== '') {
     switch (cardsArray[i].type) {
       case 'green':
-        greenCardPlaceholders[cardsArray[i].player].textContent =
+        greenCardArray[cardsArray[i].player].textContent =
           cardsArray[i].timestamp;
         break;
       case 'yellow':
-        yellowCardPlaceholders[cardsArray[i].player].textContent =
+        yellowCardArray[cardsArray[i].player].textContent =
           cardsArray[i].timestamp;
         break;
       case 'red':
-        redCardPlaceholders[cardsArray[i].player].textContent =
+        redCardArray[cardsArray[i].player].textContent =
           cardsArray[i].timestamp;
         break;
     }
-    // } else {
-    //   i--;
-    // }
   }
 
   // Final results

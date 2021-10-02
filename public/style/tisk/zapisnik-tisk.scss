@@ -117,6 +117,17 @@ body {
             width: 72mm;
             height: 10mm;
             padding-left: $smallPadding;
+            position: relative;
+
+            h2:last-child {
+              text-align: center;
+              font-size: calc(#{$h2}* 1.5);
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              width: 100%;
+            }
 
             &:first-child {
               border-left: 1px solid black;

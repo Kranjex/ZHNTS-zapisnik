@@ -409,8 +409,6 @@ startButton.addEventListener('click', () => {
     const cornerButton = document.getElementById('cornerButton');
     const penaltyButton = document.getElementById('penaltyButton');
 
-    // Dodaj update metodo za posodabljanje podatkovne baze igralcev (goli in kartoni)
-
     // Action type
     actionButton.addEventListener('click', function () {
       goalType = 'AK';
