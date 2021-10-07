@@ -298,6 +298,8 @@ closeButton.onclick = () => {
   }
 };
 
+let eventActivated = false;
+
 // This code can stand on its own
 // Set up match dashboard
 const periodLength = document.querySelector(
@@ -320,7 +322,10 @@ function displayTime() {
 let period = 1; // For displaying period start in history section
 function checkTime() {
   // Check period length
+  // for (let i = 1; i < periodNumber.length + 1; i++) {
+  // console.log((periodLength.value.toString() + ':00') * i);
   if (periodLength.value > 10) {
+    // if (stopwatch.textContent === (periodLength.value.toString() + ':00') * i) {
     if (stopwatch.textContent === periodLength.value.toString() + ':00') {
       console.log('Time is here!');
       // Play sound
@@ -328,21 +333,28 @@ function checkTime() {
       period++;
     }
   } else {
-    if (stopwatch.textContent === '0' + periodLength.value.toString() + ':00') {
+    if (
+      stopwatch.textContent ===
+      // ('0' + periodLength.value.toString() + ':00') * i
+      '0' + periodLength.value.toString() + ':00'
+    ) {
       console.log('Time is here!');
       // Play sound
       stopButton.click();
       period++;
     }
   }
+  // }
   // Check period count
   const totalTime = parseInt(periodLength.value) * parseInt(periodNumber.value);
   if (periodLength.value > 10) {
     if (stopwatch.textContent === totalTime.toString() + ':00') {
+      stopButton.click();
       alert('Game is finished.');
     }
   } else {
     if (stopwatch.textContent === '0' + totalTime.toString() + ':00') {
+      stopButton.click();
       alert('Game is finished.');
     }
   }
@@ -373,7 +385,9 @@ startButton.addEventListener('click', () => {
         Tminutes++;
       }
       displayTime();
+      // for (let i = 1; i < periodLength.value; i++) {
       checkTime();
+      // }
     }, 1000);
 
     stopButton.addEventListener('click', () => {
@@ -563,23 +577,28 @@ startButton.addEventListener('click', () => {
     // System for displaying and adding cards
     const cardsContainers = document.querySelectorAll('.cardContainer');
     let cardsArray = [];
+
     // Green card
-    const greenCards = document.querySelectorAll('.triangle');
-    for (let i = 0; i < greenCards.length; i++) {
-      greenCards[i].addEventListener('click', () => {
-        greenCards[i].classList.toggle('fullOpacity');
-        const mainScreen = document.querySelector('#mainScreen');
-        const playerRow = mainScreen.querySelectorAll('.playerRowContainer');
-        const penaltyTimer = document.createElement('div');
-        playerRow[i].insertBefore(penaltyTimer, cardsContainers[i]);
-        addCard(playersDatabase, 'green', playerRow[i]);
-        countdownTimer('green', penaltyTimer, playerRow[i]);
-        const time = parseInt(Tminutes) * 10 + parseInt(minutes) + 1 + "'";
-        console.log(time);
-        cardSorage(cardsArray, i, time, 'green');
-        greenCards[i].style.pointerEvents = 'none';
-      });
-    }
+    // const greenCards = document.querySelectorAll('.triangle');
+    // for (let i = 0; i < greenCards.length; i++) {
+    //   greenCards[i].addEventListener('click', () => {
+    //     if (eventActivated === false) {
+    //       greenCards[i].classList.toggle('fullOpacity');
+    //       const mainScreen = document.querySelector('#mainScreen');
+    //       const playerRow = mainScreen.querySelectorAll('.playerRowContainer');
+    //       const penaltyTimer = document.createElement('div');
+    //       playerRow[i].insertBefore(penaltyTimer, cardsContainers[i]);
+    //       addCard(playersDatabase, 'green', playerRow[i]);
+    //       countdownTimer('green', penaltyTimer, playerRow[i]);
+    //       const time = parseInt(Tminutes) * 10 + parseInt(minutes) + 1 + "'";
+    //       console.log(time);
+    //       cardSorage(cardsArray, i, time, 'green');
+    //       const playerData = playerRow[i].childNodes[0].textContent;
+    //       cardHistory(playerData, time, 'green');
+    //       greenCards[i].style.pointerEvents = 'none';
+    //     }
+    //   });
+    // }
     // Yellow card
     const yellowCards = document.querySelectorAll('.square');
     for (let i = 0; i < yellowCards.length; i++) {
@@ -604,6 +623,8 @@ startButton.addEventListener('click', () => {
         const time = parseInt(Tminutes) * 10 + parseInt(minutes) + 1 + "'";
         console.log(time);
         cardSorage(cardsArray, i, time, 'yellow');
+        const playerData = playerRow[i].childNodes[0].innerHTML;
+        cardHistory(playerData, time, 'yellow');
       });
     }
     // Red card
@@ -624,6 +645,9 @@ startButton.addEventListener('click', () => {
         const time = parseInt(Tminutes) * 10 + parseInt(minutes) + 1 + "'";
         console.log(time);
         cardSorage(cardsArray, i, time, 'red');
+        const playerData = playerRow[i].childNodes[0].innerHTML;
+        cardHistory(playerData, time, 'red');
+        eventActivated = true;
       });
     }
   }
@@ -647,6 +671,42 @@ substractSecondButton.onclick = () => {
   }
   displayTime();
 };
+
+// Prostor za novo kodo o kartonih
+async function getGreenCards() {
+  const greenCards = document.querySelectorAll('.triangle');
+  return greenCards;
+}
+
+setTimeout(() => {
+  const greenCards = getGreenCards();
+  console.log(greenCards.length);
+  // console.log(greenCards);
+
+  // Green card
+  // const greenCards = document.querySelectorAll('.triangle');
+  for (let i = 0; i < greenCards.length; i++) {
+    greenCards[i].addEventListener('click', () => {
+      console.log('dela do se');
+      // if (eventActivated === false) {
+      greenCards[i].classList.toggle('fullOpacity');
+      const mainScreen = document.querySelector('#mainScreen');
+      const playerRow = mainScreen.querySelectorAll('.playerRowContainer');
+      const penaltyTimer = document.createElement('div');
+      playerRow[i].insertBefore(penaltyTimer, cardsContainers[i]);
+      addCard(playersDatabase, 'green', playerRow[i]);
+      countdownTimer('green', penaltyTimer, playerRow[i]);
+      // const time = parseInt(Tminutes) * 10 + parseInt(minutes) + 1 + "'";
+      const time = 'time';
+      console.log(time);
+      cardSorage(cardsArray, i, time, 'green');
+      const playerData = playerRow[i].childNodes[0].textContent;
+      cardHistory(playerData, time, 'green');
+      greenCards[i].style.pointerEvents = 'none';
+      // }
+    });
+  }
+}, 10000);
 
 // Functions that need to be nested inside settings confirmation statement
 // Function for displaying players in dashboard
@@ -861,4 +921,32 @@ function cardSorage(array, player, time, type) {
   sessionStorage.setItem('cardsArray', JSON.stringify(array));
 }
 // Function for displaying cards in history section
-function cardHistory() {}
+function cardHistory(player, time, type) {
+  let displayType;
+  const cardRow = document.createElement('div');
+  cardRow.classList.add('cardRow');
+  // cardRow.textContent = `<b>${time}</b>${type} - ${player.number}${player.name}${player.lastName}`;
+  switch (type) {
+    case 'green':
+      displayType = 'Zeleni';
+      break;
+    case 'yellow':
+      displayType = 'Rumeni';
+      break;
+    case 'red':
+      displayType = 'Rdeči';
+      break;
+  }
+  cardRow.innerHTML = `<b>${time}</b> <span class='${type}Card'>${displayType}</span> - ${player}`;
+  historyContainer.append(cardRow);
+}
+
+/* ===================================================================================================================================
+
+TODO: 
+1. Poskusi premakniti event listenerje za kartone iz event listenerja za startButton, da se prepreči ponavljanje in podvajanje kazni - štoparica za kazensko klop.
+  ~ Poskusi z async funkcijo, ki najprej dobi vse kartone, tako kot zdaj, vendar izven event listenerja pred klikom ti kartoni še ne obstajajo!
+
+2. Popravi funkcijo, ki preverja trenutni čas periode in prekine oziroma označi konec periode in na koncu javi, da je tekma končaca (zadnje deluje!)
+
+=================================================================================================================================== */

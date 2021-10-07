@@ -1087,20 +1087,19 @@ body main #dashboardContainer #dashboard #history {
 }
 
 body main #dashboardContainer #dashboard #history .periodStart {
-  width: 100%;
-  height: 20px;
   background-color: #9eed82;
 }
 
 body main #dashboardContainer #dashboard #history .periodStop {
-  width: 100%;
-  height: 20px;
   background-color: #fb6161;
 }
 
 body main #dashboardContainer #dashboard #history .periodStart,
 body main #dashboardContainer #dashboard #history .periodStop,
-body main #dashboardContainer #dashboard #history .goalRow {
+body main #dashboardContainer #dashboard #history .goalRow.cardRow {
+  width: 100%;
+  height: 2rem;
+  font-size: 1.5rem;
   padding-left: 0.5rem;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1116,7 +1115,26 @@ body main #dashboardContainer #dashboard #history .goalRow {
 body main #dashboardContainer #dashboard #history .goalRow,
 body main #dashboardContainer #dashboard #history .cardRow {
   width: 100%;
-  height: 20px;
+  height: 2rem;
+  font-size: 1.5rem;
+}
+
+body main #dashboardContainer #dashboard #history .greenCard {
+  color: #169b00;
+}
+
+body main #dashboardContainer #dashboard #history .yellowCard {
+  color: #fff735;
+}
+
+body main #dashboardContainer #dashboard #history .redCard {
+  color: #ff3636;
+}
+
+body main #dashboardContainer #dashboard #history .greenCard,
+body main #dashboardContainer #dashboard #history .yellowCard,
+body main #dashboardContainer #dashboard #history .redCard {
+  text-shadow: 0 0 1px #cbced1;
 }
 
 body main #homeTeam,
@@ -1210,13 +1228,13 @@ body main #guestTeam .playersContainer {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  overflow: scroll;
+  overflow: auto;
 }
 
 body main #homeTeam .playersContainer .playerRowContainer,
 body main #guestTeam .playersContainer .playerRowContainer {
   width: 100%;
-  height: 4rem;
+  height: 10rem !important;
   margin-bottom: 0.2rem;
   font-size: 1.5rem;
   border-radius: 20px;
@@ -1302,7 +1320,7 @@ body main #guestTeam .playersContainer .playerRowContainer .boldNumber {
 
 body main #homeTeam .playersContainer .playerRowContainer .penaltyTimer,
 body main #guestTeam .playersContainer .playerRowContainer .penaltyTimer {
-  width: 10%;
+  width: 12%;
   background-color: #fb6161;
   border-radius: 20px;
   font-weight: 700;

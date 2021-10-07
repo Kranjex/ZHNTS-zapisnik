@@ -600,25 +600,40 @@ body {
           overflow: auto;
 
           .periodStart {
-            width: 100%;
-            height: 20px;
             background-color: $startButton;
           }
           .periodStop {
-            width: 100%;
-            height: 20px;
             background-color: $stopButton;
           }
           .periodStart,
           .periodStop,
-          .goalRow {
+          .goalRow.cardRow {
+            width: 100%;
+            height: 2rem;
+            font-size: 1.5rem;
             padding-left: 0.5rem;
             @include flexStartCenter;
           }
           .goalRow,
           .cardRow {
             width: 100%;
-            height: 20px;
+            height: 2rem;
+            font-size: 1.5rem;
+          }
+          .greenCard {
+            color: $greenCard;
+          }
+          .yellowCard {
+            color: $yellowCard;
+          }
+          .redCard {
+            color: $redCard;
+          }
+
+          .greenCard,
+          .yellowCard,
+          .redCard {
+            text-shadow: 0 0 1px $shadowGray1;
           }
         }
       }
@@ -666,11 +681,11 @@ body {
         height: 80%;
         padding: 1rem;
         @include flexColumnStart;
-        overflow: scroll;
+        overflow: auto;
 
         .playerRowContainer {
           width: 100%;
-          height: 4rem;
+          height: 10rem !important;
           margin-bottom: 0.2rem;
           font-size: 1.5rem;
           border-radius: 20px;
@@ -725,7 +740,7 @@ body {
             font-weight: 1000;
           }
           .penaltyTimer {
-            width: 10%;
+            width: 12%;
             background-color: $stopButton;
             border-radius: 20px;
             font-weight: 700;
