@@ -197,12 +197,14 @@ function searchPlayers(data, club, team, container) {
   checkButton.innerHTML = 'Izberi vse';
   checkButton.addEventListener('click', () => {
     const checkboxes = teamContainer.querySelectorAll('input[type=checkbox]');
-    for (let i = 0; i < checkboxes.length; i++) {
+    for (let i = 0; i < 18; i++) {
       checkboxes[i].checked = true;
     }
   });
   teamContainer.append(checkButton);
 }
+
+let greenCards, yellowCards, redCards;
 
 // Set up window close
 closeButton.onclick = () => {
@@ -247,11 +249,21 @@ closeButton.onclick = () => {
       'input[type=checkbox]'
     );
     let homePlayers = [];
+    let homeChecked = 0;
     for (let i = 0; i < homeCheckboxes.length; i++) {
       if (homeCheckboxes[i].checked) {
         homePlayers.push(homeData[i]);
       }
     }
+    homeCheckboxes.forEach((checkbox) => {
+      checkbox.addEventListener('change', () => {
+        console.log(homeChecked);
+        homeChecked++;
+        if (homeChecked >= 18) {
+          alert('Izberete lahko največ 18 igralcev!');
+        }
+      });
+    });
     sessionStorage.setItem('homePlayers', JSON.stringify(homePlayers));
     showHomePlayers('home');
 
@@ -295,10 +307,174 @@ closeButton.onclick = () => {
       .getItem('guestTeam')
       .trim()
       .replace(/ /g, '_')}.png)`;
+
+    // get cards
+    const cardsContainers = document.querySelectorAll('.cardContainer');
+    let cardsArray = [];
+    let clicked = false;
+    // Green cards
+    greenCards = document.querySelectorAll('.triangle');
+    for (let i = 0; i < greenCards.length; i++) {
+      greenCards[i].addEventListener('click', () => {
+        greenCards[i].classList.toggle('fullOpacity');
+        greenCards[i].style.pointerEvents = 'none';
+        // insert penalty timer
+        const mainScreen = document.querySelector('#mainScreen');
+        const playerRow = mainScreen.querySelectorAll('.playerRowContainer');
+        const penaltyTimer = document.createElement('div');
+        penaltyTimer.textContent = '02:00';
+        penaltyTimer.classList.add('penaltyTimer');
+        playerRow[i].style.pointerEvents = 'none';
+        playerRow[i].insertBefore(penaltyTimer, cardsContainers[i]);
+        // countdown timer
+        let Gseconds = 0,
+          GTseconds = 0,
+          Gminutes = 2,
+          GTminutes = 0,
+          Gtime = '';
+        startButton.addEventListener('click', () => {
+          // if (clicked === false) {
+          //   clicked = true;
+          const greenInterval = setInterval(() => {
+            Gseconds--;
+
+            if (Gseconds < 0) {
+              Gseconds = 9;
+              GTseconds--;
+            }
+            if (GTseconds < 0) {
+              GTseconds = 5;
+              Gminutes--;
+            }
+            if (Gminutes < 0) {
+              Gminutes = 9;
+              GTminutes--;
+            }
+            if (Gminutes === 0 && GTseconds === 0 && Gseconds === 0) {
+              clearInterval(greenInterval);
+              penaltyTimer.remove();
+              playerRow[i].style.pointerEvents = 'auto';
+            }
+            Gtime = `${GTminutes}${Gminutes}:${GTseconds}${Gseconds}`;
+            penaltyTimer.textContent = Gtime;
+          }, 1000);
+          stopButton.addEventListener('click', () => {
+            clearInterval(greenInterval);
+          });
+          // }
+        });
+        let eventMinute = `${minutes + 1}'`;
+        // add card to the player - database
+        addCard(playersDatabase, 'green', playerRow[i]);
+        // add card to the session storage
+        cardSorage(cardsArray, i, eventMinute, 'green');
+        // add card to history section
+        const playerData = playerRow[i].childNodes[0].textContent;
+        cardHistory(playerData, eventMinute, 'green');
+      });
+    }
+    // Yellow cards
+    yellowCards = document.querySelectorAll('.square');
+    for (let i = 0; i < yellowCards.length; i++) {
+      yellowCards[i].addEventListener('click', () => {
+        yellowCards[i].classList.toggle('fullOpacity');
+        greenCards[i].style.pointerEvents = 'none';
+        // insert penalty timer
+        const mainScreen = document.querySelector('#mainScreen');
+        const playerRow = mainScreen.querySelectorAll('.playerRowContainer');
+        const penaltyTimer = document.createElement('div');
+        // penaltyTimer.textContent = '02:00';
+        penaltyTimer.classList.add('penaltyTimer');
+        playerRow[i].style.pointerEvents = 'none';
+        playerRow[i].insertBefore(penaltyTimer, cardsContainers[i]);
+        const duration = window.prompt(
+          'Vnesite dolžino kazni: \n Milejša kazen: 5 min \n Strožja kazen: 10 min'
+        );
+        // countdown timer
+        let Yseconds = 0,
+          YTseconds = 0,
+          Yminutes = 0,
+          YTminutes = 0,
+          Ytime = '';
+        if (duration == 5) {
+          Yminutes = 5;
+          penaltyTimer.textContent = `0${duration}:00`;
+        } else if (duration == 10) {
+          YTminutes = 1;
+          penaltyTimer.textContent = `${duration}:00`;
+        }
+
+        startButton.addEventListener('click', () => {
+          // if (clicked === false) {
+          //   clicked = true;
+          const yellowInterval = setInterval(() => {
+            Yseconds--;
+
+            if (Yseconds < 0) {
+              Yseconds = 9;
+              YTseconds--;
+            }
+            if (YTseconds < 0) {
+              YTseconds = 5;
+              Yminutes--;
+            }
+            if (Yminutes < 0) {
+              Yminutes = 9;
+              YTminutes--;
+            }
+            if (Yminutes === 0 && YTseconds === 0 && Yseconds === 0) {
+              clearInterval(yellowInterval);
+              penaltyTimer.remove();
+              playerRow[i].style.pointerEvents = 'auto';
+            }
+            Ytime = `${YTminutes}${Yminutes}:${YTseconds}${Yseconds}`;
+            penaltyTimer.textContent = Ytime;
+          }, 1000);
+          stopButton.addEventListener('click', () => {
+            clearInterval(yellowInterval);
+          });
+          // }
+        });
+        let eventMinute = `${minutes + 1}'`;
+        // add card to the player - database
+        addCard(playersDatabase, 'yellow', playerRow[i]);
+        // add card to the session storage
+        cardSorage(cardsArray, i, eventMinute, 'yellow');
+        // add card to history section
+        const playerData = playerRow[i].childNodes[0].textContent;
+        cardHistory(playerData, eventMinute, 'yellow');
+      });
+    }
+    // Red cards
+    redCards = document.querySelectorAll('.circle');
+    for (let i = 0; i < greenCards.length; i++) {
+      redCards[i].addEventListener('click', () => {
+        // Toggle full opacity
+        redCards[i].classList.toggle('fullOpacity');
+        // Add penalty timer
+        const mainScreen = document.querySelector('#mainScreen');
+        const playerRow = mainScreen.querySelectorAll('.playerRowContainer');
+        const penaltyTimer = document.createElement('div');
+        penaltyTimer.classList.add('penaltyTimer');
+        penaltyTimer.textContent = 'Izključen';
+        playerRow[i].insertBefore(penaltyTimer, cardsContainers[i]);
+        // Display red overlay
+        playerRow[i].style.backgroundColor = '#fb6161';
+        playerRow[i].style.pointerEvents = 'none';
+        playerRow[i].style.cursor = 'not-allowed';
+        // Event time
+        let eventMinute = `${minutes + 1}'`;
+        // Add card to player - database
+        addCard(playersDatabase, 'red', playerRow[i]);
+        // add card to session storage
+        cardSorage(cardsArray, i, eventMinute, 'red');
+        // add card to history section
+        const playerData = playerRow[i].childNodes[0].innerHTML;
+        cardHistory(playerData, eventMinute, 'red');
+      });
+    }
   }
 };
-
-let eventActivated = false;
 
 // This code can stand on its own
 // Set up match dashboard
@@ -414,14 +590,22 @@ startButton.addEventListener('click', () => {
     }
 
     // System for displaying and adding goals
-    let homeGoalCount = 0;
-    let guestGoalCount = 0;
+    let homeGoalCount = parseInt(
+      document.getElementById('homeScore').innerHTML
+    );
+    let guestGoalCount = parseInt(
+      document.getElementById('guestScore').innerHTML
+    );
     let goalType = '';
     let goalsArray = [];
     // Buttons
     const actionButton = document.getElementById('actionButton');
     const cornerButton = document.getElementById('cornerButton');
     const penaltyButton = document.getElementById('penaltyButton');
+    // Main score containers
+    // const homeScoreContainer = document.getElementById('homeScoreContainer');
+    // const guestScoreContainer = document.getElementById('guestScoreContainer');
+    // Score number containers
 
     // Action type
     actionButton.addEventListener('click', function () {
@@ -437,7 +621,8 @@ startButton.addEventListener('click', () => {
             const team = player.dataset.team;
             // Home team
             if (team === 'home-player') {
-              homeGoalCount++;
+              homeGoalCount =
+                parseInt(document.getElementById('homeScore').innerHTML) + 1;
               const homeScore = (document.getElementById(
                 'homeScore'
               ).innerHTML = homeGoalCount);
@@ -452,7 +637,8 @@ startButton.addEventListener('click', () => {
               );
             } // Guest Team
             else if (team === 'guest-player') {
-              guestGoalCount++;
+              guestGoalCount =
+                parseInt(document.getElementById('guestScore').innerHTML) + 1;
               const guestScore = (document.getElementById(
                 'guestScore'
               ).innerHTML = guestGoalCount);
@@ -573,83 +759,6 @@ startButton.addEventListener('click', () => {
         });
       });
     });
-
-    // System for displaying and adding cards
-    const cardsContainers = document.querySelectorAll('.cardContainer');
-    let cardsArray = [];
-
-    // Green card
-    // const greenCards = document.querySelectorAll('.triangle');
-    // for (let i = 0; i < greenCards.length; i++) {
-    //   greenCards[i].addEventListener('click', () => {
-    //     if (eventActivated === false) {
-    //       greenCards[i].classList.toggle('fullOpacity');
-    //       const mainScreen = document.querySelector('#mainScreen');
-    //       const playerRow = mainScreen.querySelectorAll('.playerRowContainer');
-    //       const penaltyTimer = document.createElement('div');
-    //       playerRow[i].insertBefore(penaltyTimer, cardsContainers[i]);
-    //       addCard(playersDatabase, 'green', playerRow[i]);
-    //       countdownTimer('green', penaltyTimer, playerRow[i]);
-    //       const time = parseInt(Tminutes) * 10 + parseInt(minutes) + 1 + "'";
-    //       console.log(time);
-    //       cardSorage(cardsArray, i, time, 'green');
-    //       const playerData = playerRow[i].childNodes[0].textContent;
-    //       cardHistory(playerData, time, 'green');
-    //       greenCards[i].style.pointerEvents = 'none';
-    //     }
-    //   });
-    // }
-    // Yellow card
-    const yellowCards = document.querySelectorAll('.square');
-    for (let i = 0; i < yellowCards.length; i++) {
-      yellowCards[i].addEventListener('click', () => {
-        const mainScreen = document.querySelector('#mainScreen');
-        const playerRow = mainScreen.querySelectorAll('.playerRowContainer');
-        const penaltyTimer = document.createElement('div');
-        let yellowDuration = window.prompt(
-          'Vnesite dolžino kazni: \n Milejša kazen: 5 min \n Strožja kazen: 10 min '
-        );
-        if (yellowDuration == 5) {
-          yellowCards[i].classList.toggle('fullOpacity');
-          addCard(playersDatabase, 'yellow', playerRow[i]);
-          countdownTimer('yellow5', penaltyTimer, playerRow[i]);
-          playerRow[i].insertBefore(penaltyTimer, cardsContainers[i]);
-        } else if (yellowDuration == 10) {
-          yellowCards[i].classList.toggle('fullOpacity');
-          addCard(playersDatabase, 'yellow', playerRow[i]);
-          countdownTimer('yellow10', penaltyTimer, playerRow[i]);
-          playerRow[i].insertBefore(penaltyTimer, cardsContainers[i]);
-        }
-        const time = parseInt(Tminutes) * 10 + parseInt(minutes) + 1 + "'";
-        console.log(time);
-        cardSorage(cardsArray, i, time, 'yellow');
-        const playerData = playerRow[i].childNodes[0].innerHTML;
-        cardHistory(playerData, time, 'yellow');
-      });
-    }
-    // Red card
-    const redCards = document.querySelectorAll('.circle');
-    for (let i = 0; i < redCards.length; i++) {
-      redCards[i].addEventListener('click', () => {
-        redCards[i].classList.toggle('fullOpacity');
-        const mainScreen = document.querySelector('#mainScreen');
-        const playerRow = mainScreen.querySelectorAll('.playerRowContainer');
-        const penaltyTimer = document.createElement('div');
-        penaltyTimer.classList.add('penaltyTimer');
-        penaltyTimer.textContent = 'Izključen';
-        playerRow[i].insertBefore(penaltyTimer, cardsContainers[i]);
-        playerRow[i].style.backgroundColor = '#fb6161';
-        playerRow[i].style.pointerEvents = 'none';
-        playerRow[i].style.cursor = 'not-allowed';
-        addCard(playersDatabase, 'red', playerRow[i]);
-        const time = parseInt(Tminutes) * 10 + parseInt(minutes) + 1 + "'";
-        console.log(time);
-        cardSorage(cardsArray, i, time, 'red');
-        const playerData = playerRow[i].childNodes[0].innerHTML;
-        cardHistory(playerData, time, 'red');
-        eventActivated = true;
-      });
-    }
   }
 });
 
@@ -672,41 +781,17 @@ substractSecondButton.onclick = () => {
   displayTime();
 };
 
-// Prostor za novo kodo o kartonih
-async function getGreenCards() {
-  const greenCards = document.querySelectorAll('.triangle');
-  return greenCards;
-}
+// Event listener for removing last scored goal
+// function removeHomeGoal() {
+const homeScoreContainer = document.getElementById('homeScoreContainer');
+homeScoreContainer.addEventListener('dblclick', () => {
+  console.log('dela');
+  const homeScore = document.getElementById('homeScore');
+  homeScore.innerHTML = parseInt(homeScore.innerHTML) - 1;
+});
+// }
 
-setTimeout(() => {
-  const greenCards = getGreenCards();
-  console.log(greenCards.length);
-  // console.log(greenCards);
-
-  // Green card
-  // const greenCards = document.querySelectorAll('.triangle');
-  for (let i = 0; i < greenCards.length; i++) {
-    greenCards[i].addEventListener('click', () => {
-      console.log('dela do se');
-      // if (eventActivated === false) {
-      greenCards[i].classList.toggle('fullOpacity');
-      const mainScreen = document.querySelector('#mainScreen');
-      const playerRow = mainScreen.querySelectorAll('.playerRowContainer');
-      const penaltyTimer = document.createElement('div');
-      playerRow[i].insertBefore(penaltyTimer, cardsContainers[i]);
-      addCard(playersDatabase, 'green', playerRow[i]);
-      countdownTimer('green', penaltyTimer, playerRow[i]);
-      // const time = parseInt(Tminutes) * 10 + parseInt(minutes) + 1 + "'";
-      const time = 'time';
-      console.log(time);
-      cardSorage(cardsArray, i, time, 'green');
-      const playerData = playerRow[i].childNodes[0].textContent;
-      cardHistory(playerData, time, 'green');
-      greenCards[i].style.pointerEvents = 'none';
-      // }
-    });
-  }
-}, 10000);
+const guestScoreContainer = document.getElementById('guestScoreContainer');
 
 // Functions that need to be nested inside settings confirmation statement
 // Function for displaying players in dashboard
@@ -793,85 +878,87 @@ function goalEvent(
       await updateDoc(goalsRef, { goals: playerGoals + 1 });
     }
   });
+
+  // dodaj removeGoal();
 }
 
-// Timer function for cards' stopwatch
-function countdownTimer(type, penaltyTimer, player) {
-  penaltyTimer.classList.add('penaltyTimer');
-  switch (type) {
-    case 'green':
-      penaltyTimer.textContent = '2:00';
-      player.style.pointerEvents = 'none';
-      player.style.cursor = 'not-allowed';
-      let secondsG = 0,
-        TsecondsG = 0,
-        minutesG = 2,
-        TminutesG = 0;
-      countdown(secondsG, TsecondsG, minutesG, TminutesG, penaltyTimer, player);
-      break;
-    case 'yellow5':
-      penaltyTimer.textContent = '5:00';
-      player.style.pointerEvents = 'none';
-      player.style.cursor = 'not-allowed';
-      let secondsY5 = 0,
-        TsecondsY5 = 0,
-        minutesY5 = 5,
-        TminutesY5 = 0;
-      countdown(
-        secondsY5,
-        TsecondsY5,
-        minutesY5,
-        TminutesY5,
-        penaltyTimer,
-        player
-      );
-      break;
-    case 'yellow10':
-      penaltyTimer.textContent = '10:00';
-      player.style.pointerEvents = 'none';
-      player.style.cursor = 'not-allowed';
-      let secondsY10 = 0,
-        TsecondsY10 = 0,
-        minutesY10 = 0,
-        TminutesY10 = 1;
-      countdown(
-        secondsY10,
-        TsecondsY10,
-        minutesY10,
-        TminutesY10,
-        penaltyTimer,
-        player
-      );
-      break;
-  }
-}
+// // Timer function for cards' stopwatch
+// function countdownTimer(type, penaltyTimer, player) {
+//   penaltyTimer.classList.add('penaltyTimer');
+//   switch (type) {
+//     case 'green':
+//       penaltyTimer.textContent = '2:00';
+//       player.style.pointerEvents = 'none';
+//       player.style.cursor = 'not-allowed';
+//       let secondsG = 0,
+//         TsecondsG = 0,
+//         minutesG = 2,
+//         TminutesG = 0;
+//       countdown(secondsG, TsecondsG, minutesG, TminutesG, penaltyTimer, player);
+//       break;
+//     case 'yellow5':
+//       penaltyTimer.textContent = '5:00';
+//       player.style.pointerEvents = 'none';
+//       player.style.cursor = 'not-allowed';
+//       let secondsY5 = 0,
+//         TsecondsY5 = 0,
+//         minutesY5 = 5,
+//         TminutesY5 = 0;
+//       countdown(
+//         secondsY5,
+//         TsecondsY5,
+//         minutesY5,
+//         TminutesY5,
+//         penaltyTimer,
+//         player
+//       );
+//       break;
+//     case 'yellow10':
+//       penaltyTimer.textContent = '10:00';
+//       player.style.pointerEvents = 'none';
+//       player.style.cursor = 'not-allowed';
+//       let secondsY10 = 0,
+//         TsecondsY10 = 0,
+//         minutesY10 = 0,
+//         TminutesY10 = 1;
+//       countdown(
+//         secondsY10,
+//         TsecondsY10,
+//         minutesY10,
+//         TminutesY10,
+//         penaltyTimer,
+//         player
+//       );
+//       break;
+//   }
+// }
 
-// Countdown timer function
-function countdown(seconds, Tseconds, minutes, Tminutes, textContent, player) {
-  const countdownTimer = setInterval(() => {
-    seconds--;
-    if (seconds < 0) {
-      seconds = 9;
-      Tseconds--;
-    }
-    if (Tseconds < 0) {
-      Tseconds = 5;
-      minutes--;
-    }
-    if (minutes < 0) {
-      minutes = 9;
-      Tminutes--;
-    }
-    if (minutes === 0 && Tseconds === 0 && seconds === 0) {
-      textContent.style.display = 'none';
-      player.style.pointerEvents = 'auto';
-      player.style.cursor = 'default';
-      clearInterval(countdownTimer);
-      penaltyTimer.parentNode.removeChild(penaltyTimer);
-    }
-    textContent.textContent = `${minutes}:${Tseconds}${seconds}`;
-  }, 1000);
-}
+// // Countdown timer function
+// function countdown(seconds, Tseconds, minutes, Tminutes, textContent, player) {
+//   const countdownTimer = setInterval(() => {
+//     seconds--;
+//     if (seconds < 0) {
+//       seconds = 9;
+//       Tseconds--;
+//     }
+//     if (Tseconds < 0) {
+//       Tseconds = 5;
+//       minutes--;
+//     }
+//     if (minutes < 0) {
+//       minutes = 9;
+//       Tminutes--;
+//     }
+//     if (minutes === 0 && Tseconds === 0 && seconds === 0) {
+//       textContent.style.display = 'none';
+//       player.style.pointerEvents = 'auto';
+//       player.style.cursor = 'default';
+//       clearInterval(countdownTimer);
+//       penaltyTimer.parentNode.removeChild(penaltyTimer);
+//     }
+//     textContent.textContent = `${minutes}:${Tseconds}${seconds}`;
+//   }, 1000);
+// }
 
 // Function for adding cards to players database
 function addCard(database1, type, player) {
@@ -948,5 +1035,7 @@ TODO:
   ~ Poskusi z async funkcijo, ki najprej dobi vse kartone, tako kot zdaj, vendar izven event listenerja pred klikom ti kartoni še ne obstajajo!
 
 2. Popravi funkcijo, ki preverja trenutni čas periode in prekine oziroma označi konec periode in na koncu javi, da je tekma končaca (zadnje deluje!)
+
+3. Dodaj omejitev za igralce, maximalno 18 igralcev!
 
 =================================================================================================================================== */
