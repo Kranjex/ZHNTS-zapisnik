@@ -1096,7 +1096,8 @@ body main #dashboardContainer #dashboard #history .periodStop {
 
 body main #dashboardContainer #dashboard #history .periodStart,
 body main #dashboardContainer #dashboard #history .periodStop,
-body main #dashboardContainer #dashboard #history .goalRow.cardRow {
+body main #dashboardContainer #dashboard #history .goalRow,
+body main #dashboardContainer #dashboard #history .cardRow {
   width: 100%;
   height: auto;
   font-size: 1.5rem;
@@ -1110,13 +1111,6 @@ body main #dashboardContainer #dashboard #history .goalRow.cardRow {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-}
-
-body main #dashboardContainer #dashboard #history .goalRow,
-body main #dashboardContainer #dashboard #history .cardRow {
-  width: 100%;
-  height: auto;
-  font-size: 1.5rem;
 }
 
 body main #dashboardContainer #dashboard #history .greenCard {

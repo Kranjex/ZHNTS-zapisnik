@@ -44,6 +44,10 @@ const playersDatabase = await getPlayers();
 //   }
 // });
 
+// Clear storage
+sessionStorage.clear();
+localStorage.clear();
+
 const stopwatch = document.getElementById('stopwatchContent');
 const mainScreen = document.getElementById('mainScreen');
 // Buttons
@@ -496,7 +500,8 @@ closeButton.onclick = () => {
     console.log(periodLength.value);
     console.log(periodNumber.value);
     for (let i = 1; i < periodNumber.value + 1; i++) {
-      timeStops.push(periodLength * i);
+      console.log(i);
+      timeStops.push(periodLength.value * i);
       console.log(timeStops);
     }
   }
@@ -542,6 +547,15 @@ function checkTime() {
   if (minutes == periodLength.value * periodNumber.value && seconds == 0) {
     stopButton.click();
     console.log('Game finished');
+    historyContainer.removeChild(historyContainer.lastChild);
+    historyContainer.removeChild(historyContainer.lastChild);
+    const endRow = document.createElement('div');
+    endRow.innerHTML = `Tekma končana.`;
+    endRow.setAttribute('class', 'periodStop');
+    const finishRow = document.createElement('div');
+    finishRow.innerHTML = `Za zaključitev kliknite START gumb`;
+    finishRow.setAttribute('class', 'periodStop');
+    historyContainer.append(endRow, finishRow);
     startButton.addEventListener('click', () => {
       location.href = '/zapisnik';
     });
@@ -785,9 +799,28 @@ homeScoreContainer.addEventListener('dblclick', () => {
   // Removes goal from system
   goalsArray.pop();
   sessionStorage.setItem('goalsArray', JSON.stringify(goalsArray));
+  // Updates players' database
+  const playerData = historyContainer.lastChild.textContent.split(' ');
+  let playerName = playerData[8];
+  let playerLastName = '';
+  for (let i = 9; i < playerData.length; i++) {
+    if (playerData[i] !== '-') playerLastName += playerData[i];
+    else break;
+  }
+  // console.log(playerName, playerLastName);
+  playersDatabase.forEach(async (player) => {
+    if (
+      player.data.name === playerName &&
+      player.data.lastName === playerLastName
+    ) {
+      const goalsRef = doc(database, 'players', player.id);
+      const playerGoals = player.data.goals;
+      console.log(playerGoals);
+      await updateDoc(goalsRef, { goals: playerGoals - 1 });
+    }
+  });
   // Removes goal from report's history section
   historyContainer.removeChild(historyContainer.lastChild);
-  // Updates players' database
 });
 
 const guestScoreContainer = document.getElementById('guestScoreContainer');
@@ -797,9 +830,28 @@ guestScoreContainer.addEventListener('dblclick', () => {
   // Removes goal from system
   goalsArray.pop();
   sessionStorage.setItem('goalsArray', JSON.stringify(goalsArray));
+  // Updates players' database
+  const playerData = historyContainer.lastChild.textContent.split(' ');
+  let playerName = playerData[8];
+  let playerLastName = '';
+  for (let i = 9; i < playerData.length; i++) {
+    if (playerData[i] !== '-') playerLastName += playerData[i];
+    else break;
+  }
+  // console.log(playerName, playerLastName);
+  playersDatabase.forEach(async (player) => {
+    if (
+      player.data.name === playerName &&
+      player.data.lastName === playerLastName
+    ) {
+      const goalsRef = doc(database, 'players', player.id);
+      const playerGoals = player.data.goals;
+      console.log(playerGoals);
+      await updateDoc(goalsRef, { goals: playerGoals - 1 });
+    }
+  });
   // Removes goal from report's history section
   historyContainer.removeChild(historyContainer.lastChild);
-  // Updates players' database
 });
 
 // Functions that need to be nested inside settings confirmation statement
@@ -885,6 +937,7 @@ function goalEvent(
       const goalsRef = doc(database, 'players', playerOfArray.id);
       const playerGoals = playerOfArray.data.goals;
       await updateDoc(goalsRef, { goals: playerGoals + 1 });
+      playerOfArray.data.goals += 1;
     }
   });
 }
@@ -970,11 +1023,11 @@ TODO:
 
 3. Dodaj omejitev za igralce, maximalno 18 igralcev!
 
-*** DONE *** 
-
 4. Popravi postavitev funkcije, ki pridobi igralce iz podatkovne baze tako, da program najprej počaka na vrednost v input za selekcijo in nato v array doda samo tiste igralce, ki ustrezajo pogojem (selekcija, klub) - preveri če se read podatki nabirajo že ob samem preverjanju igralcev.
-  ~ Prestrukturiranje podatkovne baze - OBVEZNO za zmanjšanje porabe podatkov in zelo uporabno za nadaljno uporabo, pri dodajanju posameznih klubov. Namesto podatkovne baze igralcev naredi podatkovne baze posameznih klubov.
+  ~ Prestrukturiranje podatkovne baze - OBVEZNO za zmanjšanje porabe podatkov in zelo uporabno za nadaljno uporabo,   pri dodajanju posameznih klubov. Namesto podatkovne baze igralcev naredi podatkovne baze posameznih klubov.
 
 5. Dodelaj event listener, ki razveljavi zadnji dodani gol za posamezno ekipo (že deluje) in tudi izbriše gol iz zgodovine zapisnika in posodobi igralčevo podatkovno bazo (samo še zadnja točka)
+
+*** DONE ***
 
 =================================================================================================================================== */

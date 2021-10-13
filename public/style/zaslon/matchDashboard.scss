@@ -607,19 +607,20 @@ body {
           }
           .periodStart,
           .periodStop,
-          .goalRow.cardRow {
+          .goalRow,
+          .cardRow {
             width: 100%;
             height: auto;
             font-size: 1.5rem;
             padding-left: 0.5rem;
             @include flexStartCenter;
           }
-          .goalRow,
-          .cardRow {
-            width: 100%;
-            height: auto;
-            font-size: 1.5rem;
-          }
+          // .goalRow,
+          // .cardRow {
+          //   width: 100%;
+          //   height: auto;
+          //   font-size: 1.5rem;
+          // }
           .greenCard {
             color: $greenCard;
           }
