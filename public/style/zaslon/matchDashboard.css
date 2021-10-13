@@ -1115,7 +1115,7 @@ body main #dashboardContainer #dashboard #history .goalRow.cardRow {
 body main #dashboardContainer #dashboard #history .goalRow,
 body main #dashboardContainer #dashboard #history .cardRow {
   width: 100%;
-  height: 2rem;
+  height: auto;
   font-size: 1.5rem;
 }
 
@@ -1234,7 +1234,7 @@ body main #guestTeam .playersContainer {
 body main #homeTeam .playersContainer .playerRowContainer,
 body main #guestTeam .playersContainer .playerRowContainer {
   width: 100%;
-  height: 10rem !important;
+  height: auto;
   margin-bottom: 0.2rem;
   font-size: 1.5rem;
   border-radius: 20px;

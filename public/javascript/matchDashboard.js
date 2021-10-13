@@ -62,13 +62,15 @@ const reportGroup = document.getElementById('reportGroup');
 const reportLocation = document.getElementById('reportLocation');
 const reportPitch = document.getElementById('reportPitch');
 const reportMatchNumber = document.getElementById('reportNumber');
+// Stopwatch settings
+let periodLength, periodNumber;
 // Officials
 const umpire1 = document.getElementById('umpire1');
 const umpire2 = document.getElementById('umpire2');
 const judge = document.getElementById('judge');
 const tournamentOfficial = document.getElementById('tournamentOfficial');
 const reserveUmpire = document.getElementById('reserveUmpire');
-//Home coaches
+// Home coaches
 const homeCoach = document.getElementById('homeCoach');
 const homeManager = document.getElementById('homeManager');
 // Guest coaches
@@ -107,11 +109,13 @@ let reportMinutes = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
 reportTime.value = `${reportHours}:${reportMinutes}`;
 
 // Function for getting players
+// Premakni funkcije v close button evnt listener za zmanjšanje porabe podatkov na firebase in dodelaj kodo, da poišče samo igralce, ki ustrezajo parametrom.
 async function getPlayers() {
   const playersData = [];
   const querySnapshot = await getDocs(playersRef);
   if (querySnapshot) {
     querySnapshot.forEach((player) => {
+      // dodelaj if stavek, ki preveri, če je selekcija igralca enaka vneseni, tudi klub za še manjše število podatkov.
       const playerObject = { id: player.id, data: player.data() };
       playersData.push(playerObject);
     });
@@ -120,6 +124,14 @@ async function getPlayers() {
     console.log('No internet connection or no players available.');
   }
 }
+
+/*
+const inputTimer = setInterval(async () => {
+  if(reportGroup.value.length != 0) {
+    playersDatabase = await getPlayers();
+  }
+}, 250)
+*/
 
 // Button event listener for home team
 let homeData = [];
@@ -473,66 +485,66 @@ closeButton.onclick = () => {
         cardHistory(playerData, eventMinute, 'red');
       });
     }
+
+    // Stopwatch data
+    periodLength = document.querySelector(
+      '#timeSettingsContainer > input[name="periodLength"]'
+    );
+    periodNumber = document.querySelector(
+      '#timeSettingsContainer > input[name="periodNumber"]'
+    );
+    console.log(periodLength.value);
+    console.log(periodNumber.value);
+    for (let i = 1; i < periodNumber.value + 1; i++) {
+      timeStops.push(periodLength * i);
+      console.log(timeStops);
+    }
   }
 };
 
 // This code can stand on its own
 // Set up match dashboard
-const periodLength = document.querySelector(
-  '#timeSettingsContainer > input[name="periodLength"]'
-);
-const periodNumber = document.querySelector(
-  '#timeSettingsContainer > input[name="periodNumber"]'
-);
+// System for displaying and adding goals
+let homeGoalCount = parseInt(document.getElementById('homeScore').innerHTML);
+let guestGoalCount = parseInt(document.getElementById('guestScore').innerHTML);
+let goalType = '';
+let goalsArray = [];
 
-// Stopwatch system
-let seconds = 0;
-let Tseconds = 0;
-let minutes = 0;
-let Tminutes = 0;
+// Novi sistem
+let seconds = 0,
+  minutes = 0;
 
 function displayTime() {
-  stopwatch.textContent = `${Tminutes}${minutes}:${Tseconds}${seconds}`;
+  // Novi sistem
+  if (seconds < 10) {
+    seconds = '0' + seconds.toString();
+  }
+
+  if (minutes < 10) {
+    // minutes = '0' + minutes.toString();
+  }
+  stopwatch.textContent = `${minutes}:${seconds}`;
 }
 
 let period = 1; // For displaying period start in history section
+let timeStops = [];
+
 function checkTime() {
-  // Check period length
-  // for (let i = 1; i < periodNumber.length + 1; i++) {
-  // console.log((periodLength.value.toString() + ':00') * i);
-  if (periodLength.value > 10) {
-    // if (stopwatch.textContent === (periodLength.value.toString() + ':00') * i) {
-    if (stopwatch.textContent === periodLength.value.toString() + ':00') {
-      console.log('Time is here!');
-      // Play sound
+  for (let i = 0; i < timeStops.length; i++) {
+    // if (minutes == periodLength.value * i && Tseconds == 0 && seconds == 0) {
+    if (minutes == periodLength.value * i && seconds == 0) {
       stopButton.click();
-      period++;
-    }
-  } else {
-    if (
-      stopwatch.textContent ===
-      // ('0' + periodLength.value.toString() + ':00') * i
-      '0' + periodLength.value.toString() + ':00'
-    ) {
-      console.log('Time is here!');
       // Play sound
-      stopButton.click();
+      console.log('Period finished');
       period++;
     }
   }
-  // }
-  // Check period count
-  const totalTime = parseInt(periodLength.value) * parseInt(periodNumber.value);
-  if (periodLength.value > 10) {
-    if (stopwatch.textContent === totalTime.toString() + ':00') {
-      stopButton.click();
-      alert('Game is finished.');
-    }
-  } else {
-    if (stopwatch.textContent === '0' + totalTime.toString() + ':00') {
-      stopButton.click();
-      alert('Game is finished.');
-    }
+  if (minutes == periodLength.value * periodNumber.value && seconds == 0) {
+    stopButton.click();
+    console.log('Game finished');
+    startButton.addEventListener('click', () => {
+      location.href = '/zapisnik';
+    });
   }
 }
 
@@ -547,23 +559,14 @@ startButton.addEventListener('click', () => {
     timerProtector = false;
     // Stopwatch system
     const timer = setInterval(() => {
+      // Novi sistem
       seconds++;
-      if (seconds > 9) {
-        seconds = 0;
-        Tseconds++;
-      }
-      if (Tseconds > 5) {
-        Tseconds = 0;
+      if (seconds > 59) {
         minutes++;
-      }
-      if (minutes > 9) {
-        minutes = 0;
-        Tminutes++;
+        seconds = 0;
       }
       displayTime();
-      // for (let i = 1; i < periodLength.value; i++) {
       checkTime();
-      // }
     }, 1000);
 
     stopButton.addEventListener('click', () => {
@@ -583,29 +586,17 @@ startButton.addEventListener('click', () => {
     // Show that period [i] started
     if (periodStartAdded < period) {
       const startRow = document.createElement('div');
-      startRow.innerHTML = `Začetek ${period}. periode - ${Tminutes}${minutes}:${Tseconds}${seconds}`;
+      // startRow.innerHTML = `Začetek ${period}. periode - ${Tminutes}${minutes}:${Tseconds}${seconds}`;
+      startRow.innerHTML = `Začetek ${period}. periode - ${minutes}:${seconds}`;
       startRow.setAttribute('class', 'periodStart');
       historyContainer.append(startRow);
       periodStartAdded++;
     }
 
-    // System for displaying and adding goals
-    let homeGoalCount = parseInt(
-      document.getElementById('homeScore').innerHTML
-    );
-    let guestGoalCount = parseInt(
-      document.getElementById('guestScore').innerHTML
-    );
-    let goalType = '';
-    let goalsArray = [];
     // Buttons
     const actionButton = document.getElementById('actionButton');
     const cornerButton = document.getElementById('cornerButton');
     const penaltyButton = document.getElementById('penaltyButton');
-    // Main score containers
-    // const homeScoreContainer = document.getElementById('homeScoreContainer');
-    // const guestScoreContainer = document.getElementById('guestScoreContainer');
-    // Score number containers
 
     // Action type
     actionButton.addEventListener('click', function () {
@@ -765,7 +756,8 @@ startButton.addEventListener('click', () => {
 // Display status in history section
 stopButton.addEventListener('click', () => {
   const stopRow = document.createElement('div');
-  stopRow.innerHTML = `Zaustavljen čas - ${Tminutes}${minutes}:${Tseconds}${seconds}`;
+  // stopRow.innerHTML = `Zaustavljen čas - ${Tminutes}${minutes}:${Tseconds}${seconds}`;
+  stopRow.innerHTML = `Zaustavljen čas - ${minutes}:${seconds}`;
   stopRow.setAttribute('class', 'periodStop');
   historyContainer.append(stopRow);
 });
@@ -777,21 +769,38 @@ addSecondButton.onclick = () => {
 substractSecondButton.onclick = () => {
   if (seconds > 0) {
     seconds--;
+  } else {
+    seconds = 59;
+    minutes--;
+    seconds--;
   }
   displayTime();
 };
 
 // Event listener for removing last scored goal
-// function removeHomeGoal() {
 const homeScoreContainer = document.getElementById('homeScoreContainer');
 homeScoreContainer.addEventListener('dblclick', () => {
-  console.log('dela');
   const homeScore = document.getElementById('homeScore');
   homeScore.innerHTML = parseInt(homeScore.innerHTML) - 1;
+  // Removes goal from system
+  goalsArray.pop();
+  sessionStorage.setItem('goalsArray', JSON.stringify(goalsArray));
+  // Removes goal from report's history section
+  historyContainer.removeChild(historyContainer.lastChild);
+  // Updates players' database
 });
-// }
 
 const guestScoreContainer = document.getElementById('guestScoreContainer');
+guestScoreContainer.addEventListener('dblclick', () => {
+  const guestScore = document.getElementById('guestScore');
+  guestScore.innerHTML = parseInt(guestScore.innerHTML) - 1;
+  // Removes goal from system
+  goalsArray.pop();
+  sessionStorage.setItem('goalsArray', JSON.stringify(goalsArray));
+  // Removes goal from report's history section
+  historyContainer.removeChild(historyContainer.lastChild);
+  // Updates players' database
+});
 
 // Functions that need to be nested inside settings confirmation statement
 // Function for displaying players in dashboard
@@ -856,7 +865,7 @@ function goalEvent(
 ) {
   // Display name in history section
   const goalRow = document.createElement('div');
-  const time = parseInt(Tminutes) * 10 + parseInt(minutes) + 1;
+  const time = parseInt(minutes) + 1;
   goalRow.innerHTML = `<b>${time}' GOL  ${type} : </b> ${player.textContent} - ${team}`;
   goalRow.setAttribute('class', 'goalRow');
   historyContainer.append(goalRow);
@@ -878,87 +887,7 @@ function goalEvent(
       await updateDoc(goalsRef, { goals: playerGoals + 1 });
     }
   });
-
-  // dodaj removeGoal();
 }
-
-// // Timer function for cards' stopwatch
-// function countdownTimer(type, penaltyTimer, player) {
-//   penaltyTimer.classList.add('penaltyTimer');
-//   switch (type) {
-//     case 'green':
-//       penaltyTimer.textContent = '2:00';
-//       player.style.pointerEvents = 'none';
-//       player.style.cursor = 'not-allowed';
-//       let secondsG = 0,
-//         TsecondsG = 0,
-//         minutesG = 2,
-//         TminutesG = 0;
-//       countdown(secondsG, TsecondsG, minutesG, TminutesG, penaltyTimer, player);
-//       break;
-//     case 'yellow5':
-//       penaltyTimer.textContent = '5:00';
-//       player.style.pointerEvents = 'none';
-//       player.style.cursor = 'not-allowed';
-//       let secondsY5 = 0,
-//         TsecondsY5 = 0,
-//         minutesY5 = 5,
-//         TminutesY5 = 0;
-//       countdown(
-//         secondsY5,
-//         TsecondsY5,
-//         minutesY5,
-//         TminutesY5,
-//         penaltyTimer,
-//         player
-//       );
-//       break;
-//     case 'yellow10':
-//       penaltyTimer.textContent = '10:00';
-//       player.style.pointerEvents = 'none';
-//       player.style.cursor = 'not-allowed';
-//       let secondsY10 = 0,
-//         TsecondsY10 = 0,
-//         minutesY10 = 0,
-//         TminutesY10 = 1;
-//       countdown(
-//         secondsY10,
-//         TsecondsY10,
-//         minutesY10,
-//         TminutesY10,
-//         penaltyTimer,
-//         player
-//       );
-//       break;
-//   }
-// }
-
-// // Countdown timer function
-// function countdown(seconds, Tseconds, minutes, Tminutes, textContent, player) {
-//   const countdownTimer = setInterval(() => {
-//     seconds--;
-//     if (seconds < 0) {
-//       seconds = 9;
-//       Tseconds--;
-//     }
-//     if (Tseconds < 0) {
-//       Tseconds = 5;
-//       minutes--;
-//     }
-//     if (minutes < 0) {
-//       minutes = 9;
-//       Tminutes--;
-//     }
-//     if (minutes === 0 && Tseconds === 0 && seconds === 0) {
-//       textContent.style.display = 'none';
-//       player.style.pointerEvents = 'auto';
-//       player.style.cursor = 'default';
-//       clearInterval(countdownTimer);
-//       penaltyTimer.parentNode.removeChild(penaltyTimer);
-//     }
-//     textContent.textContent = `${minutes}:${Tseconds}${seconds}`;
-//   }, 1000);
-// }
 
 // Function for adding cards to players database
 function addCard(database1, type, player) {
@@ -1012,7 +941,6 @@ function cardHistory(player, time, type) {
   let displayType;
   const cardRow = document.createElement('div');
   cardRow.classList.add('cardRow');
-  // cardRow.textContent = `<b>${time}</b>${type} - ${player.number}${player.name}${player.lastName}`;
   switch (type) {
     case 'green':
       displayType = 'Zeleni';
@@ -1034,8 +962,19 @@ TODO:
 1. Poskusi premakniti event listenerje za kartone iz event listenerja za startButton, da se prepreči ponavljanje in podvajanje kazni - štoparica za kazensko klop.
   ~ Poskusi z async funkcijo, ki najprej dobi vse kartone, tako kot zdaj, vendar izven event listenerja pred klikom ti kartoni še ne obstajajo!
 
+*** DONE ***
+
 2. Popravi funkcijo, ki preverja trenutni čas periode in prekine oziroma označi konec periode in na koncu javi, da je tekma končaca (zadnje deluje!)
 
+*** DONE ***
+
 3. Dodaj omejitev za igralce, maximalno 18 igralcev!
+
+*** DONE *** 
+
+4. Popravi postavitev funkcije, ki pridobi igralce iz podatkovne baze tako, da program najprej počaka na vrednost v input za selekcijo in nato v array doda samo tiste igralce, ki ustrezajo pogojem (selekcija, klub) - preveri če se read podatki nabirajo že ob samem preverjanju igralcev.
+  ~ Prestrukturiranje podatkovne baze - OBVEZNO za zmanjšanje porabe podatkov in zelo uporabno za nadaljno uporabo, pri dodajanju posameznih klubov. Namesto podatkovne baze igralcev naredi podatkovne baze posameznih klubov.
+
+5. Dodelaj event listener, ki razveljavi zadnji dodani gol za posamezno ekipo (že deluje) in tudi izbriše gol iz zgodovine zapisnika in posodobi igralčevo podatkovno bazo (samo še zadnja točka)
 
 =================================================================================================================================== */
