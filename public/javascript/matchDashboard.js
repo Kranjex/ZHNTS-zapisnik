@@ -26,27 +26,23 @@ const playersRef = collection(database, 'players');
 const playersDatabase = await getPlayers();
 
 // Check if user is signed in and check its role
-// auth.onAuthStateChanged(async (user) => {
-//   const response = await fetch('/checkRole');
-//   const role = await response.json();
-//   if (!user) {
-//     document.body.style.display = 'none';
-//     alert('You need to sign in first.');
-//     location.href = '/';
-//   } else if (role != 'Delegat') {
-//     document.body.style.display = 'none';
-//     alert('You do not have the permission to access this page. ' + role);
-//     location.href = history.back();
-//   } else {
-//     const welcomeText = (document.getElementById(
-//       'welcomeText'
-//     ).childNodes[0].innerHTML = `Pozdravljen ${auth.currentUser.displayName}`);
-//   }
-// });
-
-// Clear storage
-sessionStorage.clear();
-localStorage.clear();
+auth.onAuthStateChanged(async (user) => {
+  const response = await fetch('/checkRole');
+  const role = await response.json();
+  if (!user) {
+    document.body.style.display = 'none';
+    alert('You need to sign in first.');
+    location.href = '/';
+  } else if (role != 'Delegat') {
+    document.body.style.display = 'none';
+    alert('You do not have the permission to access this page. ' + role);
+    location.href = history.back();
+  } else {
+    const welcomeText = (document.getElementById(
+      'welcomeText'
+    ).childNodes[0].innerHTML = `Pozdravljen ${auth.currentUser.displayName}`);
+  }
+});
 
 const stopwatch = document.getElementById('stopwatchContent');
 const mainScreen = document.getElementById('mainScreen');
@@ -113,13 +109,11 @@ let reportMinutes = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
 reportTime.value = `${reportHours}:${reportMinutes}`;
 
 // Function for getting players
-// Premakni funkcije v close button evnt listener za zmanjšanje porabe podatkov na firebase in dodelaj kodo, da poišče samo igralce, ki ustrezajo parametrom.
 async function getPlayers() {
   const playersData = [];
   const querySnapshot = await getDocs(playersRef);
   if (querySnapshot) {
     querySnapshot.forEach((player) => {
-      // dodelaj if stavek, ki preveri, če je selekcija igralca enaka vneseni, tudi klub za še manjše število podatkov.
       const playerObject = { id: player.id, data: player.data() };
       playersData.push(playerObject);
     });
@@ -129,13 +123,8 @@ async function getPlayers() {
   }
 }
 
-/*
-const inputTimer = setInterval(async () => {
-  if(reportGroup.value.length != 0) {
-    playersDatabase = await getPlayers();
-  }
-}, 250)
-*/
+let homeChecked = 0,
+  guestChecked = 0;
 
 // Button event listener for home team
 let homeData = [];
@@ -198,6 +187,27 @@ function searchPlayers(data, club, team, container) {
         const playerRowLabel = document.createElement('label');
         playerRowLabel.setAttribute('for', `player${counter}`);
         playerRowLabel.innerHTML = `${player.data.name} ${player.data.lastName} ${player.data.number} ${player.data.specialMarks}`;
+        playerRow.addEventListener('click', () => {
+          switch (team) {
+            case 'home':
+              if (!playerRow.checked) {
+                homeChecked--;
+              } else if (playerRow.checked) {
+                homeChecked++;
+                if (homeChecked > 18) {
+                  alert('Največje dovoljeno število igralcev je 18!');
+                }
+              }
+              break;
+            case 'guest':
+              guestChecked++;
+              if (guestChecked > 18) {
+                alert('Največje dovoljeno število igralcev je 18!');
+              }
+              break;
+          }
+          console.log(homeChecked, guestChecked);
+        });
 
         playerRowContainer.append(playerRow, playerRowLabel);
         teamContainer.append(playerRowContainer);
@@ -227,7 +237,7 @@ closeButton.onclick = () => {
   const safetyProtector = confirm(
     'Ste prepričani, da želite nadaljevati? \n Zaradi varnosti preglejte podatke še enkrat.'
   );
-  if (safetyProtector) {
+  if (safetyProtector && homeChecked <= 18 && guestChecked <= 18) {
     setUpWindowContainer.style.display = 'none';
 
     mainScreen.style.display = 'flex';
@@ -265,14 +275,14 @@ closeButton.onclick = () => {
       'input[type=checkbox]'
     );
     let homePlayers = [];
-    let homeChecked = 0;
+    // let homeChecked = 0;
     for (let i = 0; i < homeCheckboxes.length; i++) {
       if (homeCheckboxes[i].checked) {
         homePlayers.push(homeData[i]);
       }
     }
     homeCheckboxes.forEach((checkbox) => {
-      checkbox.addEventListener('change', () => {
+      checkbox.addEventListener('click', () => {
         console.log(homeChecked);
         homeChecked++;
         if (homeChecked >= 18) {
@@ -327,7 +337,6 @@ closeButton.onclick = () => {
     // get cards
     const cardsContainers = document.querySelectorAll('.cardContainer');
     let cardsArray = [];
-    let clicked = false;
     // Green cards
     greenCards = document.querySelectorAll('.triangle');
     for (let i = 0; i < greenCards.length; i++) {
@@ -349,8 +358,6 @@ closeButton.onclick = () => {
           GTminutes = 0,
           Gtime = '';
         startButton.addEventListener('click', () => {
-          // if (clicked === false) {
-          //   clicked = true;
           const greenInterval = setInterval(() => {
             Gseconds--;
 
@@ -377,7 +384,6 @@ closeButton.onclick = () => {
           stopButton.addEventListener('click', () => {
             clearInterval(greenInterval);
           });
-          // }
         });
         let eventMinute = `${minutes + 1}'`;
         // add card to the player - database
@@ -421,8 +427,6 @@ closeButton.onclick = () => {
         }
 
         startButton.addEventListener('click', () => {
-          // if (clicked === false) {
-          //   clicked = true;
           const yellowInterval = setInterval(() => {
             Yseconds--;
 
@@ -449,7 +453,6 @@ closeButton.onclick = () => {
           stopButton.addEventListener('click', () => {
             clearInterval(yellowInterval);
           });
-          // }
         });
         let eventMinute = `${minutes + 1}'`;
         // add card to the player - database
@@ -500,12 +503,13 @@ closeButton.onclick = () => {
     console.log(periodLength.value);
     console.log(periodNumber.value);
     for (let i = 1; i < periodNumber.value + 1; i++) {
-      console.log(i);
-      timeStops.push(periodLength.value * i);
+      timeStops.push(periodLength * i);
       console.log(timeStops);
     }
   }
 };
+
+// Function to check that maximum 18 players are checked
 
 // This code can stand on its own
 // Set up match dashboard
@@ -547,15 +551,6 @@ function checkTime() {
   if (minutes == periodLength.value * periodNumber.value && seconds == 0) {
     stopButton.click();
     console.log('Game finished');
-    historyContainer.removeChild(historyContainer.lastChild);
-    historyContainer.removeChild(historyContainer.lastChild);
-    const endRow = document.createElement('div');
-    endRow.innerHTML = `Tekma končana.`;
-    endRow.setAttribute('class', 'periodStop');
-    const finishRow = document.createElement('div');
-    finishRow.innerHTML = `Za zaključitev kliknite START gumb`;
-    finishRow.setAttribute('class', 'periodStop');
-    historyContainer.append(endRow, finishRow);
     startButton.addEventListener('click', () => {
       location.href = '/zapisnik';
     });
@@ -600,7 +595,6 @@ startButton.addEventListener('click', () => {
     // Show that period [i] started
     if (periodStartAdded < period) {
       const startRow = document.createElement('div');
-      // startRow.innerHTML = `Začetek ${period}. periode - ${Tminutes}${minutes}:${Tseconds}${seconds}`;
       startRow.innerHTML = `Začetek ${period}. periode - ${minutes}:${seconds}`;
       startRow.setAttribute('class', 'periodStart');
       historyContainer.append(startRow);
@@ -794,64 +788,30 @@ substractSecondButton.onclick = () => {
 // Event listener for removing last scored goal
 const homeScoreContainer = document.getElementById('homeScoreContainer');
 homeScoreContainer.addEventListener('dblclick', () => {
-  const homeScore = document.getElementById('homeScore');
-  homeScore.innerHTML = parseInt(homeScore.innerHTML) - 1;
-  // Removes goal from system
-  goalsArray.pop();
-  sessionStorage.setItem('goalsArray', JSON.stringify(goalsArray));
-  // Updates players' database
-  const playerData = historyContainer.lastChild.textContent.split(' ');
-  let playerName = playerData[8];
-  let playerLastName = '';
-  for (let i = 9; i < playerData.length; i++) {
-    if (playerData[i] !== '-') playerLastName += playerData[i];
-    else break;
+  if (homeScore.innerHTML != 0) {
+    const homeScore = document.getElementById('homeScore');
+    homeScore.innerHTML = parseInt(homeScore.innerHTML) - 1;
+    // Removes goal from system
+    goalsArray.pop();
+    sessionStorage.setItem('goalsArray', JSON.stringify(goalsArray));
+    // Removes goal from report's history section
+    historyContainer.removeChild(historyContainer.lastChild);
+    // Updates players' database
   }
-  // console.log(playerName, playerLastName);
-  playersDatabase.forEach(async (player) => {
-    if (
-      player.data.name === playerName &&
-      player.data.lastName === playerLastName
-    ) {
-      const goalsRef = doc(database, 'players', player.id);
-      const playerGoals = player.data.goals;
-      console.log(playerGoals);
-      await updateDoc(goalsRef, { goals: playerGoals - 1 });
-    }
-  });
-  // Removes goal from report's history section
-  historyContainer.removeChild(historyContainer.lastChild);
 });
 
 const guestScoreContainer = document.getElementById('guestScoreContainer');
 guestScoreContainer.addEventListener('dblclick', () => {
-  const guestScore = document.getElementById('guestScore');
-  guestScore.innerHTML = parseInt(guestScore.innerHTML) - 1;
-  // Removes goal from system
-  goalsArray.pop();
-  sessionStorage.setItem('goalsArray', JSON.stringify(goalsArray));
-  // Updates players' database
-  const playerData = historyContainer.lastChild.textContent.split(' ');
-  let playerName = playerData[8];
-  let playerLastName = '';
-  for (let i = 9; i < playerData.length; i++) {
-    if (playerData[i] !== '-') playerLastName += playerData[i];
-    else break;
+  if (homeScore.innerHTML != 0) {
+    const guestScore = document.getElementById('guestScore');
+    guestScore.innerHTML = parseInt(guestScore.innerHTML) - 1;
+    // Removes goal from system
+    goalsArray.pop();
+    sessionStorage.setItem('goalsArray', JSON.stringify(goalsArray));
+    // Removes goal from report's history section
+    historyContainer.removeChild(historyContainer.lastChild);
+    // Updates players' database
   }
-  // console.log(playerName, playerLastName);
-  playersDatabase.forEach(async (player) => {
-    if (
-      player.data.name === playerName &&
-      player.data.lastName === playerLastName
-    ) {
-      const goalsRef = doc(database, 'players', player.id);
-      const playerGoals = player.data.goals;
-      console.log(playerGoals);
-      await updateDoc(goalsRef, { goals: playerGoals - 1 });
-    }
-  });
-  // Removes goal from report's history section
-  historyContainer.removeChild(historyContainer.lastChild);
 });
 
 // Functions that need to be nested inside settings confirmation statement
@@ -937,7 +897,6 @@ function goalEvent(
       const goalsRef = doc(database, 'players', playerOfArray.id);
       const playerGoals = playerOfArray.data.goals;
       await updateDoc(goalsRef, { goals: playerGoals + 1 });
-      playerOfArray.data.goals += 1;
     }
   });
 }
@@ -1023,8 +982,10 @@ TODO:
 
 3. Dodaj omejitev za igralce, maximalno 18 igralcev!
 
+*** DONE *** 
+
 4. Popravi postavitev funkcije, ki pridobi igralce iz podatkovne baze tako, da program najprej počaka na vrednost v input za selekcijo in nato v array doda samo tiste igralce, ki ustrezajo pogojem (selekcija, klub) - preveri če se read podatki nabirajo že ob samem preverjanju igralcev.
-  ~ Prestrukturiranje podatkovne baze - OBVEZNO za zmanjšanje porabe podatkov in zelo uporabno za nadaljno uporabo,   pri dodajanju posameznih klubov. Namesto podatkovne baze igralcev naredi podatkovne baze posameznih klubov.
+  ~ Prestrukturiranje podatkovne baze - OBVEZNO za zmanjšanje porabe podatkov in zelo uporabno za nadaljno uporabo, pri dodajanju posameznih klubov. Namesto podatkovne baze igralcev naredi podatkovne baze posameznih klubov.
 
 5. Dodelaj event listener, ki razveljavi zadnji dodani gol za posamezno ekipo (že deluje) in tudi izbriše gol iz zgodovine zapisnika in posodobi igralčevo podatkovno bazo (samo še zadnja točka)
 
