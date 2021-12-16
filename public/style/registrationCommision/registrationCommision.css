@@ -408,6 +408,13 @@ body main .box:hover {
           transform: scale(1.1);
 }
 
+body main .box:nth-child(3) {
+  -webkit-filter: brightness(0.9);
+          filter: brightness(0.9);
+  cursor: pointer;
+  pointer-events: none;
+}
+
 body main .box:active {
   -webkit-box-shadow: 0 0 2px #ecf0f3, 0 0 2px #cbced1, inset 6px 6px 9px #cbced1, inset -6px -6px 9px #fff;
           box-shadow: 0 0 2px #ecf0f3, 0 0 2px #cbced1, inset 6px 6px 9px #cbced1, inset -6px -6px 9px #fff;

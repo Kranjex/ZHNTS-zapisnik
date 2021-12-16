@@ -108,6 +108,12 @@ body {
         transform: scale(1.1);
       }
 
+      &:nth-child(3) {
+        filter: brightness(0.9);
+        cursor: pointer;
+        pointer-events: none;
+      }
+
       &:active {
         box-shadow: 0 0 2px $mainBackground, 0 0 2px $shadowGray1,
           inset 6px 6px 9px $shadowGray1, inset -6px -6px 9px $shadowWhite;

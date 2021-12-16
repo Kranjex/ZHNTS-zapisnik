@@ -1,0 +1,32 @@
+@import '../sass/mixins';
+@import '../sass/variables';
+@import '../sass/animations';
+
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font-family: Helvetica;
+  font-weight: 700;
+  @include flexCenter;
+  color: $fontGray;
+  background-color: $mainBackground;
+  transition: all 0.5s;
+
+  a {
+    font-size: 4rem;
+    color: $mainGreen;
+    text-decoration: none;
+    width: 300px;
+    height: 300px;
+    border-radius: 20px;
+    @include flexCenter;
+    box-shadow: 13px 13px 20px $shadowGray1, -13px -13px 20px $shadowWhite;
+    margin: 0 30px 0 30px;
+    transition: all 0.3s ease-out;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}

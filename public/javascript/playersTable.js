@@ -29,21 +29,21 @@ const playersDatabase = await getPlayers();
 
 // Check if user is signed in and check its role
 // Update: Probaj dodati role kak node response || role kak local variable (zaradi refreshanja strani)
-auth.onAuthStateChanged(async (user) => {
-  const response = await fetch('/checkRole');
-  const role = await response.json();
-  console.log(role);
+// auth.onAuthStateChanged(async (user) => {
+//   const response = await fetch('/checkRole');
+//   const role = await response.json();
+//   console.log(role);
 
-  if (!user) {
-    document.body.style.display = 'none';
-    alert('You need to sign in first.');
-    location.href = '/';
-  } else if (role != 'Komisija') {
-    document.body.style.display = 'none';
-    alert('You do not have the permission to access this page. ' + role);
-    location.href = history.back();
-  }
-});
+//   if (!user) {
+//     document.body.style.display = 'none';
+//     alert('You need to sign in first.');
+//     location.href = '/';
+//   } else if (role != 'Komisija') {
+//     document.body.style.display = 'none';
+//     alert('You do not have the permission to access this page. ' + role);
+//     location.href = history.back();
+//   }
+// });
 
 // Constant Variables
 const addButton = document.getElementById('addPlayer');

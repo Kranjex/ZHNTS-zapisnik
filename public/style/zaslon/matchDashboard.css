@@ -793,7 +793,7 @@ body #setUpWindowContainer #teamSetUpContainer .teamSelectionContainer {
           align-items: center;
   display: none;
   width: 50%;
-  height: 20rem;
+  height: 30rem;
   margin: 5rem auto;
 }
 
@@ -819,6 +819,14 @@ body #setUpWindowContainer #teamSetUpContainer .teamSelectionContainer .teamSele
   cursor: pointer;
   -webkit-animation-delay: calc(var(--index) * 0.2s);
           animation-delay: calc(var(--index) * 0.2s);
+  margin-bottom: 20px;
+  -webkit-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
+}
+
+body #setUpWindowContainer #teamSetUpContainer .teamSelectionContainer .teamSelection:hover {
+  -webkit-transform: scale(1.1);
+          transform: scale(1.1);
 }
 
 body #setUpWindowContainer #teamSetUpContainer .playerRowContainer {

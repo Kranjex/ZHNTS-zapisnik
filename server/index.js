@@ -18,7 +18,8 @@ let currentRole = 'none';
 // Login page
 // Dodaj middleware, ki preveri, če je že kak user role in v primeru, da je preusmeri nazaj.
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/html/index.html');
+  // res.sendFile(__dirname + '/html/index.html');
+  res.sendFile(__dirname + '/html/tmp.html');
 });
 
 app.post('/', (req, res, next) => {

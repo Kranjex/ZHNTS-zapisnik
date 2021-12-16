@@ -26,23 +26,23 @@ const playersRef = collection(database, 'players');
 const playersDatabase = await getPlayers();
 
 // Check if user is signed in and check its role
-auth.onAuthStateChanged(async (user) => {
-  const response = await fetch('/checkRole');
-  const role = await response.json();
-  if (!user) {
-    document.body.style.display = 'none';
-    alert('You need to sign in first.');
-    location.href = '/';
-  } else if (role != 'Delegat') {
-    document.body.style.display = 'none';
-    alert('You do not have the permission to access this page. ' + role);
-    location.href = history.back();
-  } else {
-    const welcomeText = (document.getElementById(
-      'welcomeText'
-    ).childNodes[0].innerHTML = `Pozdravljen ${auth.currentUser.displayName}`);
-  }
-});
+// auth.onAuthStateChanged(async (user) => {
+//   const response = await fetch('/checkRole');
+//   const role = await response.json();
+//   if (!user) {
+//     document.body.style.display = 'none';
+//     alert('You need to sign in first.');
+//     location.href = '/';
+//   } else if (role != 'Delegat') {
+//     document.body.style.display = 'none';
+//     alert('You do not have the permission to access this page. ' + role);
+//     location.href = history.back();
+//   } else {
+//     const welcomeText = (document.getElementById(
+//       'welcomeText'
+//     ).childNodes[0].innerHTML = `Pozdravljen ${auth.currentUser.displayName}`);
+//   }
+// });
 
 const stopwatch = document.getElementById('stopwatchContent');
 const mainScreen = document.getElementById('mainScreen');
@@ -347,14 +347,14 @@ closeButton.onclick = () => {
         const mainScreen = document.querySelector('#mainScreen');
         const playerRow = mainScreen.querySelectorAll('.playerRowContainer');
         const penaltyTimer = document.createElement('div');
-        penaltyTimer.textContent = '02:00';
+        penaltyTimer.textContent = '01:00';
         penaltyTimer.classList.add('penaltyTimer');
         playerRow[i].style.pointerEvents = 'none';
         playerRow[i].insertBefore(penaltyTimer, cardsContainers[i]);
         // countdown timer
         let Gseconds = 0,
           GTseconds = 0,
-          Gminutes = 2,
+          Gminutes = 1,
           GTminutes = 0,
           Gtime = '';
         startButton.addEventListener('click', () => {
@@ -410,7 +410,8 @@ closeButton.onclick = () => {
         playerRow[i].style.pointerEvents = 'none';
         playerRow[i].insertBefore(penaltyTimer, cardsContainers[i]);
         const duration = window.prompt(
-          'Vnesite dolžino kazni: \n Milejša kazen: 5 min \n Strožja kazen: 10 min'
+          // 'Vnesite dolžino kazni: \n Milejša kazen: 5 min \n Strožja kazen: 10 min'
+          'Vnesite dolžino kazni v minutah! Najmanj 3 minute.'
         );
         // countdown timer
         let Yseconds = 0,
@@ -418,13 +419,24 @@ closeButton.onclick = () => {
           Yminutes = 0,
           YTminutes = 0,
           Ytime = '';
-        if (duration == 5) {
-          Yminutes = 5;
-          penaltyTimer.textContent = `0${duration}:00`;
-        } else if (duration == 10) {
-          YTminutes = 1;
+        let durationInt = parseInt(duration);
+
+        if (duration > 9) {
+          Yminutes = durationInt % 10;
+          YTminutes = Math.floor(durationInt / 10);
           penaltyTimer.textContent = `${duration}:00`;
+        } else {
+          Yminutes = parseInt(duration);
+          penaltyTimer.textContent = `0${duration}:00`;
         }
+
+        // if (duration == 5) {
+        //   Yminutes = 5;
+        //   penaltyTimer.textContent = `0${duration}:00`;
+        // } else if (duration == 10) {
+        //   YTminutes = 1;
+        //   penaltyTimer.textContent = `${duration}:00`;
+        // }
 
         startButton.addEventListener('click', () => {
           const yellowInterval = setInterval(() => {
@@ -442,7 +454,12 @@ closeButton.onclick = () => {
               Yminutes = 9;
               YTminutes--;
             }
-            if (Yminutes === 0 && YTseconds === 0 && Yseconds === 0) {
+            if (
+              YTminutes === 0 &&
+              Yminutes === 0 &&
+              YTseconds === 0 &&
+              Yseconds === 0
+            ) {
               clearInterval(yellowInterval);
               penaltyTimer.remove();
               playerRow[i].style.pointerEvents = 'auto';
@@ -507,10 +524,10 @@ closeButton.onclick = () => {
       console.log(timeStops);
     }
   }
+
+  // Opens new tab to print out report form with static data (in case program crashes)
+  window.open('./zapisnik', '_blank');
 };
-
-// Function to check that maximum 18 players are checked
-
 // This code can stand on its own
 // Set up match dashboard
 // System for displaying and adding goals
