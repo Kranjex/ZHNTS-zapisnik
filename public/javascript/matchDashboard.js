@@ -194,15 +194,17 @@ function searchPlayers(data, club, team, container) {
                 homeChecked--;
               } else if (playerRow.checked) {
                 homeChecked++;
-                if (homeChecked > 18) {
-                  alert('Največje dovoljeno število igralcev je 18!');
+                if (homeChecked > 12) {
+                  // zunaj 18!
+                  alert('Največje dovoljeno število igralcev je 12!');
                 }
               }
               break;
             case 'guest':
               guestChecked++;
-              if (guestChecked > 18) {
-                alert('Največje dovoljeno število igralcev je 18!');
+              if (guestChecked > 12) {
+                // zunaj 18!
+                alert('Največje dovoljeno število igralcev je 12!');
               }
               break;
           }
