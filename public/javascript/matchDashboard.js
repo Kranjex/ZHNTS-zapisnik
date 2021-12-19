@@ -895,6 +895,7 @@ function goalEvent(
   goalsArray
 ) {
   // Display name in history section
+  // console.log(player.textContent.slice(0, 2));
   const goalRow = document.createElement('div');
   const time = parseInt(minutes) + 1;
   goalRow.innerHTML = `<b>${time}' GOL  ${type} : </b> ${player.textContent} - ${team}`;
@@ -906,6 +907,7 @@ function goalEvent(
     score: `${homeGoalCount}:${guestGoalCount}`,
     timestamp: time + "'",
     type: type,
+    number: player.textContent.slice(0, 2),
   };
   console.log(newGoal);
   goalsArray.push(newGoal);

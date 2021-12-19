@@ -126,7 +126,7 @@ window.onload = () => {
   // Add goals to the report
   const goalsArray = JSON.parse(sessionStorage.getItem('goalsArray'));
   const scoreboardRow = document.querySelectorAll('.scoreboardRow');
-  let counter = 1;
+  // let counter = 1;
   for (let i = 0; i < goalsArray.length; i++) {
     switch (goalsArray[i].team) {
       case 'HK Moravske Toplice':
@@ -141,10 +141,11 @@ window.onload = () => {
     }
     scoreboardRow[i].childNodes[1].textContent = goalsArray[i].team;
     scoreboardRow[i].childNodes[3].textContent = goalsArray[i].timestamp;
-    scoreboardRow[i].childNodes[5].textContent = counter;
+    // scoreboardRow[i].childNodes[5].textContent = counter;
+    scoreboardRow[i].childNodes[5].textContent = goalsArray[i].number;
     scoreboardRow[i].childNodes[7].textContent = goalsArray[i].type;
     scoreboardRow[i].childNodes[9].textContent = goalsArray[i].score;
-    counter++;
+    // counter++;
   }
   // Add cards to the report
   const cardsArray = JSON.parse(sessionStorage.getItem('cardsArray'));
@@ -173,21 +174,25 @@ window.onload = () => {
     }
   }
 
-  for (let i = 0; i < cardsArray.length; i++) {
-    switch (cardsArray[i].type) {
-      case 'green':
-        greenCardArray[cardsArray[i].player].textContent =
-          cardsArray[i].timestamp;
-        break;
-      case 'yellow':
-        yellowCardArray[cardsArray[i].player].textContent =
-          cardsArray[i].timestamp;
-        break;
-      case 'red':
-        redCardArray[cardsArray[i].player].textContent =
-          cardsArray[i].timestamp;
-        break;
+  try {
+    for (let i = 0; i < cardsArray.length; i++) {
+      switch (cardsArray[i].type) {
+        case 'green':
+          greenCardArray[cardsArray[i].player].textContent =
+            cardsArray[i].timestamp;
+          break;
+        case 'yellow':
+          yellowCardArray[cardsArray[i].player].textContent =
+            cardsArray[i].timestamp;
+          break;
+        case 'red':
+          redCardArray[cardsArray[i].player].textContent =
+            cardsArray[i].timestamp;
+          break;
+      }
     }
+  } catch {
+    console.log('No cards in array.');
   }
 
   // Final results
