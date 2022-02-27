@@ -1379,14 +1379,8 @@ body main #guestTeam #backgroundContainerGuest #image {
   z-index: 10;
 }
 
-body .highlight {
-  -webkit-transition: all 0.3s ease-out;
-  transition: all 0.3s ease-out;
-}
-
 body .highlight:hover {
-  -webkit-transform: scale(1.1);
-          transform: scale(1.1);
+  border: 1px solid dimgray;
 }
 
 @media only screen and (max-width: 768px) {
