@@ -592,8 +592,8 @@ startButton.addEventListener('click', () => {
 				// Event listener
 				player.addEventListener('click', () => {
 					console.log(player.dataset.playerid);
-					toggleHighlight();
 					if (player.style.cursor === 'pointer') {
+						removeHighlight();
 						const team = player.dataset.team;
 						// Home team
 						if (team === 'home-player') {
@@ -627,8 +627,8 @@ startButton.addEventListener('click', () => {
 				player.style.cursor = 'pointer';
 				// Event listener
 				player.addEventListener('click', () => {
-					toggleHighlight();
 					if (player.style.cursor === 'pointer') {
+						removeHighlight();
 						const team = player.dataset.team;
 						// Home team
 						if (team === 'home-player') {
@@ -661,8 +661,8 @@ startButton.addEventListener('click', () => {
 				player.style.cursor = 'pointer';
 				// Event listener
 				player.addEventListener('click', () => {
-					toggleHighlight();
 					if (player.style.cursor === 'pointer') {
+						removeHighlight();
 						const team = player.dataset.team;
 						// Home team
 						if (team === 'home-player') {
@@ -889,10 +889,17 @@ function cardHistory(player, time, type) {
 
 // Function for highlighting playerRowContainers on hover
 function toggleHighlight() {
-	console.log('Class Toggle Dela');
 	const playersRows = document.querySelectorAll('.playerRowContainer');
 	playersRows.forEach((row) => {
 		row.classList.toggle('highlight');
+	});
+}
+
+// Function for removing highlighting playerRowContainers on hover
+function removeHighlight() {
+	const playersRows = document.querySelectorAll('.playerRowContainer');
+	playersRows.forEach((row) => {
+		row.classList.remove('highlight');
 	});
 }
 
